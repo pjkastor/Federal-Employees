@@ -11,7 +11,7 @@ VIEWER.resourceMap = new Map()
 //Keep track of how many resources you have fetched
 VIEWER.resourceFetchCount = 0
 
-//Keep track of how many resources you are processing for navPlace
+//Keep track of how many resources you are processing
 VIEWER.resourceCount = 0
 
 //Once you have fetched this many resources, fetch no more.  Helps stop infinite loops from circular references.
@@ -81,10 +81,7 @@ VIEWER.init = async function() {
 
 /**
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
- * In this case, the GeoJSON are all Features take from Feature Collections.
- * These Feature Collections were values of navPlace properties or Web Annotation bodies.
- * All Features from the outer most objects and their children are present.
- * This may have caused duplicates in some cases.
+ * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
 VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
     let mapbox_satellite_layer=
