@@ -69,15 +69,75 @@ VIEWER.updateGeometry = function(event) {
  */
 VIEWER.init = async function() {
     let latlong = [12, 12] //default starting coords
-    const locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
-    const peopleData = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
-    const taxData = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    const districtData = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    const countyData = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    const stateData = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let geoJsonData = [locationData, peopleData, taxData, districtData, countyData, stateData ]
+    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
+    let pData = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
+    let taxBoundaries = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    let districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    let geoJsonData = [ ]
     //loadInput.value = "Apply Options"
-    let formattedGeoJsonData = geoJsonData.flat(1) //AnnotationPages and FeatureCollections cause arrays in arrays.  
+    
+    let peopleData = []
+    locationData = locationData[0]
+    pData = pData[0]
+    countyBoundaries = countyBoundaries[0]
+    stateBoundaries = stateBoundaries[0]
+    taxBoundaries = taxBoundaries[0]
+    districtBoundaries = districtBoundaries[0]
+    pData["Fields"].forEach((element) => {
+        peopleFields.push(element["Fied"])
+    })
+    peopleFields.push("Geocoding ID")
+
+    pData["Data"].map((item) => {
+        const filteredItem = {}
+        peopleFields.forEach((field) => {
+          if (item.hasOwnProperty(field)) {
+            filteredItem[field] = item[field]
+          }
+        })
+        peopleData.push(filteredItem)
+    })
+
+    peopleData.sort(function (a, b) {
+        return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
+    })
+
+    locationData.features.forEach(function (loc) {
+        let tempX = loc.geometry.coordinates[0]
+        let tempY = loc.geometry.coordinates[1]
+        loc.geometry.coordinates[0] = tempY
+        loc.geometry.coordinates[1] = tempX
+        loc.properties["Earliest Record"] = parseInt(loc.properties["Earliest Record"])
+        loc.properties["Latest Record"] = parseInt(loc.properties["Latest Record"])
+
+        let personnelArr = {}
+        let temp = peopleData.filter(function (p) {
+          return p["Geocoding ID"] == loc.properties["Geocode Number"]
+        })
+        if (temp.length > 0) {
+          temp.forEach((item, index) => {
+            const existingId = Object.keys(personnelArr).find((id) =>
+              personnelArr[id].includes(item)
+            )
+            if (existingId) {
+              personnelArr[existingId].push(item)
+            } else {
+              const newId = item["GovernmentEmployeeNumber"]
+              personnelArr[newId] = [item]
+            }
+          })
+        }
+        loc.properties.personnel = personnelArr
+    })
+
+    geoJsonData.push(locationData)
+    geoJsonData.push(countyBoundaries)
+    geoJsonData.push(stateBoundaries)
+    geoJsonData.push(taxBoundaries)
+    geoJsonData.push(districtBoundaries)
+    const formattedGeoJsonData = geoJsonData.flat(1) //AnnotationPages and FeatureCollections cause arrays in arrays.  
     //Abstracted.  Maybe one day you want to VIEWER.initializeOtherWebMap(latlong, allGeos)
     VIEWER.initializeLeaflet(latlong, formattedGeoJsonData)
 }
@@ -140,7 +200,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
     //     "Streets": esri_street,
     //     "Satellite" : mapbox_satellite_layer,
     //     "Topography" : topomap
-    // };
+    // }
     //var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(VIEWER.mymap)
 
     let appColor = "#008080"
@@ -244,13 +304,13 @@ VIEWER.formatPopup = function(feature, layer) {
 }
 
 VIEWER.getURLParameter = function(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) { return pair[1]; }
+    var query = window.location.search.substring(1)
+    var vars = query.split("&")
+    for (var i = 0 i < vars.length i++) {
+        var pair = vars[i].split("=")
+        if (pair[0] == variable) { return pair[1] }
     }
-    return (false);
+    return (false)
 }
 
 VIEWER.init()
