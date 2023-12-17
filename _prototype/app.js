@@ -69,11 +69,14 @@ VIEWER.updateGeometry = function(event) {
  */
 VIEWER.init = async function() {
     let latlong = [12, 12] //default starting coords
-    let geos = []
-    let resource = {}
-    // TODO get all the local Feature Collections and Features data and play it into this array to pass forward. 
-    let geoJsonData = []
-    loadInput.value = "Apply Options"
+    const locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
+    const peopleData = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
+    const taxData = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    const districtData = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    const countyData = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    const stateData = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    let geoJsonData = [locationData, peopleData, taxData, districtData, countyData, stateData ]
+    //loadInput.value = "Apply Options"
     let formattedGeoJsonData = geoJsonData.flat(1) //AnnotationPages and FeatureCollections cause arrays in arrays.  
     //Abstracted.  Maybe one day you want to VIEWER.initializeOtherWebMap(latlong, allGeos)
     VIEWER.initializeLeaflet(latlong, formattedGeoJsonData)
