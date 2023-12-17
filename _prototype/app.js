@@ -75,16 +75,17 @@ VIEWER.init = async function() {
     let districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
     let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let geoJsonData = [ ]
+    let geoJsonData = []
+    let peopleFields = []
     //loadInput.value = "Apply Options"
     
     let peopleData = []
-    locationData = locationData[0]
-    pData = pData[0]
-    countyBoundaries = countyBoundaries[0]
-    stateBoundaries = stateBoundaries[0]
-    taxBoundaries = taxBoundaries[0]
-    districtBoundaries = districtBoundaries[0]
+    // locationData = locationData[0]
+    // pData = pData[0]
+    // countyBoundaries = countyBoundaries[0]
+    // stateBoundaries = stateBoundaries[0]
+    // taxBoundaries = taxBoundaries[0]
+    // districtBoundaries = districtBoundaries[0]
     pData["Fields"].forEach((element) => {
         peopleFields.push(element["Fied"])
     })
@@ -306,7 +307,7 @@ VIEWER.formatPopup = function(feature, layer) {
 VIEWER.getURLParameter = function(variable) {
     var query = window.location.search.substring(1)
     var vars = query.split("&")
-    for (var i = 0 i < vars.length i++) {
+    for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=")
         if (pair[0] == variable) { return pair[1] }
     }
