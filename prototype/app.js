@@ -75,71 +75,93 @@ VIEWER.init = async function() {
     let districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
     let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => {return {}})
+    let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => {return {}})
     let geoJsonData = []
     let peopleFields = []
     //loadInput.value = "Apply Options"
     
     let peopleData = []
+    // I want the counties to know their district
+    countyBoundaries.features = countyBoundaries.features.filter(cnty => cnty?.properties?.STATE_TERR === "Pennsylvania")
+    .map(cntyObj => {
+        cntyObj.properties.districts = judicialDistricts.filter(dist => dist.ID === cntyObj.properties.ID)
+        cntyObj.properties.circuits = judicialCircuits.filter(circuit => circuit?.State === "PA")
+        return cntyObj
+    })
+
+    // I want the states (' counties'?) to know their circuit
+    stateBoundaries.features = stateBoundaries.features.filter(state => state?.properties.ABBR_NAME === "PA")
+    .map(stateObj => {
+        stateObj.properties.circuits = judicialCircuits.filter(circuit => circuit?.State === stateObj.properties.ABBR_NAME)
+        return stateObj
+    })
+
+    geoJsonData.push(countyBoundaries)
+    geoJsonData.push(stateBoundaries)
+
     // locationData = locationData[0]
     // pData = pData[0]
     // countyBoundaries = countyBoundaries[0]
     // stateBoundaries = stateBoundaries[0]
     // taxBoundaries = taxBoundaries[0]
     // districtBoundaries = districtBoundaries[0]
-    pData["Fields"].forEach((element) => {
-        peopleFields.push(element["Fied"])
-    })
-    peopleFields.push("Geocoding ID")
+    // pData["Fields"].forEach((element) => {
+    //     peopleFields.push(element["Fied"])
+    // })
+    // peopleFields.push("Geocoding ID")
 
-    pData["Data"].map((item) => {
-        const filteredItem = {}
-        peopleFields.forEach((field) => {
-          if (item.hasOwnProperty(field)) {
-            filteredItem[field] = item[field]
-          }
-        })
-        peopleData.push(filteredItem)
-    })
+    // pData["Data"].map((item) => {
+    //     const filteredItem = {}
+    //     peopleFields.forEach((field) => {
+    //       if (item.hasOwnProperty(field)) {
+    //         filteredItem[field] = item[field]
+    //       }
+    //     })
+    //     peopleData.push(filteredItem)
+    // })
 
-    peopleData.sort(function (a, b) {
-        return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
-    })
+    // peopleData.sort(function (a, b) {
+    //     return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
+    // })
 
-    locationData.features.forEach(function (loc) {
-        let tempX = loc.geometry.coordinates[0]
-        let tempY = loc.geometry.coordinates[1]
-        loc.geometry.coordinates[0] = tempY
-        loc.geometry.coordinates[1] = tempX
-        loc.properties["Earliest Record"] = parseInt(loc.properties["Earliest Record"])
-        loc.properties["Latest Record"] = parseInt(loc.properties["Latest Record"])
+    // locationData.features.forEach(function (loc) {
+    //     let tempX = loc.geometry.coordinates[0]
+    //     let tempY = loc.geometry.coordinates[1]
+    //     loc.geometry.coordinates[0] = tempY
+    //     loc.geometry.coordinates[1] = tempX
+    //     loc.properties["Earliest Record"] = parseInt(loc.properties["Earliest Record"])
+    //     loc.properties["Latest Record"] = parseInt(loc.properties["Latest Record"])
 
-        let personnelArr = {}
-        let temp = peopleData.filter(function (p) {
-          return p["Geocoding ID"] == loc.properties["Geocode Number"]
-        })
-        if (temp.length > 0) {
-          temp.forEach((item, index) => {
-            const existingId = Object.keys(personnelArr).find((id) =>
-              personnelArr[id].includes(item)
-            )
-            if (existingId) {
-              personnelArr[existingId].push(item)
-            } else {
-              const newId = item["GovernmentEmployeeNumber"]
-              personnelArr[newId] = [item]
-            }
-          })
-        }
-        loc.properties.personnel = personnelArr
-    })
+    //     let personnelArr = {}
+    //     let temp = peopleData.filter(function (p) {
+    //       return p["Geocoding ID"] == loc.properties["Geocode Number"]
+    //     })
+    //     if (temp.length > 0) {
+    //       temp.forEach((item, index) => {
+    //         const existingId = Object.keys(personnelArr).find((id) =>
+    //           personnelArr[id].includes(item)
+    //         )
+    //         if (existingId) {
+    //           personnelArr[existingId].push(item)
+    //         } else {
+    //           const newId = item["GovernmentEmployeeNumber"]
+    //           personnelArr[newId] = [item]
+    //         }
+    //       })
+    //     }
+    //     loc.properties.personnel = personnelArr
+    // })
 
-    geoJsonData.push(locationData)
-    geoJsonData.push(countyBoundaries)
-    geoJsonData.push(stateBoundaries)
-    geoJsonData.push(taxBoundaries)
-    geoJsonData.push(districtBoundaries)
+    // geoJsonData.push(locationData)
+    // geoJsonData.push(countyBoundaries)
+    // geoJsonData.push(stateBoundaries)
+    // geoJsonData.push(taxBoundaries)
+    // geoJsonData.push(districtBoundaries)
+
     const formattedGeoJsonData = geoJsonData.flat(1) //AnnotationPages and FeatureCollections cause arrays in arrays.  
     //Abstracted.  Maybe one day you want to VIEWER.initializeOtherWebMap(latlong, allGeos)
+    console.log(formattedGeoJsonData)
     VIEWER.initializeLeaflet(latlong, formattedGeoJsonData)
 }
 
