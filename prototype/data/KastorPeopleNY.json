@@ -1,5 +1,6 @@
 {
-"Data":[
+"_name":"KastorPeopleNY",
+"_data":[
  {
   "RowNumber": 8833,
   "GovernmentEmployeeNumber": "GEN.30176",
@@ -68271,7 +68272,7 @@
   "Pay Period": "year"
  }
 ],
-"Fields":[
+"_fields":[
  {
   "Column": "A",
   "Fied": "RowNumber",

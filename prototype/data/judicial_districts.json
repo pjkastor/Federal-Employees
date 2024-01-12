@@ -1,4 +1,6 @@
-[
+{
+   "_name":"judicial_disctricts",
+   "_data": [
    {
       "Current State":"PA",
       "Historic State":"PA",
@@ -1404,3 +1406,4 @@
       "End Year":"1832"
    }
 ]
+}
