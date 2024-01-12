@@ -108,6 +108,11 @@ VIEWER.init = async function() {
     locationData.features = locationData.features.map(f => {
         if(!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = locationData._name
+        // Oh no are these really inverted!?!?!  I may need a new copy of this location data
+        let tempX = f.geometry.coordinates[0]
+        let tempY = f.geometry.coordinates[1]
+        f.geometry.coordinates[0] = tempY
+        f.geometry.coordinates[1] = tempX
         return f
     })
 
@@ -158,38 +163,39 @@ VIEWER.init = async function() {
  * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
 VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
-    let mapbox_satellite_layer=
+    const mapbox_satellite_layer=
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
         maxZoom: 19,
         id: 'mapbox.satellite', //mapbox.streets
         accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
     })
 
-    let osm = 
+    const osm = 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
     })
 
-    let esri_street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19
-    })
-    let esri_natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    const esri_street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19
     })
 
-    let topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    const esri_natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19
     })
 
-    let carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    const topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
     })
 
-    let USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
+    const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19
     })
 
-    let baseMaps = {
+    const USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19
+    })
+
+    const baseMaps = {
         "OpenStreetMap": osm,
         "CartoDB": carto,
         "ESRI Street" : esri_street,
@@ -250,42 +256,33 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         },
         onEachFeature: VIEWER.formatPopup
     })
-
-    const locationFeatures = geoMarkers.locations.features.map(f =>{
-        const name = f.properties._name ?? ""
-        return L.circleMarker(f.geometry.coordinates, {
-            radius: 6,
-            fillColor: "yellow",
-            color: "yellow",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 1,
-            className: name
-        })
+    const locationFeatures = L.geoJSON(geoMarkers.locations, {
+        pointToLayer: function(feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 6,
+                fillColor: "yellow",
+                color: "yellow",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 1
+            })
+        },
+        onEachFeature: VIEWER.formatPopup
     })
     
-    const locationsLayer = L.layerGroup(locationFeatures)
-
     let main_layers = {
         "State Boundaries": stateFeatures,
         "County Boundaries": countyFeatures,
         "1814 Tax Districts": taxFeatures1814,
         "1798 Tax Disctricts": taxFeatures1798,
-        "Specific Locations": locationsLayer
+        "Specific Locations": locationFeatures
     }
     VIEWER.mymap = L.map('leafletInstanceContainer', {
         center: coords,
         zoom: 2,
         layers: [
-            osm, 
-            esri_street, 
-            topomap, 
-            mapbox_satellite_layer, 
-            stateFeatures, 
-            countyFeatures, 
-            locationsLayer, 
-            taxFeatures1798, 
-            taxFeatures1814
+            mapbox_satellite_layer,
+            locationFeatures
         ]
     })
     let layerControl = L.control.layers(baseMaps, main_layers).addTo(VIEWER.mymap)
@@ -293,7 +290,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
     loadingMessage.classList.add("is-hidden")
 
 
-    // TODO set the initial view by applying an initial filter.
+    // TODO set the initial view by applying an initial date filter.
     /*
     var originalCountyData = {
       ...vis.data[1], // Spread the existing object properties
@@ -331,11 +328,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
       }),
     };
     */
-    // TODO add some kind of fill toggling to allow for "border only" views (per layer?)
-
     // TODO implement some clustering mechanism for AllLocations
-
-
 }
 
 /**
