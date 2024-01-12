@@ -261,7 +261,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
             return L.circleMarker(latlng, {
                 radius: 6,
                 fillColor: "yellow",
-                color: "yellow",
+                color: "black",
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 1
