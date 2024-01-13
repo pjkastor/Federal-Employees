@@ -13,11 +13,17 @@ VIEWER.main_layers = null
 
 VIEWER.layerControl = null
 
+VIEWER.activeLayers = {
+    "Specific Locations" : true,
+    "County Boundaries" : false,
+    "State Boundaries": false
+}
+
+VIEWER.activeBasemap = null
+
 VIEWER.stateFeatures = null
 
 VIEWER.countyFeatures = null
-
-VIEWER.locationData = null
 
 VIEWER.taxFeatures1798
 
@@ -104,16 +110,16 @@ VIEWER.updateGeometry = function(event) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let latlong = [12, 12] //default starting coords
-    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
-    let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
-    let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    let districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    let tax_1814 = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => {return {}})
-    let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => {return {}})
+    const latlong = [12, 12] //default starting coords
+    const locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
+    const specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
+    const tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    const districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
+    const tax_1814 = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    const stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    const countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    const judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => {return {}})
+    const judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => {return {}})
     let geoJsonData = []
     let peopleFields = []
     //loadInput.value = "Apply Options"
@@ -144,8 +150,8 @@ VIEWER.init = async function() {
         if(!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = locationData._name
         // Oh no are these really inverted!?!?!  I may need a new copy of this location data
-        let tempX = f.geometry.coordinates[0]
-        let tempY = f.geometry.coordinates[1]
+        const tempX = f.geometry.coordinates[0]
+        const tempY = f.geometry.coordinates[1]
         f.geometry.coordinates[0] = tempY
         f.geometry.coordinates[1] = tempX
         return f
@@ -190,14 +196,15 @@ VIEWER.init = async function() {
     VIEWER.geoJsonByLayers.states = stateBoundaries
     VIEWER.geoJsonByLayers.tax_1798 = tax_1798
     VIEWER.geoJsonByLayers.tax_1814 = tax_1814
-    const geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
-    VIEWER.initializeLeaflet(latlong, geoMarkers, 0) 
+    VIEWER.initializeLeaflet(latlong, 0) 
 }
 
 /**
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
  */
-VIEWER.initializeLeaflet = async function(coords, geoMarkers={}, userInputDate=null) {
+VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
+    let selectedControls = null
+    let geoMarkers = VIEWER.geoJsonByLayers
     if(VIEWER.mymap === null){
         VIEWER.baseLayers.mapbox_satellite_layer =
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
@@ -240,142 +247,192 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers={}, userInputDate=n
             "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
             "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer
         }    
+
+        VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
+            style: function(feature) {
+                let name = feature.properties._name ?? ""
+                return {
+                    color: "#005A9C",
+                    fillColor: "#005A9C",
+                    fillOpacity: 0.00,
+                    className: name
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
+            style: function(feature) {
+                let name = feature.properties._name ?? ""
+                return {
+                    color: "#008080",
+                    fillColor: "#008080",
+                    fillOpacity: 0.00,
+                    className: name
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
+            style: function(feature) {
+                let name = feature.properties._name ?? ""
+                return {
+                    color: "blue",
+                    fillColor: "blue",
+                    fillOpacity: 0.00,
+                    className: name
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
+            style: function(feature) {
+                let name = feature.properties._name ?? ""
+                return {
+                    color: "purple",
+                    fillColor: "purple",
+                    fillOpacity: 0.00,
+                    className: name
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
+            pointToLayer: function(feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 6,
+                    fillColor: "yellow",
+                    color: "black",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 1
+                })
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+        
+        VIEWER.main_layers = {
+            "1798 Tax Disctricts": VIEWER.geoJsonLayers.taxFeatures1798,
+            "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
+            "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
+            "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
+            "Specific Locations": VIEWER.geoJsonLayers.locationFeatures
+        }
+        
+        VIEWER.mymap = L.map('leafletInstanceContainer', {
+            center: coords,
+            zoom: 2,
+            layers: [
+                VIEWER.baseLayers.mapbox_satellite_layer,
+                VIEWER.geoJsonLayers.locationFeatures
+            ]
+        })        
+        VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
     }
 
     if(userInputDate){
         // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-        for(const entry in geoMarkers){
-            switch(entry){
-                case "locations":
-                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        // If it does not have a date, should we keep it on the map?  Yes for now.
-                        if(!f.properties.hasOwnProperty("Earliest Record") && f.properties.hasOwnProperty("Latest Record")) return true
-                        const sDate = new Date(f.properties["Earliest Record"])
-                        const eDate = new Date(f.properties["Latest Record"])
-                        const currDate = new Date(userInputDate)
-                        return sDate <= currDate && eDate >= currDate
-                    })
-                break
-                case "states":
-                case "counties":
-                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        if(!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
-                        const sDate = new Date(f.properties["START_DATE"])
-                        const eDate = new Date(f.properties["END_DATE"])
-                        const currDate = new Date(userInputDate)
-                        return sDate < currDate && eDate >= currDate
-                    })
-                break
-                default:
+        // This clone here taked a few seconds -- we need to add some kind of "we are working..." UI for the user.
+        //geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
+        // for(const entry in geoMarkers){
+        //     switch(entry){
+        //         case "locations":
+        //             geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+        //                 // If it does not have a date, should we keep it on the map?  Yes for now.
+        //                 if(!f.properties.hasOwnProperty("Earliest Record") && f.properties.hasOwnProperty("Latest Record")) return true
+        //                 const sDate = new Date(f.properties["Earliest Record"])
+        //                 const eDate = new Date(f.properties["Latest Record"])
+        //                 const currDate = new Date(userInputDate)
+        //                 return sDate <= currDate && eDate >= currDate
+        //             })
+        //         break
+        //         case "states":
+        //         case "counties":
+        //             geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+        //                 if(!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
+        //                 const sDate = new Date(f.properties["START_DATE"])
+        //                 const eDate = new Date(f.properties["END_DATE"])
+        //                 const currDate = new Date(userInputDate)
+        //                 return sDate < currDate && eDate >= currDate
+        //             })
+        //         break
+        //         default:
+        //     }
+        // }
+        for(const entry in VIEWER.mymap._layers){
+            const obj = VIEWER.mymap._layers[entry]
+            if(obj.hasOwnProperty("feature")){
+                if(obj.options.hasOwnProperty("startDate") && obj.options.hasOwnProperty("endDate")){
+                    const sDate = new Date(obj.options.startDate)
+                    const eDate = new Date(obj.options.endDate)
+                    const currDate = new Date(userInputDate)
+                    if(sDate <= currDate && eDate >= currDate){
+                        obj._path.classList.remove("is-hidden")
+                    }
+                    else{
+                        obj._path.classList.add("is-hidden")
+                    }
+                }
             }
         }
     }
 
     // TODO remove the current GeoJSON layers and register the new filtered ones
     // Make sure the same layers that were active before the date change are active again.
-    if(VIEWER.mymap){
-        // VIEWER.layerControl.removeLayer(VIEWER.stateFeatures)
-        // VIEWER.layerControl.removeLayer(VIEWER.countyFeatures)
-        // VIEWER.layerControl.removeLayer(VIEWER.locationFeatures)
-    }
+    // if(VIEWER.mymap){
+    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.stateFeatures)
+    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.countyFeatures)
+    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.locationFeatures)
+    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.stateFeatures)
+    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.countyFeatures)
+    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.locationFeatures)
+    //     // Know which layers are active to make them active again
+    //     VIEWER.layerControl._layers.forEach(l => {
+    //         if (l.overlay) {
+    //             if(!l.name.includes("Tax Districts")){
+    //                 VIEWER.activeLayers[l.name] === VIEWER.layerControl._map.hasLayer(l.layer)    
+    //             }
+    //         }
+    //     })
+    // }
 
-    VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
-        style: function(feature) {
-            let name = feature.properties._name ?? ""
-            return {
-                color: "#005A9C",
-                fillColor: "#005A9C",
-                fillOpacity: 0.00,
-                className: name
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
-        style: function(feature) {
-            let name = feature.properties._name ?? ""
-            return {
-                color: "#008080",
-                fillColor: "#008080",
-                fillOpacity: 0.00,
-                className: name
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
-        style: function(feature) {
-            let name = feature.properties._name ?? ""
-            return {
-                color: "blue",
-                fillColor: "blue",
-                fillOpacity: 0.00,
-                className: name
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
-        style: function(feature) {
-            let name = feature.properties._name ?? ""
-            return {
-                color: "purple",
-                fillColor: "purple",
-                fillOpacity: 0.00,
-                className: name
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
-        pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 6,
-                fillColor: "yellow",
-                color: "black",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 1
-            })
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
     
-    VIEWER.main_layers = {
-        "1798 Tax Disctricts": VIEWER.geoJsonLayers.taxFeatures1798,
-        "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
-        "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
-        "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
-        "Specific Locations": VIEWER.geoJsonLayers.locationFeatures
-    }
 
-    //FIXME can we just redraw the shape layers and redo the controls?  We shouldn't need to redo the base layers and completely redraw...
+    // //FIXME can we just redraw the shape layers and redo the controls?  We shouldn't need to redo the base layers and completely redraw...
 
 
-    if(VIEWER.mymap){
-        // Which layers are active?  We will need to make them active again after we rebuild them filtered.
-        // VIEWER.mymap.layers = the active ones
-        // VIEWER.layerControl.addOverlay(stateFeatures, "State Boundaries")
-        // VIEWER.layerControl.addOverlay(countFeatures, "County Boundaries")
-        // VIEWER.layerControl.addOverlay(locationData, "Specific Locations")
-        VIEWER.mymap.off()
-        VIEWER.mymap.remove()
-    }
+    // if(VIEWER.mymap){
+    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.stateFeatures, "State Boundaries")
+    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.countyFeatures, "County Boundaries")
+    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.locationFeatures, "Specific Locations")
+    //     for(const layername in VIEWER.activeLayers){
+    //         if(!VIEWER.activeLayers[layername]) continue
+    //         const checkbox_containers = document.querySelector(".leaflet-control-layers-overlays").querySelectorAll("label")
+    //         for(const container of checkbox_containers){
+    //             const checkbox = container.querySelector("input")
+    //             const name = container.querySelector("span").innerText.trim()
+    //             if(name === layername){
+    //                 checkbox.click()
+    //             }
+    //         }
+    //     }
+    // }
+    // else{
+    //     VIEWER.mymap = L.map('leafletInstanceContainer', {
+    //         center: coords,
+    //         zoom: 2,
+    //         layers: [
+    //             VIEWER.baseLayers.mapbox_satellite_layer,
+    //             VIEWER.geoJsonLayers.locationFeatures
+    //         ]
+    //     })        
+    //     VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+    //     VIEWER.activeBasemap = VIEWER.baseLayers.mapbox_satellite_layer
+    // }
 
-    VIEWER.mymap = L.map('leafletInstanceContainer', {
-        center: coords,
-        zoom: 2,
-        layers: [
-            VIEWER.baseLayers.mapbox_satellite_layer,
-            VIEWER.geoJsonLayers.locationFeatures
-        ]
-    })        
-    VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-    
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
     
@@ -403,9 +460,19 @@ VIEWER.formatPopup = function(feature, layer) {
         if (feature.properties["Country"]) {
             popupContent += `${feature.properties["Country"]}`
         }
+        if(feature.properties["Earliest Record"]){
+            layer.options.startDate = feature.properties["Earliest Record"]
+        }
+        else if(feature.properties["START_DATE"]){
+            layer.options.startDate = feature.properties["START_DATE"]
+        }
+        if(feature.properties["Latest Record"]){
+            layer.options.endDate = feature.properties["Latest Record"]
+        }
+        else if(feature.properties["END_DATE"]){
+            layer.options.endDate = feature.properties["END_DATE"]
+        }
         popupContent += `</div>`
-        layer.options.start = "1888"
-        layer.options.end = "1999"
         layer.bindPopup(popupContent)
     }
 }
@@ -421,18 +488,16 @@ VIEWER.getURLParameter = function(variable) {
 }
 
 
-
 // html functions to change time
 document.getElementById("timeSlider").addEventListener("input", function (e) {
-    document.getElementById("slider-value").innerHTML = e.target.value
+    document.getElementById("slider-value").innerText = e.target.value
 })
 
 document.getElementById("timeSlider").addEventListener("change", function (e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
-    const geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
     const latlong = [12, 12]
-    VIEWER.initializeLeaflet(latlong, geoMarkers, sliderYear) 
+    VIEWER.initializeLeaflet(latlong, sliderYear) 
 });
 
 VIEWER.init()
