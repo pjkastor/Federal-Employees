@@ -13,14 +13,6 @@ VIEWER.main_layers = null
 
 VIEWER.layerControl = null
 
-VIEWER.activeLayers = {
-    "Specific Locations" : true,
-    "County Boundaries" : false,
-    "State Boundaries": false
-}
-
-VIEWER.activeBasemap = null
-
 VIEWER.stateFeatures = null
 
 VIEWER.countyFeatures = null
@@ -329,39 +321,20 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
                 VIEWER.baseLayers.mapbox_satellite_layer,
                 VIEWER.geoJsonLayers.locationFeatures
             ]
-        })        
+        })  
+
+        VIEWER.mymap.on("overlayadd", function (event) {
+          VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+        })
+
+        VIEWER.mymap.on("overlayadd", function (event) {
+          VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+        })
+          
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
     }
 
     if(userInputDate){
-        // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-        // This clone here taked a few seconds -- we need to add some kind of "we are working..." UI for the user.
-        //geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
-        // for(const entry in geoMarkers){
-        //     switch(entry){
-        //         case "locations":
-        //             geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-        //                 // If it does not have a date, should we keep it on the map?  Yes for now.
-        //                 if(!f.properties.hasOwnProperty("Earliest Record") && f.properties.hasOwnProperty("Latest Record")) return true
-        //                 const sDate = new Date(f.properties["Earliest Record"])
-        //                 const eDate = new Date(f.properties["Latest Record"])
-        //                 const currDate = new Date(userInputDate)
-        //                 return sDate <= currDate && eDate >= currDate
-        //             })
-        //         break
-        //         case "states":
-        //         case "counties":
-        //             geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-        //                 if(!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
-        //                 const sDate = new Date(f.properties["START_DATE"])
-        //                 const eDate = new Date(f.properties["END_DATE"])
-        //                 const currDate = new Date(userInputDate)
-        //                 return sDate < currDate && eDate >= currDate
-        //             })
-        //         break
-        //         default:
-        //     }
-        // }
         for(const entry in VIEWER.mymap._layers){
             const obj = VIEWER.mymap._layers[entry]
             if(obj.hasOwnProperty("feature")){
@@ -379,60 +352,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             }
         }
     }
-
-    // TODO remove the current GeoJSON layers and register the new filtered ones
-    // Make sure the same layers that were active before the date change are active again.
-    // if(VIEWER.mymap){
-    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.stateFeatures)
-    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.countyFeatures)
-    //     VIEWER.layerControl.removeLayer(VIEWER.geoJsonLayers.locationFeatures)
-    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.stateFeatures)
-    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.countyFeatures)
-    //     VIEWER.mymap.removeLayer(VIEWER.geoJsonLayers.locationFeatures)
-    //     // Know which layers are active to make them active again
-    //     VIEWER.layerControl._layers.forEach(l => {
-    //         if (l.overlay) {
-    //             if(!l.name.includes("Tax Districts")){
-    //                 VIEWER.activeLayers[l.name] === VIEWER.layerControl._map.hasLayer(l.layer)    
-    //             }
-    //         }
-    //     })
-    // }
-
     
-
-    // //FIXME can we just redraw the shape layers and redo the controls?  We shouldn't need to redo the base layers and completely redraw...
-
-
-    // if(VIEWER.mymap){
-    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.stateFeatures, "State Boundaries")
-    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.countyFeatures, "County Boundaries")
-    //     VIEWER.layerControl.addOverlay(VIEWER.geoJsonLayers.locationFeatures, "Specific Locations")
-    //     for(const layername in VIEWER.activeLayers){
-    //         if(!VIEWER.activeLayers[layername]) continue
-    //         const checkbox_containers = document.querySelector(".leaflet-control-layers-overlays").querySelectorAll("label")
-    //         for(const container of checkbox_containers){
-    //             const checkbox = container.querySelector("input")
-    //             const name = container.querySelector("span").innerText.trim()
-    //             if(name === layername){
-    //                 checkbox.click()
-    //             }
-    //         }
-    //     }
-    // }
-    // else{
-    //     VIEWER.mymap = L.map('leafletInstanceContainer', {
-    //         center: coords,
-    //         zoom: 2,
-    //         layers: [
-    //             VIEWER.baseLayers.mapbox_satellite_layer,
-    //             VIEWER.geoJsonLayers.locationFeatures
-    //         ]
-    //     })        
-    //     VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-    //     VIEWER.activeBasemap = VIEWER.baseLayers.mapbox_satellite_layer
-    // }
-
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
     
@@ -498,6 +418,6 @@ document.getElementById("timeSlider").addEventListener("change", function (e) {
     var sliderYear = e.target.value + "-12-31"
     const latlong = [12, 12]
     VIEWER.initializeLeaflet(latlong, sliderYear) 
-});
+})
 
 VIEWER.init()
