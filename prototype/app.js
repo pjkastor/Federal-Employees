@@ -330,7 +330,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         VIEWER.mymap.on("overlayadd", function (event) {
           VIEWER.geoJsonLayers.locationFeatures.bringToFront()
         })
-          
+
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
     }
 
@@ -343,10 +343,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
                     const eDate = new Date(obj.options.endDate)
                     const currDate = new Date(userInputDate)
                     if(sDate <= currDate && eDate >= currDate){
-                        obj._path.classList.remove("is-hidden")
+                        obj._path.classList.remove("is-not-visible")
                     }
                     else{
-                        obj._path.classList.add("is-hidden")
+                        obj._path.classList.add("is-not-visible")
                     }
                 }
             }

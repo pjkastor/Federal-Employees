@@ -211,3 +211,16 @@ input[type="checkbox"]{
 #timeSliderSpan {
   display: inline-block;
 }
+
+.is-not-visible{
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
+path{
+    -webkit-transition: visibility 1.5s, opacity 1.5s linear;
+    -moz-transition: visibility 1.5s, opacity 1.5s linear;
+    -o-transition: visibility 1.5s, opacity 1.5s linear;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
