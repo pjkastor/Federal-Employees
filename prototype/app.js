@@ -5,6 +5,42 @@
 
 let VIEWER = {}
 
+VIEWER.geoJsonByLayers = {}
+
+VIEWER.geoJsonLayers = {}
+
+VIEWER.main_layers = null
+
+VIEWER.layerControl = null
+
+VIEWER.stateFeatures = null
+
+VIEWER.countyFeatures = null
+
+VIEWER.locationData = null
+
+VIEWER.taxFeatures1798
+
+VIEWER.taxFeatures1819 = null
+
+VIEWER.baseLayers = {}
+
+VIEWER.baseLayers.mapbox_satellite_layer = null
+
+VIEWER.baseLayers.osm = null
+
+VIEWER.baseLayers.esri_street = null
+
+VIEWER.baseLayers.esri_natgeo = null
+
+VIEWER.baseLayers.topomap = null
+
+VIEWER.baseLayers.carto = null
+
+VIEWER.baseLayers.USGS_top_streets = null
+
+VIEWER.baseMaps = null 
+
 //Keep tracked of fetched resources.  Do not fetch resources you have already resolved.
 VIEWER.resourceMap = new Map()
 
@@ -24,7 +60,7 @@ VIEWER.resourceFindLimit = 1000
 VIEWER.resource = {}
 
 //For Leaflet
-VIEWER.mymap = {}
+VIEWER.mymap = null
 
 //GeoJSON contexts to verify
 VIEWER.geojson_contexts = ["https://geojson.org/geojson-ld/geojson-context.jsonld", "http://geojson.org/geojson-ld/geojson-context.jsonld"]
@@ -82,7 +118,6 @@ VIEWER.init = async function() {
     let peopleFields = []
     //loadInput.value = "Apply Options"
     let peopleData = []
-    let geoJsonByLayers = {}
 
     // Format FeatureCollections' Features Array so each feature known its _name for filtering.
     tax_1798.features = tax_1798.features.map(f => {
@@ -150,62 +185,101 @@ VIEWER.init = async function() {
     peopleData.sort(function (a, b) {
         return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
     })
-    geoJsonByLayers.locations = locationData
-    geoJsonByLayers.counties = countyBoundaries
-    geoJsonByLayers.states = stateBoundaries
-    geoJsonByLayers.tax_1798 = tax_1798
-    geoJsonByLayers.tax_1814 = tax_1814
-    VIEWER.initializeLeaflet(latlong, geoJsonByLayers) 
+    VIEWER.geoJsonByLayers.locations = locationData
+    VIEWER.geoJsonByLayers.counties = countyBoundaries
+    VIEWER.geoJsonByLayers.states = stateBoundaries
+    VIEWER.geoJsonByLayers.tax_1798 = tax_1798
+    VIEWER.geoJsonByLayers.tax_1814 = tax_1814
+    const geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
+    VIEWER.initializeLeaflet(latlong, geoMarkers, 0) 
 }
 
 /**
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
- * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
-VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
-    const mapbox_satellite_layer=
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
-        maxZoom: 19,
-        id: 'mapbox.satellite', //mapbox.streets
-        accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
-    })
+VIEWER.initializeLeaflet = async function(coords, geoMarkers={}, userInputDate=null) {
+    if(VIEWER.mymap === null){
+        VIEWER.baseLayers.mapbox_satellite_layer =
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
+            maxZoom: 19,
+            id: 'mapbox.satellite', //mapbox.streets
+            accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
+        })
 
-    const osm = 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.osm = 
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        })
 
-    const esri_street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.esri_street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19
+        })
 
-    const esri_natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.esri_natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19
+        })
 
-    const topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        })
 
-    const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        })
 
-    const USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 19
-    })
+        VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19
+        })
 
-    const baseMaps = {
-        "OpenStreetMap": osm,
-        "CartoDB": carto,
-        "ESRI Street" : esri_street,
-        "ESRI NatGeo" : esri_natgeo,
-        "Open Topomap": topomap,
-        "USGS Topo + Street": USGS_top_streets,
-        "Mapbox Satellite": mapbox_satellite_layer
+        VIEWER.baseMaps = {
+            "OpenStreetMap": VIEWER.baseLayers.osm,
+            "CartoDB": VIEWER.baseLayers.carto,
+            "ESRI Street" : VIEWER.baseLayers.esri_street,
+            "ESRI NatGeo" : VIEWER.baseLayers.esri_natgeo,
+            "Open Topomap": VIEWER.baseLayers.topomap,
+            "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
+            "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer
+        }    
     }
 
-    const stateFeatures = L.geoJSON(geoMarkers.states, {
+    if(userInputDate){
+        // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
+        for(const entry in geoMarkers){
+            switch(entry){
+                case "locations":
+                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                        // If it does not have a date, should we keep it on the map?  Yes for now.
+                        if(!f.properties.hasOwnProperty("Earliest Record") && f.properties.hasOwnProperty("Latest Record")) return true
+                        const sDate = new Date(f.properties["Earliest Record"])
+                        const eDate = new Date(f.properties["Latest Record"])
+                        const currDate = new Date(userInputDate)
+                        return sDate <= currDate && eDate >= currDate
+                    })
+                break
+                case "states":
+                case "counties":
+                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                        if(!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
+                        const sDate = new Date(f.properties["START_DATE"])
+                        const eDate = new Date(f.properties["END_DATE"])
+                        const currDate = new Date(userInputDate)
+                        return sDate < currDate && eDate >= currDate
+                    })
+                break
+                default:
+            }
+        }
+    }
+
+    // TODO remove the current GeoJSON layers and register the new filtered ones
+    // Make sure the same layers that were active before the date change are active again.
+    if(VIEWER.mymap){
+        // VIEWER.layerControl.removeLayer(VIEWER.stateFeatures)
+        // VIEWER.layerControl.removeLayer(VIEWER.countyFeatures)
+        // VIEWER.layerControl.removeLayer(VIEWER.locationFeatures)
+    }
+
+    VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
         style: function(feature) {
             let name = feature.properties._name ?? ""
             return {
@@ -218,7 +292,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         onEachFeature: VIEWER.formatPopup
     })
 
-    const countyFeatures = L.geoJSON(geoMarkers.counties, {
+    VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
             let name = feature.properties._name ?? ""
             return {
@@ -231,7 +305,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         onEachFeature: VIEWER.formatPopup
     })
 
-    const taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
+    VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
         style: function(feature) {
             let name = feature.properties._name ?? ""
             return {
@@ -244,7 +318,7 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         onEachFeature: VIEWER.formatPopup
     })
 
-    const taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
+    VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
         style: function(feature) {
             let name = feature.properties._name ?? ""
             return {
@@ -256,7 +330,8 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         },
         onEachFeature: VIEWER.formatPopup
     })
-    const locationFeatures = L.geoJSON(geoMarkers.locations, {
+
+    VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             return L.circleMarker(latlng, {
                 radius: 6,
@@ -270,65 +345,41 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
         onEachFeature: VIEWER.formatPopup
     })
     
-    let main_layers = {
-        "State Boundaries": stateFeatures,
-        "County Boundaries": countyFeatures,
-        "1814 Tax Districts": taxFeatures1814,
-        "1798 Tax Disctricts": taxFeatures1798,
-        "Specific Locations": locationFeatures
+    VIEWER.main_layers = {
+        "1798 Tax Disctricts": VIEWER.geoJsonLayers.taxFeatures1798,
+        "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
+        "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
+        "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
+        "Specific Locations": VIEWER.geoJsonLayers.locationFeatures
     }
+
+    //FIXME can we just redraw the shape layers and redo the controls?  We shouldn't need to redo the base layers and completely redraw...
+
+
+    if(VIEWER.mymap){
+        // Which layers are active?  We will need to make them active again after we rebuild them filtered.
+        // VIEWER.mymap.layers = the active ones
+        // VIEWER.layerControl.addOverlay(stateFeatures, "State Boundaries")
+        // VIEWER.layerControl.addOverlay(countFeatures, "County Boundaries")
+        // VIEWER.layerControl.addOverlay(locationData, "Specific Locations")
+        VIEWER.mymap.off()
+        VIEWER.mymap.remove()
+    }
+
     VIEWER.mymap = L.map('leafletInstanceContainer', {
         center: coords,
         zoom: 2,
         layers: [
-            mapbox_satellite_layer,
-            locationFeatures
+            VIEWER.baseLayers.mapbox_satellite_layer,
+            VIEWER.geoJsonLayers.locationFeatures
         ]
-    })
-    let layerControl = L.control.layers(baseMaps, main_layers).addTo(VIEWER.mymap)
+    })        
+    VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+    
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
-
-
-    // TODO set the initial view by applying an initial date filter.
-    /*
-    var originalCountyData = {
-      ...vis.data[1], // Spread the existing object properties
-      features: vis.data[1].features.filter(function (d) {
-        var sDate = new Date(d.properties["START_DATE"]);
-        var eDate = new Date(d.properties["END_DATE"]);
-        var currDate = new Date("1811-12-31");
-        var bool = sDate < currDate && eDate >= currDate;
-        return bool;
-      }), // Filter the array based on a condition
-    };
-    var originalStateData = {
-      ...vis.data[2], // Spread the existing object properties
-      features: vis.data[2].features.filter(function (d) {
-        var sDate = new Date(d.properties["START_DATE"]);
-        var eDate = new Date(d.properties["END_DATE"]);
-        var currDate = new Date("1811-12-31");
-        var bool = sDate < currDate && eDate >= currDate;
-        return bool;
-      }), // Filter the array based on a condition
-    };
-    var originalLocData = {
-      ...vis.data[0],
-      features: vis.data[0].features.filter(function (d) {
-        var bool = false;
-        if (
-          !isNaN(d.properties["Earliest Record"]) ||
-          !isNaN(d.properties["Latest Record"])
-        ) {
-          bool =
-            d.properties["Earliest Record"] <= 1811 &&
-            d.properties["Latest Record"] >= 1811;
-        }
-        return bool;
-      }),
-    };
-    */
-    // TODO implement some clustering mechanism for AllLocations
+    
+    // TODO implement some clustering mechanism for AllLocations?
 }
 
 /**
@@ -338,29 +389,21 @@ VIEWER.initializeLeaflet = async function(coords, geoMarkers) {
  * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup = function(feature, layer) {
-    let popupContent = "<div id = 'locPopup'><h5>"
+    let popupContent = "<div class='featureInfo'>"
     let i = 0
     let langs = []
     let stringToLangMap = {"none":[]}
     if (feature.properties){
         if (feature.properties["Geocoding Location"]) {
-            popupContent += `${feature.properties["Geocoding Location"]}, <br>"`
+            popupContent += `<b>${feature.properties["Geocoding Location"]}</b> <br>`
         }
         if (feature.properties["State"]) {
-            popupContent += `${feature.properties["State"]} ", "`
+            popupContent += `${feature.properties["State"]}, `
         }
         if (feature.properties["Country"]) {
-            popupContent += `${feature.properties["Country"]} ", "`
+            popupContent += `${feature.properties["Country"]}`
         }
-        if (feature.properties.option2) {
-            let annoURI = feature.properties.option2 ?? ""
-            popupContent += `
-                <div class="featureInfo">
-                    <b>Some label or description.</b>
-                </div>
-            `
-        }
-        popupContent += `</h5></div>`
+        popupContent += `</div>`
         layer.options.start = "1888"
         layer.options.end = "1999"
         layer.bindPopup(popupContent)
@@ -376,5 +419,20 @@ VIEWER.getURLParameter = function(variable) {
     }
     return (false)
 }
+
+
+
+// html functions to change time
+document.getElementById("timeSlider").addEventListener("input", function (e) {
+    document.getElementById("slider-value").innerHTML = e.target.value
+})
+
+document.getElementById("timeSlider").addEventListener("change", function (e) {
+    // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
+    var sliderYear = e.target.value + "-12-31"
+    const geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
+    const latlong = [12, 12]
+    VIEWER.initializeLeaflet(latlong, geoMarkers, sliderYear) 
+});
 
 VIEWER.init()

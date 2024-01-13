@@ -185,3 +185,29 @@ input[type="checkbox"]{
     }
 }
 */
+
+#infoContainer {
+    position: absolute;
+    width: 40%;
+    border: 2px solid black;
+    color: #222;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+}
+.slider-container {
+  font-family: "Roboto";
+}
+
+#timeSliderSpan {
+  display: inline-block;
+}
