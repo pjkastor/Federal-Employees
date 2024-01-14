@@ -7,11 +7,12 @@ body{
 }
 #leafletInstanceContainer { 
     height: 70em;
-    background-image: url(images/earth.gif);
+    background-image: url(images/Logo.png);
     background-repeat: no-repeat;
     background-attachment: local;
-    background-position: center -19em;
-    background-size: 85em;
+    background-position: center 2em;
+    background-size: 35em;
+    font-size: 14pt;
     border: 1px solid black;
     z-index:0;
 }
@@ -21,6 +22,7 @@ body{
     animation-name: color;
     animation-duration: 2s;
     animation-iteration-count: infinite;
+    padding: 2em 0em;
 }
 #currentCoords{
     font-weight: bold;

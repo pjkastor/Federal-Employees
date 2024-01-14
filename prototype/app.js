@@ -400,7 +400,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
     }
     
-    
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
     
