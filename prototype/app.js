@@ -332,6 +332,29 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
 
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+
+        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+            
+            const newchk = chk.cloneNode(true)
+            newchk.addEventListener("click", ev => {
+                const isChecked = event.target.checked
+                const layername = event.target.nextElementSibling.innerText.trim()
+                for(const entry in VIEWER.mymap._layers){
+                    const obj = VIEWER.mymap._layers[entry]
+                    if(obj.hasOwnProperty("feature")){
+                        if(obj.feature?.properties?._name && obj.feature.properties._name === layername){
+                            if(isChecked){
+                                obj._path.classList.remove("is-toggled-off")
+                            }
+                            else{
+                                obj._path.classList.add("is-toggled-off")
+                            }
+                        }
+                    }
+                }
+            })
+            chk.replaceWith(newchk)
+        })
     }
 
     if(userInputDate){
@@ -381,16 +404,16 @@ VIEWER.formatPopup = function(feature, layer) {
             popupContent += `${feature.properties["Country"]}`
         }
         if(feature.properties["Earliest Record"]){
-            layer.options.startDate = feature.properties["Earliest Record"]
+            layer.options.startDate = feature.properties["Earliest Record"] + "-12-31"
         }
         else if(feature.properties["START_DATE"]){
-            layer.options.startDate = feature.properties["START_DATE"]
+            layer.options.startDate = feature.properties["START_DATE"] + "-12-31"
         }
         if(feature.properties["Latest Record"]){
-            layer.options.endDate = feature.properties["Latest Record"]
+            layer.options.endDate = feature.properties["Latest Record"] + "-12-31"
         }
         else if(feature.properties["END_DATE"]){
-            layer.options.endDate = feature.properties["END_DATE"]
+            layer.options.endDate = feature.properties["END_DATE"] + "-12-31"
         }
         popupContent += `</div>`
         layer.bindPopup(popupContent)

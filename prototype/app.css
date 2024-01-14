@@ -218,6 +218,12 @@ input[type="checkbox"]{
     z-index: 0;
 }
 
+.is-toggled-off{
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
 path{
     -webkit-transition: visibility 1.5s, opacity 1.5s linear;
     -moz-transition: visibility 1.5s, opacity 1.5s linear;
