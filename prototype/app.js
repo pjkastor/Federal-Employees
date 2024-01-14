@@ -106,8 +106,7 @@ VIEWER.init = async function() {
     const locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
     const specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
     const tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    const districtBoundaries = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    const tax_1814 = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
+    const tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
     const stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
     const countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
     const judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => {return {}})
@@ -197,7 +196,9 @@ VIEWER.init = async function() {
 VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     let selectedControls = null
     let geoMarkers = VIEWER.geoJsonByLayers
+    let initialState = false
     if(VIEWER.mymap === null){
+        initialState = true
         VIEWER.baseLayers.mapbox_satellite_layer =
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
             maxZoom: 19,
@@ -242,12 +243,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
         VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
             style: function(feature) {
-                let name = feature.properties._name ?? ""
+                const name = feature.properties._name ?? ""
                 return {
                     color: "#005A9C",
                     fillColor: "#005A9C",
                     fillOpacity: 0.00,
-                    className: name
+                    className: name.replaceAll(" ", "_")
                 }
             },
             onEachFeature: VIEWER.formatPopup
@@ -255,12 +256,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
         VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
             style: function(feature) {
-                let name = feature.properties._name ?? ""
+                const name = feature.properties._name ?? ""
                 return {
                     color: "#008080",
                     fillColor: "#008080",
                     fillOpacity: 0.00,
-                    className: name
+                    className: name.replaceAll(" ", "_")
                 }
             },
             onEachFeature: VIEWER.formatPopup
@@ -268,12 +269,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
         VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
             style: function(feature) {
-                let name = feature.properties._name ?? ""
+                const name = feature.properties._name ?? ""
                 return {
                     color: "blue",
                     fillColor: "blue",
                     fillOpacity: 0.00,
-                    className: name
+                    className: name.replaceAll(" ", "_")
                 }
             },
             onEachFeature: VIEWER.formatPopup
@@ -281,12 +282,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
         VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
             style: function(feature) {
-                let name = feature.properties._name ?? ""
+                const name = feature.properties._name ?? ""
                 return {
                     color: "purple",
                     fillColor: "purple",
                     fillOpacity: 0.00,
-                    className: name
+                    className: name.replaceAll(" ", "_")
                 }
             },
             onEachFeature: VIEWER.formatPopup
@@ -294,20 +295,22 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
         VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
+                const name = feature.properties._name ?? ""
                 return L.circleMarker(latlng, {
                     radius: 6,
                     fillColor: "yellow",
                     color: "black",
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 1
+                    fillOpacity: 1,
+                    className: name.replaceAll(" ", "_")
                 })
             },
             onEachFeature: VIEWER.formatPopup
         })
         
         VIEWER.main_layers = {
-            "1798 Tax Disctricts": VIEWER.geoJsonLayers.taxFeatures1798,
+            "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
             "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
             "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
             "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
@@ -319,6 +322,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             zoom: 2,
             layers: [
                 VIEWER.baseLayers.mapbox_satellite_layer,
+                VIEWER.geoJsonLayers.taxFeatures1798,
+                VIEWER.geoJsonLayers.taxFeatures1814,
+                VIEWER.geoJsonLayers.stateFeatures,
+                VIEWER.geoJsonLayers.countyFeatures,
                 VIEWER.geoJsonLayers.locationFeatures
             ]
         })  
@@ -334,7 +341,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
 
         VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-            
             const newchk = chk.cloneNode(true)
             newchk.addEventListener("click", ev => {
                 const isChecked = event.target.checked
@@ -375,6 +381,25 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             }
         }
     }
+
+    // Initial state
+    if(initialState){
+        // Toggle everything off except specific locations
+        for(const l in VIEWER.mymap._layers){
+            const obj = VIEWER.mymap._layers[l]
+            if(obj.hasOwnProperty("feature")){
+                if(obj.feature?.properties?._name && obj.feature.properties._name !== "Specific Locations"){
+                    obj._path.classList.add("is-toggled-off")
+                }
+            }
+        }
+        // Uncheck the controls
+        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+            const layername = chk.nextElementSibling.innerText.trim()
+            if(layername !== "Specific Locations") chk.checked=false
+        })
+    }
+    
     
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
