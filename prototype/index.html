@@ -15,7 +15,7 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
-        <script src="./app.js" type="module"></script>
+        <script src="./app2.js" type="module"></script>
         <link rel="stylesheet" href="./app.css" />
     </head>
     <body>
@@ -26,6 +26,20 @@
             <p> 
                 For more information see the <a class="text-bold" target="_blank" href="https://habesoftware.rocks/TODO#readme"> Readme</a>.
             </p>
+        </div>
+        <div id="infoContainer" class="is-hidden">
+            <div class="slider-container">
+                <span><h5>1789</h5></span>
+                <input type="range" id="timeSlider" min="1789" max="1832" value="1832" step="1">
+                <span><h5>1832</h5></span>
+            </div>
+            <h5 id="slider-value">1832</h5>
+            <!-- 
+            <div id="clickedPanel">
+            <div id="locInfo"></div>
+            <div id="personnelInfo"></div>
+            </div> 
+            -->
         </div>
         <div id="viewerBody" class="container">
             <p>
