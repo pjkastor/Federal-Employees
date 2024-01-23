@@ -240,3 +240,7 @@ path{
     -o-transition: visibility 1.5s, opacity 1.5s linear;
     transition: visibility 1.5s, opacity 1.5s linear;
 }
+
+.leaflet-control-layers-base span, .leaflet-control-layers-overlays span{
+    font-size: 10pt;
+}
