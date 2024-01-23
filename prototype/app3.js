@@ -369,28 +369,19 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             const layername = chk.nextElementSibling.innerText.trim()
             VIEWER.selectedLayers.push(VIEWER.baseMaps[layername])
         })
-        VIEWER.layerControl.remove()
-        VIEWER.mymap.eachLayer(function(layer){
-            if(layer.hasOwnProperty("feature")){
-                layer.remove()    
-            }
-        })
-        VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-        VIEWER.selectedLayers.forEach(l => {
-            if(!l.hasOwnProperty("tiles")) {
-                l.addTo(VIEWER.mymap)
-            }
-        })
+
+        VIEWER.mymap.off()
+        VIEWER.mymap.remove()
     }
-    else{
-        VIEWER.mymap = L.map('leafletInstanceContainer', {
-            center: coords,
-            zoom: 2,
-            layers: VIEWER.selectedLayers        
-        })    
-        VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-    }
-    
+
+    VIEWER.mymap = L.map('leafletInstanceContainer', {
+        center: coords,
+        zoom: 2,
+        layers: VIEWER.selectedLayers
+    })
+
+    VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+
     VIEWER.mymap.on("overlayadd", function (event) {
       VIEWER.geoJsonLayers.locationFeatures.bringToFront()
     })
