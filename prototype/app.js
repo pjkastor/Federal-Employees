@@ -432,13 +432,13 @@ VIEWER.formatPopup = function(feature, layer) {
             layer.options.startDate = feature.properties["Earliest Record"] + "-12-31"
         }
         else if(feature.properties["START_DATE"]){
-            layer.options.startDate = feature.properties["START_DATE"] + "-12-31"
+            layer.options.startDate = feature.properties["START_DATE"]
         }
         if(feature.properties["Latest Record"]){
             layer.options.endDate = feature.properties["Latest Record"] + "-12-31"
         }
         else if(feature.properties["END_DATE"]){
-            layer.options.endDate = feature.properties["END_DATE"] + "-12-31"
+            layer.options.endDate = feature.properties["END_DATE"]
         }
         popupContent += `</div>`
         layer.bindPopup(popupContent)
