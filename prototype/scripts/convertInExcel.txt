@@ -1,7 +1,7 @@
 function main(workbook: ExcelScript.Workbook): TableData[] {
     // Get the first table in the "Sheet1" worksheet.
     // If you know the table name, use `workbook.getTable('TableName')` instead.
-    const table = workbook.getTable("districts");
+    const table = workbook.getWorksheet("Locations").getTable("Locations");
 
     // Get all the values from the table as text.
     const texts = table.getRange().getTexts();

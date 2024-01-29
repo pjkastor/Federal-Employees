@@ -16661,6 +16661,13 @@
         "Type": "point",
         "Geocoding Location": "Sangamo",
         "State": "IL",
+        // "State": {
+        //   "2024": "Illinois",
+        //   "1818": "Illinois",
+        //   "1816": "Illinois Territory",
+        //   "1800": "Indiana Territory",
+        //   "1787": "Northwest Territory"
+        // }
         "Country": "United States",
         "Sector": "North America",
         "Polity": "Independent Polity",

@@ -15,7 +15,7 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
          crossorigin=""></script>
-        <script src="./app2.js" type="module"></script>
+        <script src="./app.js" type="module"></script>
         <link rel="stylesheet" href="./app.css" />
     </head>
     <body>
@@ -126,6 +126,33 @@
             window.scrollTo(0,0);
         }
 
-        
+        async function convertAllLocationsToFeatureCollection(){
+            let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+            let fc = {
+                  "type": "FeatureCollection",
+                  "name": "AllLocations",
+                  "crs": {
+                    "type": "name",
+                    "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" }
+                  },
+                  "features": []
+            }
+            for(let loc_obj of locations.features){
+                // NOTE that we can undo the lat,long issue here as well, and remove the accomodation from the processing script.
+                const lat = loc_obj.properties["Latitude"] ? parseFloat(loc_obj.properties["Latitude"].replace(",","")) : null
+                const lon = loc_obj.properties["Longitude"] ? parseFloat(loc_obj.properties["Longitude"]) : null
+                let feature ={
+                    "type":"Feature",
+                    "properties":loc_obj.properties,
+                    "geometry": { 
+                        "type": "Point", 
+                        "coordinates": [lat,lon] 
+                    }
+                }
+                fc.features.push(feature)
+            }
+            console.log(fc)
+        }
+
     </script>
 </html>
