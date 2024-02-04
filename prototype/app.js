@@ -62,6 +62,9 @@ VIEWER.resource = {}
 //For Leaflet
 VIEWER.mymap = null
 
+//Keep track of the date chosen by the user.
+VIEWER.userInputDate = "0-12-31"
+
 //GeoJSON contexts to verify
 VIEWER.geojson_contexts = ["https://geojson.org/geojson-ld/geojson-context.jsonld", "http://geojson.org/geojson-ld/geojson-context.jsonld"]
 
@@ -235,6 +238,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
 
     if(userInputDate){
+        VIEWER.userInputDate = userInputDate
         // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
         geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
         for(const entry in geoMarkers){
@@ -402,6 +406,31 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
  * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup = function(feature, layer) {
+    function determineStateTitle(feature){
+        const datemap = feature?.properties?.STATE_TITLE
+        if(!datemap) return null
+        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b){return a-b})
+        const mostrecent = years_in_order.pop()
+        let titleForChosenYear = datemap[mostrecent]
+        if(parseInt(VIEWER.userInputDate) > 0){
+            titleForChosenYear = null
+            for(let i = 0; i<years_in_order.length; i++){
+                const prev_year = (i > 0) ? years_in_order[i-1] : years_in_order[i]
+                const the_year = years_in_order[i]
+                if(the_year === parseInt(VIEWER.userInputDate)){
+                    titleForChosenYear = feature.properties.STATE_TITLE[the_year]
+                    break
+                }
+                if(the_year > parseInt(VIEWER.userInputDate)){
+                    titleForChosenYear = feature.properties.STATE_TITLE[prev_year]
+                    break
+                }
+            }    
+        }
+        return titleForChosenYear
+    }
+
+
     let popupContent = "<div class='featurePopUp'>"
     let i = 0
     let langs = []
@@ -417,8 +446,10 @@ VIEWER.formatPopup = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Country:</label> ${feature.properties["Country"]}</div>`
         }
         if (feature.properties["STATE_TITLE"]) {
-            popupContent += `<div class="featureInfo"><label>State Title:</label> State Name TODO </div> `
-            //popupContent += determineStateTitleFromDateMap()
+            const stateTitle = determineStateTitle(feature)
+            if(stateTitle){
+                popupContent += `<div class="featureInfo"><label>State Title:</label> ${stateTitle} </div> `    
+            }
         }
         if (feature.properties["Type"]) {
             popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"]}</div>`
