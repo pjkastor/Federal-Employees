@@ -267,7 +267,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     else{
         document.getElementById("timeSlider").value = "1832"
-        document.getElementById("slider-value").innerHTML = "Year Chosen: N/A"
+        document.getElementById("slider-value").innerHTML = "Year: N/A"
     }
         
     VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
@@ -549,7 +549,7 @@ VIEWER.getURLParameter = function(variable) {
 
 // Change the selected date shown to the user.
 document.getElementById("timeSlider").addEventListener("input", function (e) {
-    document.getElementById("slider-value").innerText = `Year Chosen: ${e.target.value}`
+    document.getElementById("slider-value").innerText = `Year: ${e.target.value}`
 })
 
 // Change the date slider
