@@ -9,11 +9,7 @@ VIEWER.geoJsonByLayers = {}
 
 VIEWER.geoJsonLayers = {}
 
-VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-    disableClusteringAtZoom : 7,
-    showCoverageOnHover: false,
-    spiderfyOnMaxZoom: true
-})
+VIEWER.locationsClusterLayer =  null
 
 VIEWER.main_layers = null
 
@@ -189,7 +185,7 @@ VIEWER.init = async function() {
     console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(latlong, 0) 
+    VIEWER.initializeLeaflet(latlong, "0-12-31") 
 }
 
 /**
@@ -198,9 +194,9 @@ VIEWER.init = async function() {
  */
 VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     let selectedControls = null
-    let geoMarkers = VIEWER.geoJsonByLayers
+    let geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
     if(VIEWER.mymap === null){
-        
+
         VIEWER.baseLayers.mapbox_satellite_layer =
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
             maxZoom: 19,
@@ -240,10 +236,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         }        
     }
 
-    if(userInputDate){
+    if(parseInt(userInputDate) > 0){
         VIEWER.userInputDate = userInputDate
         // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-        geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
         for(const entry in geoMarkers){
             switch(entry){
                 case "locations":
@@ -269,6 +264,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
                 default:
             }
         }
+    }
+    else{
+        document.getElementById("timeSlider").value = "1832"
+        document.getElementById("slider-value").innerHTML = "1832"
     }
         
     VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
@@ -323,7 +322,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         onEachFeature: VIEWER.formatPopup
     })
 
-
     VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             const name = feature.properties._name ?? ""
@@ -341,8 +339,35 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         onEachFeature: VIEWER.formatPopup
     })
 
-    VIEWER.locationsClusterLayer.addLayer(VIEWER.geoJsonLayers.locationFeatures)
+    const clusters = L.geoJSON(geoMarkers.locations, {
+        pointToLayer: function(feature, latlng) {
+            const name = feature.properties._name ?? ""
+            // Do something different for feature.properties.STATE_ABBRV === "Capital"
+            return L.circleMarker(latlng, {
+                radius: 6,
+                fillColor: "yellow",
+                color: "black",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 1,
+                className: "clusterPoint"
+            })
+        },
+        onEachFeature: VIEWER.formatPopup
+    })
 
+    if(VIEWER.locationsClusterLayer){
+        VIEWER.locationsClusterLayer.clearLayers()
+        VIEWER.locationsClusterLayer.addLayer(clusters)
+    }
+    else{
+        VIEWER.locationsClusterLayer =  L.markerClusterGroup({
+            disableClusteringAtZoom : 7,
+            showCoverageOnHover: false,
+            spiderfyOnMaxZoom: true
+        })
+        VIEWER.locationsClusterLayer.addLayer(clusters)
+    }
     
     VIEWER.main_layers = {
         "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
@@ -356,7 +381,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     VIEWER.selectedLayers = [
         VIEWER.baseLayers.mapbox_satellite_layer,
         VIEWER.locationsClusterLayer
-        //VIEWER.geoJsonLayers.locationFeatures
     ]
 
     if(VIEWER.mymap){
@@ -374,7 +398,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
         VIEWER.layerControl.remove()
         VIEWER.mymap.eachLayer(function(layer){
-            if(layer.hasOwnProperty("feature")){
+            if(layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint"){
                 layer.remove()    
             }
         })
@@ -394,13 +418,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
     }
     
+    if(parseInt(userInputDate) === 0) VIEWER.mymap.setView([12,12], 2)
+
     VIEWER.mymap.on("overlayadd", function (event) {
-      //VIEWER.geoJsonLayers.locationFeatures.bringToFront()
         VIEWER.locationsClusterLayer.bringToFront()
     })
 
     VIEWER.mymap.on("overlayadd", function (event) {
-      //VIEWER.geoJsonLayers.locationFeatures.bringToFront()
         VIEWER.locationsClusterLayer.bringToFront()
     })
     
@@ -408,7 +432,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     loadingMessage.classList.add("is-hidden")
     infoContainer.classList.remove("is-hidden")
 
-    // TODO implement some clustering mechanism for AllLocations
 }
 
 /**
@@ -505,16 +528,26 @@ VIEWER.getURLParameter = function(variable) {
     return (false)
 }
 
-// html functions to change time
+// Change the selected date shown to the user.
 document.getElementById("timeSlider").addEventListener("input", function (e) {
     document.getElementById("slider-value").innerText = e.target.value
 })
 
+// Change the date slider
 document.getElementById("timeSlider").addEventListener("change", function (e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
     const latlong = [12, 12]
     VIEWER.initializeLeaflet(latlong, sliderYear) 
 })
+
+// Reset to the default view...maybe just page reset?
+document.getElementById("resetView").addEventListener("click", function (e) {
+    VIEWER.reset(e)
+})
+
+VIEWER.reset = function(event){
+    VIEWER.initializeLeaflet([12,12],"0-12-31")
+}
 
 VIEWER.init()
