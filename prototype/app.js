@@ -9,6 +9,12 @@ VIEWER.geoJsonByLayers = {}
 
 VIEWER.geoJsonLayers = {}
 
+VIEWER.locationsClusterLayer =  L.markerClusterGroup({
+    disableClusteringAtZoom : 9,
+    showCoverageOnHover: false,
+    spiderfyOnMaxZoom: true
+})
+
 VIEWER.main_layers = null
 
 VIEWER.layerControl = null
@@ -320,9 +326,11 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         onEachFeature: VIEWER.formatPopup
     })
 
+
     VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             const name = feature.properties._name ?? ""
+            // Do something different for feature.properties.STATE_ABBRV === "Capital"
             return L.circleMarker(latlng, {
                 radius: 6,
                 fillColor: "yellow",
@@ -335,18 +343,23 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         },
         onEachFeature: VIEWER.formatPopup
     })
+
+    VIEWER.locationsClusterLayer.addLayer(VIEWER.geoJsonLayers.locationFeatures)
+
     
     VIEWER.main_layers = {
         "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
         "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
         "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
         "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
-        "Specific Locations": VIEWER.geoJsonLayers.locationFeatures
+        "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
+        "Clustered Locations": VIEWER.locationsClusterLayer
     }
 
     VIEWER.selectedLayers = [
         VIEWER.baseLayers.mapbox_satellite_layer,
-        VIEWER.geoJsonLayers.locationFeatures
+        VIEWER.locationsClusterLayer
+        //VIEWER.geoJsonLayers.locationFeatures
     ]
 
     if(VIEWER.mymap){
@@ -385,11 +398,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     
     VIEWER.mymap.on("overlayadd", function (event) {
-      VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+      //VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+        VIEWER.locationsClusterLayer.bringToFront()
     })
 
     VIEWER.mymap.on("overlayadd", function (event) {
-      VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+      //VIEWER.geoJsonLayers.locationFeatures.bringToFront()
+        VIEWER.locationsClusterLayer.bringToFront()
     })
     
     leafletInstanceContainer.style.backgroundImage = "none"
