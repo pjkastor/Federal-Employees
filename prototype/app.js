@@ -356,6 +356,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         onEachFeature: VIEWER.formatPopup
     })
 
+    // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
     if(VIEWER.locationsClusterLayer){
         VIEWER.locationsClusterLayer.clearLayers()
         VIEWER.locationsClusterLayer.addLayer(clusters)
@@ -398,6 +399,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
         VIEWER.layerControl.remove()
         VIEWER.mymap.eachLayer(function(layer){
+            // Clear the L.GeoJSON layers.  Remember locationsClusterLayer is a layer group.  Clearing and redrawing is handled differently.
             if(layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint"){
                 layer.remove()    
             }
