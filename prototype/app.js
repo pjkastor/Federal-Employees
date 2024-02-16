@@ -351,7 +351,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     const clusters = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             const name = feature.properties._name ?? ""
-            
+
             const capitalIcon = L.icon({
                 iconUrl: './images/star.png',
                 iconSize:     [16, 16], // size of the icon
@@ -380,7 +380,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     else{
         VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-            disableClusteringAtZoom : 2,
+            disableClusteringAtZoom : 7,
             showCoverageOnHover: false,
             spiderfyOnMaxZoom: true
         })
