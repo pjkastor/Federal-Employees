@@ -325,7 +325,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             const name = feature.properties._name ?? ""
-            // Do something different for feature.properties.STATE_ABBRV === "Capital"
+            const capitalIcon = L.icon({
+                iconUrl: './images/star.png',
+                iconSize:     [16, 16], // size of the icon
+                iconAnchor:   [8, 9], // point of the icon which will correspond to marker's location
+                popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            })
+
+            // Make the Capital a 'star' Icon
+            if(feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, {icon: capitalIcon})
+
             return L.circleMarker(latlng, {
                 radius: 6,
                 fillColor: "yellow",
@@ -342,7 +351,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     const clusters = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
             const name = feature.properties._name ?? ""
-            // Do something different for feature.properties.STATE_ABBRV === "Capital"
+            
+            const capitalIcon = L.icon({
+                iconUrl: './images/star.png',
+                iconSize:     [16, 16], // size of the icon
+                iconAnchor:   [8, 9], // point of the icon which will correspond to marker's location
+                popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            })
+            // Make the Capital a 'star' Icon
+            if(feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, {icon: capitalIcon})
             return L.circleMarker(latlng, {
                 radius: 6,
                 fillColor: "yellow",
@@ -363,7 +380,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     else{
         VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-            disableClusteringAtZoom : 7,
+            disableClusteringAtZoom : 2,
             showCoverageOnHover: false,
             spiderfyOnMaxZoom: true
         })
