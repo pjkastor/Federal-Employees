@@ -10,7 +10,7 @@ VIEWER.geoJsonByLayers = {}
 VIEWER.geoJsonLayers = {}
 
 VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-    disableClusteringAtZoom : 9,
+    disableClusteringAtZoom : 7,
     showCoverageOnHover: false,
     spiderfyOnMaxZoom: true
 })
@@ -200,6 +200,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     let selectedControls = null
     let geoMarkers = VIEWER.geoJsonByLayers
     if(VIEWER.mymap === null){
+        
         VIEWER.baseLayers.mapbox_satellite_layer =
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
             maxZoom: 19,
@@ -212,34 +213,30 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             maxZoom: 19
         })
 
-        VIEWER.baseLayers.esri_street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19
-        })
-
-        VIEWER.baseLayers.esri_natgeo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19
-        })
-
         VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         })
 
-        VIEWER.baseLayers.carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
-        })
 
         VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19
         })
 
+        VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19
+        });
+
+        VIEWER.baseLayers.Esri_Ocean = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19
+        })
+
         VIEWER.baseMaps = {
+            "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer,
             "OpenStreetMap": VIEWER.baseLayers.osm,
-            "CartoDB": VIEWER.baseLayers.carto,
-            "ESRI Street" : VIEWER.baseLayers.esri_street,
-            "ESRI NatGeo" : VIEWER.baseLayers.esri_natgeo,
             "Open Topomap": VIEWER.baseLayers.topomap,
             "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
-            "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer
+            "ESRI World Physical": VIEWER.baseLayers.Esri_WorldPhysical,
+            "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
         }        
     }
 
