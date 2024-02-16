@@ -380,7 +380,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     else{
         VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-            disableClusteringAtZoom : 7,
+            disableClusteringAtZoom : 9,
             showCoverageOnHover: false,
             spiderfyOnMaxZoom: true
         })
