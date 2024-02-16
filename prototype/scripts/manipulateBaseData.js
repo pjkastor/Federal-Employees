@@ -1,6 +1,4 @@
 const hello = "hello world"
-
-
 /**
  * Note the new AllLocations file already contains data that is the result of running this script on the original.
  */ 
@@ -10,8 +8,8 @@ async function mapStateTitleChangesOntoLocations(){
 	let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
 
 	// Runtime could be improved but already runs in less than a couple seconds.
-	for(let state_obj in title_changes){
-		for(let loc_obj in locations){
+	for(let state_obj of title_changes){
+		for(let loc_obj of locations){
 			if(state_obj["STATE_ABBREV"] === loc_obj["STATE_ABBREV"]){
 				if(typeof loc_obj["STATE_TITLE"] === "string"){
 					loc_obj["STATE_TITLE"] = {}
@@ -23,6 +21,7 @@ async function mapStateTitleChangesOntoLocations(){
 
 	// Could save the file, but you can also just copy it out of console yourself.
 	console.log(locations)
+	return locations
 }
 
 async function convertAllLocationsToFeatureCollection(){
@@ -45,6 +44,7 @@ async function convertAllLocationsToFeatureCollection(){
 		}
 		fc.features.push(feature)
 	}
+	console.log(fc)
 	return fc
 }
 
