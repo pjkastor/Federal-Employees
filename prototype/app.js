@@ -380,7 +380,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     }
     else{
         VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-            disableClusteringAtZoom : 9,
+            disableClusteringAtZoom : 8,
             showCoverageOnHover: false,
             spiderfyOnMaxZoom: true
         })
@@ -509,16 +509,16 @@ VIEWER.formatPopup = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"]}</div>`
         }
         if(feature.properties["Earliest Date"]){
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${feature.properties["Earliest Date"]}</div>`
+            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
         }
         else if(feature.properties["START_DATE"]){
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${feature.properties["START_DATE"]}</div>`
+            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
         }
         if(feature.properties["Latest Date"]){
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${feature.properties["Latest Date"]}</div>`
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["Latest Date"])}</div>`
         }
         else if(feature.properties["END_DATE"]){
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${feature.properties["END_DATE"]}</div>`
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
         }
         if(feature.properties["Earliest Date"]){
             layer.options.startDate = feature.properties["Earliest Date"]
