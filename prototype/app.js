@@ -210,20 +210,20 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
 
         VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19
+            maxZoom: 11
         })
 
 
         VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19
+            maxZoom: 8
         })
 
         VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19
+            maxZoom: 8
         });
 
         VIEWER.baseLayers.Esri_Ocean = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19
+            maxZoom: 10
         })
 
         VIEWER.baseMaps = {
