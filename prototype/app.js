@@ -210,7 +210,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         })
 
         VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            maxZoom: 11
+            maxZoom: 10
         })
 
 
