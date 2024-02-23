@@ -127,7 +127,7 @@
         }
 
         async function convertAllLocationsToFeatureCollection(){
-            let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+            let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
             let fc = {
                   "type": "FeatureCollection",
                   "name": "AllLocations",

@@ -110,7 +110,7 @@ VIEWER.updateGeometry = function(event) {
  */
 VIEWER.init = async function() {
     let latlong = [12, 12] //default starting coords
-    let locationData = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return {}})
+    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
     let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
