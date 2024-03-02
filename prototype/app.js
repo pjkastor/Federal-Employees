@@ -269,7 +269,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
         style: function(feature) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
             return {
                 color: "#005A9C",
                 fillColor: "#005A9C",
@@ -282,7 +282,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
             return {
                 color: "#008080",
                 fillColor: "#008080",
@@ -295,7 +295,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
         style: function(feature) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
             return {
                 color: "blue",
                 fillColor: "blue",
@@ -308,7 +308,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
         style: function(feature) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
             return {
                 color: "purple",
                 fillColor: "purple",
@@ -321,7 +321,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
             const capitalIcon = L.icon({
                 iconUrl: './images/star.png',
                 iconSize: [16, 16], // size of the icon
@@ -347,7 +347,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     const clusters = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ? ? ""
+            const name = feature.properties._name ?? ""
 
             const capitalIcon = L.icon({
                 iconUrl: './images/star.png',
@@ -457,7 +457,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
  */
 VIEWER.formatPopup = function(feature, layer) {
     function determineStateTitle(feature) {
-        const datemap = feature ? .properties ? .STATE_TITLE
+        const datemap = feature ?.properties ?.STATE_TITLE
         if (!datemap) return null
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
         const mostrecent = years_in_order.pop()
