@@ -1,58 +1,63 @@
 /**
  * @author Bryan Haberger
  * https://github.com/thehabes
- */ 
-body{
+ */
+body {
     margin-bottom: 8em;
 }
-#leafletInstanceContainer { 
+
+#leafletInstanceContainer {
     height: 70em;
     background-image: url(images/Logo.png);
     background-size: 35em;
     background-position: center 2em;
-/*    background-image: url(images/earth.gif);
+    /*    
+    background-image: url(images/earth.gif);
     background-size: 75em;
-    background-position: center -12em;*/
+    background-position: center -12em;
+    */
     background-repeat: no-repeat;
     background-attachment: local;
     border: 1px solid black;
-    z-index:0;
+    z-index: 0;
 }
-#loadingMessage{
+
+#loadingMessage {
     text-align: center;
     background-color: darkgrey;
-/*    animation-name: color;
+    /*    
+    animation-name: color;
     animation-duration: 2s;
-    animation-iteration-count: infinite;*/
+    animation-iteration-count: infinite;
+    */
     padding: 2em 0em;
     font-size: 14pt;
 }
-#currentCoords{
+
+#currentCoords {
     font-weight: bold;
 }
-         
-.tag{
-    color:white;
+
+.tag {
+    color: white;
 }
 
-.grouped{
-    flex-flow:  wrap;
+.grouped {
+    flex-flow: wrap;
 }
 
-.grouped div{
-    display:  inline-flex;
+.grouped div {
+    display: inline-flex;
 }
 
-.grouped input{
+.grouped input {
     height: 1.5em;
     width: 8em !important;
 }
 
-.featurePopUp{
-    
-}
+.featurePopUp {}
 
-.featureInfo{
+.featureInfo {
     margin: 4px 0px;
     font-family: monospace;
     font-size: 8pt;
@@ -60,48 +65,53 @@ body{
     padding: 4px 0px;
 }
 
-.featureInfo label{
+.featureInfo label {
     margin-right: 6px;
     font-family: sans-serif;
 }
 
-.featureInfo img, .leaflet-popup-content img{
-    max-height:  270px;
+.featureInfo img,
+.leaflet-popup-content img {
+    max-height: 270px;
 }
 
-.featureCompliance{
-    text-align:center;
+.featureCompliance {
+    text-align: center;
 }
 
-.howTo{
+.howTo {
     font-size: 10pt;
 }
 
-input[app]{
+input[app] {
     margin: 2px 0px 5px 0px;
 }
 
 @keyframes color {
     0% {
-      background-color: white;
+        background-color: white;
     }
+
     50% {
-      background-color: darkgrey;
+        background-color: darkgrey;
     }
+
     100 {
-      background-color: white;
+        background-color: white;
     }
 }
 
-footer{
-  bottom : 0;
-  background-color : #FFF;
-  z-index : 1;
-  flex-flow:  wrap;
+footer {
+    bottom: 0;
+    background-color: #FFF;
+    z-index: 1;
+    flex-flow: wrap;
 }
-footer div{
-    display:  inline-flex;
+
+footer div {
+    display: inline-flex;
 }
+
 header {
     background: #222;
     width: 100%;
@@ -110,6 +120,7 @@ header {
     box-shadow: 0 0 3rem #001e3c;
     margin-bottom: 3rem;
 }
+
 header small {
     position: absolute;
     bottom: 1rem;
@@ -117,73 +128,80 @@ header small {
     margin-left: 17.1%;
     color: #dfdfdf;
 }
+
 header h1 {
     color: #a3d1ff;
     letter-spacing: .55rem;
     position: relative;
     font-weight: 300;
     padding-left: 1em;
-    font-size:  75%;
+    font-size: 75%;
 }
-header img{
+
+header img {
     max-width: 69%;
     padding-left: 6px;
-    max-height:  8em;
+    max-height: 8em;
 }
-.card header{
+
+.card header {
     background-color: white;
     box-shadow: none;
     margin-bottom: 1em;
     padding: 0px;
 }
 
-.regular-header-text{
-    top:  1em;
-    position:  relative;
-    font-size:  14pt;
+.regular-header-text {
+    top: 1em;
+    position: relative;
+    font-size: 14pt;
 }
 
-.small-header-text{
-    position:  relative;
-    font-size:  9pt;
+.small-header-text {
+    position: relative;
+    font-size: 9pt;
 }
 
 /* Help with phones and tablets */
 @media only screen and (max-width: 763px) {
-    .savespace{
+    .savespace {
         display: none;
     }
-    .regular-header-text{
-        height:  0px;
-        visibility:  hidden;
+
+    .regular-header-text {
+        height: 0px;
+        visibility: hidden;
     }
-    .small-header-text{
-        min-width:  unset;
+
+    .small-header-text {
+        min-width: unset;
     }
+
     #leafletInstanceContainer {
         height: 50em;
     }
+
     footer {
-        font-size:  65%;
+        font-size: 65%;
     }
 }
 
-ul{
+ul {
     background-color: lightgray;
     width: fit-content;
     box-shadow: 0px 0px 8px grey;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
     width: 2rem;
     height: 2rem;
 }
 
-.text-bold{
+.text-bold {
     font-weight: bold;
 }
 
-.text-dots{
+.text-dots {
     border-bottom: 2px dotted var(--color-primary);
 }
 
@@ -211,40 +229,42 @@ input[type="checkbox"]{
 }
 
 .slider-container {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 .slider-container {
-  font-family: "Roboto";
+    font-family: "Roboto";
 }
 
 #timeSliderSpan {
-  display: inline-block;
+    display: inline-block;
 }
 
-.is-not-visible{
+.is-not-visible {
     visibility: hidden;
     opacity: 0;
     z-index: 0;
 }
 
-.is-toggled-off{
+.is-toggled-off {
     visibility: hidden;
     opacity: 0;
     z-index: 0;
 }
 
-.is-hidden{
+.is-hidden {
     display: none;
 }
 
-path{
+path {
     -webkit-transition: visibility 1.5s, opacity 1.5s linear;
     -moz-transition: visibility 1.5s, opacity 1.5s linear;
     -o-transition: visibility 1.5s, opacity 1.5s linear;
     transition: visibility 1.5s, opacity 1.5s linear;
 }
 
-.leaflet-control-layers-base span, .leaflet-control-layers-overlays span{
+.leaflet-control-layers-base span,
+.leaflet-control-layers-overlays span {
     font-size: 10pt;
 }

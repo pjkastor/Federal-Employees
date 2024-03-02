@@ -9,7 +9,7 @@ VIEWER.geoJsonByLayers = {}
 
 VIEWER.geoJsonLayers = {}
 
-VIEWER.locationsClusterLayer =  null
+VIEWER.locationsClusterLayer = null
 
 VIEWER.main_layers = null
 
@@ -41,7 +41,7 @@ VIEWER.baseLayers.carto = null
 
 VIEWER.baseLayers.USGS_top_streets = null
 
-VIEWER.baseMaps = null 
+VIEWER.baseMaps = null
 
 //Keep tracked of fetched resources.  Do not fetch resources you have already resolved.
 VIEWER.resourceMap = new Map()
@@ -110,43 +110,41 @@ VIEWER.updateGeometry = function(event) {
  */
 VIEWER.init = async function() {
     let latlong = [12, 12] //default starting coords
-    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return {}})
-    let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => {return {}})
-    let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return {}})
-    let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return {}})
-    let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => {return {}})
-    let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => {return {}})
+    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
+    let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => { return {} })
+    let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
+    let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
+    let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
+    let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
+    let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => { return {} })
+    let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
     //loadInput.value = "Apply Options"
     let peopleData = []
     let geoJsonByLayers = {}
-
-    // Format FeatureCollections' Features Array so each feature known its _name for filtering.
     tax_1798.features = tax_1798.features.map(f => {
-        if(!f.hasOwnProperty("properties")) f.properties = {}
+        if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = tax_1798._name
         return f
     })
     tax_1814.features = tax_1814.features.map(f => {
-        if(!f.hasOwnProperty("properties")) f.properties = {}
+        if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = tax_1814._name
         return f
     })
     countyBoundaries.features = countyBoundaries.features.map(f => {
-        if(!f.hasOwnProperty("properties")) f.properties = {}
+        if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = countyBoundaries._name
         return f
     })
     stateBoundaries.features = stateBoundaries.features.map(f => {
-        if(!f.hasOwnProperty("properties")) f.properties = {}
+        if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = stateBoundaries._name
         return f
     })
     locationData.features = locationData.features.map(f => {
-        if(!f.hasOwnProperty("properties")) f.properties = {}
+        if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = locationData._name
         // Oh no are these really inverted!?!?!  I may need a new copy of this location data
         let tempX = f.geometry.coordinates[0]
@@ -164,14 +162,14 @@ VIEWER.init = async function() {
     specificPeople._data.map((item) => {
         const filteredItem = {}
         peopleFields.forEach((field) => {
-          if (item.hasOwnProperty(field)) {
-            filteredItem[field] = item[field]
-          }
+            if (item.hasOwnProperty(field)) {
+                filteredItem[field] = item[field]
+            }
         })
         peopleData.push(filteredItem)
     })
 
-    peopleData.sort(function (a, b) {
+    peopleData.sort(function(a, b) {
         return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
     })
 
@@ -185,29 +183,29 @@ VIEWER.init = async function() {
     console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(latlong, "0-12-31") 
+    VIEWER.initializeLeaflet(latlong, "0-12-31")
 }
 
 /**
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
  * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
-VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
+VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     let selectedControls = null
     let geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
-    if(VIEWER.mymap === null){
+    if (VIEWER.mymap === null) {
 
         VIEWER.baseLayers.mapbox_satellite_layer =
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
-            maxZoom: 19,
-            id: 'mapbox.satellite', //mapbox.streets
-            accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
-        })
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
+                maxZoom: 19,
+                id: 'mapbox.satellite', //mapbox.streets
+                accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
+            })
 
-        VIEWER.baseLayers.osm = 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19
-        })
+        VIEWER.baseLayers.osm =
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            })
 
         VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
             maxZoom: 10
@@ -233,46 +231,45 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
             "ESRI World Physical": VIEWER.baseLayers.Esri_WorldPhysical,
             "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
-        }        
+        }
     }
 
-    if(parseInt(userInputDate) > 0){
+    if (parseInt(userInputDate) > 0) {
         VIEWER.userInputDate = userInputDate
         // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-        for(const entry in geoMarkers){
-            switch(entry){
+        for (const entry in geoMarkers) {
+            switch (entry) {
                 case "locations":
                     geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                         // If it does not have a date, should we keep it on the map?  Yes for now.
-                        if(!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
+                        if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
                         const sDate = new Date(f.properties["Earliest Date"])
                         const eDate = new Date(f.properties["Latest Date"])
                         const currDate = new Date(userInputDate)
                         return sDate <= currDate && eDate >= currDate
                     })
-                break
+                    break
                 case "states":
                 case "counties":
                     geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        if(!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
+                        if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
                         const sDate = new Date(f.properties["START_DATE"])
                         const eDate = new Date(f.properties["END_DATE"])
                         const currDate = new Date(userInputDate)
                         return sDate < currDate && eDate >= currDate
                     })
-                break
+                    break
                 default:
             }
         }
-    }
-    else{
+    } else {
         document.getElementById("timeSlider").value = "1832"
         document.getElementById("slider-value").innerHTML = "Year: N/A"
     }
-        
+
     VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
         style: function(feature) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
             return {
                 color: "#005A9C",
                 fillColor: "#005A9C",
@@ -285,7 +282,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
     VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
             return {
                 color: "#008080",
                 fillColor: "#008080",
@@ -298,7 +295,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
     VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
         style: function(feature) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
             return {
                 color: "blue",
                 fillColor: "blue",
@@ -311,7 +308,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
     VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
         style: function(feature) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
             return {
                 color: "purple",
                 fillColor: "purple",
@@ -324,16 +321,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
     VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
             const capitalIcon = L.icon({
                 iconUrl: './images/star.png',
-                iconSize:     [16, 16], // size of the icon
-                iconAnchor:   [8, 9], // point of the icon which will correspond to marker's location
-                popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+                iconSize: [16, 16], // size of the icon
+                iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
             })
 
             // Make the Capital a 'star' Icon
-            if(feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, {icon: capitalIcon})
+            if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
 
             return L.circleMarker(latlng, {
                 radius: 6,
@@ -350,16 +347,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
 
     const clusters = L.geoJSON(geoMarkers.locations, {
         pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ?? ""
+            const name = feature.properties._name ? ? ""
 
             const capitalIcon = L.icon({
                 iconUrl: './images/star.png',
-                iconSize:     [16, 16], // size of the icon
-                iconAnchor:   [8, 9], // point of the icon which will correspond to marker's location
-                popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+                iconSize: [16, 16], // size of the icon
+                iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
             })
             // Make the Capital a 'star' Icon
-            if(feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, {icon: capitalIcon})
+            if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
             return L.circleMarker(latlng, {
                 radius: 6,
                 fillColor: "yellow",
@@ -374,20 +371,19 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
     })
 
     // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
-    if(VIEWER.locationsClusterLayer){
+    if (VIEWER.locationsClusterLayer) {
         VIEWER.locationsClusterLayer.clearLayers()
         VIEWER.locationsClusterLayer.addLayer(clusters)
-    }
-    else{
-        VIEWER.locationsClusterLayer =  L.markerClusterGroup({
-            disableClusteringAtZoom : 6,
+    } else {
+        VIEWER.locationsClusterLayer = L.markerClusterGroup({
+            disableClusteringAtZoom: 6,
             showCoverageOnHover: false,
             spiderfyOnMaxZoom: true,
-            spiderLegPolylineOptions : {weight: 1.5, color: 'yellow', opacity: 0.75}
+            spiderLegPolylineOptions: { weight: 1.5, color: 'yellow', opacity: 0.75 }
         })
         VIEWER.locationsClusterLayer.addLayer(clusters)
     }
-    
+
     VIEWER.main_layers = {
         "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
         "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
@@ -402,7 +398,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
         VIEWER.locationsClusterLayer
     ]
 
-    if(VIEWER.mymap){
+    if (VIEWER.mymap) {
         // Which layers are active?  We will need to make them active again after we rebuild them filtered.
         VIEWER.selectedLayers = []
         //Main Layers
@@ -416,38 +412,37 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
             VIEWER.selectedLayers.push(VIEWER.baseMaps[layername])
         })
         VIEWER.layerControl.remove()
-        VIEWER.mymap.eachLayer(function(layer){
+        VIEWER.mymap.eachLayer(function(layer) {
             // Clear the L.GeoJSON layers.  Remember locationsClusterLayer is a layer group.  Clearing and redrawing is handled differently.
-            if(layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint"){
-                layer.remove()    
+            if (layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint") {
+                layer.remove()
             }
         })
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
         VIEWER.selectedLayers.forEach(l => {
-            if(!l.hasOwnProperty("tiles")) {
+            if (!l.hasOwnProperty("tiles")) {
                 l.addTo(VIEWER.mymap)
             }
         })
-    }
-    else{
+    } else {
         VIEWER.mymap = L.map('leafletInstanceContainer', {
             center: coords,
             zoom: 2,
-            layers: VIEWER.selectedLayers        
-        })    
+            layers: VIEWER.selectedLayers
+        })
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
     }
-    
-    if(parseInt(userInputDate) === 0) VIEWER.mymap.setView([12,12], 2)
 
-    VIEWER.mymap.on("overlayadd", function (event) {
+    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView([12, 12], 2)
+
+    VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
     })
 
-    VIEWER.mymap.on("overlayadd", function (event) {
+    VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
     })
-    
+
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
     infoContainer.classList.remove("is-hidden")
@@ -461,26 +456,26 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate=null) {
  * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup = function(feature, layer) {
-    function determineStateTitle(feature){
-        const datemap = feature?.properties?.STATE_TITLE
-        if(!datemap) return null
-        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b){return a-b})
+    function determineStateTitle(feature) {
+        const datemap = feature ? .properties ? .STATE_TITLE
+        if (!datemap) return null
+        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
         const mostrecent = years_in_order.pop()
         let titleForChosenYear = datemap[mostrecent]
-        if(parseInt(VIEWER.userInputDate) > 0){
+        if (parseInt(VIEWER.userInputDate) > 0) {
             titleForChosenYear = null
-            for(let i = 0; i<years_in_order.length; i++){
-                const prev_year = (i > 0) ? years_in_order[i-1] : years_in_order[i]
+            for (let i = 0; i < years_in_order.length; i++) {
+                const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
                 const the_year = years_in_order[i]
-                if(the_year === parseInt(VIEWER.userInputDate)){
+                if (the_year === parseInt(VIEWER.userInputDate)) {
                     titleForChosenYear = feature.properties.STATE_TITLE[the_year]
                     break
                 }
-                if(the_year > parseInt(VIEWER.userInputDate)){
+                if (the_year > parseInt(VIEWER.userInputDate)) {
                     titleForChosenYear = feature.properties.STATE_TITLE[prev_year]
                     break
                 }
-            }    
+            }
         }
         return titleForChosenYear
     }
@@ -489,8 +484,8 @@ VIEWER.formatPopup = function(feature, layer) {
     let popupContent = "<div class='featurePopUp'>"
     let i = 0
     let langs = []
-    let stringToLangMap = {"none":[]}
-    if (feature.properties){
+    let stringToLangMap = { "none": [] }
+    if (feature.properties) {
         if (feature.properties["Geocoding Location"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding Location"]} </div>`
         }
@@ -502,35 +497,31 @@ VIEWER.formatPopup = function(feature, layer) {
         }
         if (feature.properties["STATE_TITLE"]) {
             const stateTitle = determineStateTitle(feature)
-            if(stateTitle){
-                popupContent += `<div class="featureInfo"><label>State Title:</label> ${stateTitle} </div> `    
+            if (stateTitle) {
+                popupContent += `<div class="featureInfo"><label>State Title:</label> ${stateTitle} </div> `
             }
         }
         if (feature.properties["Type"]) {
             popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"]}</div>`
         }
-        if(feature.properties["Earliest Date"]){
+        if (feature.properties["Earliest Date"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
-        }
-        else if(feature.properties["START_DATE"]){
+        } else if (feature.properties["START_DATE"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
         }
-        if(feature.properties["Latest Date"]){
+        if (feature.properties["Latest Date"]) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["Latest Date"])}</div>`
-        }
-        else if(feature.properties["END_DATE"]){
+        } else if (feature.properties["END_DATE"]) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
         }
-        if(feature.properties["Earliest Date"]){
+        if (feature.properties["Earliest Date"]) {
             layer.options.startDate = feature.properties["Earliest Date"]
-        }
-        else if(feature.properties["START_DATE"]){
+        } else if (feature.properties["START_DATE"]) {
             layer.options.startDate = feature.properties["START_DATE"]
         }
-        if(feature.properties["Latest Date"]){
+        if (feature.properties["Latest Date"]) {
             layer.options.endDate = feature.properties["Latest Date"]
-        }
-        else if(feature.properties["END_DATE"]){
+        } else if (feature.properties["END_DATE"]) {
             layer.options.endDate = feature.properties["END_DATE"]
         }
         popupContent += `</div>`
@@ -549,25 +540,25 @@ VIEWER.getURLParameter = function(variable) {
 }
 
 // Change the selected date shown to the user.
-document.getElementById("timeSlider").addEventListener("input", function (e) {
+document.getElementById("timeSlider").addEventListener("input", function(e) {
     document.getElementById("slider-value").innerText = `Year: ${e.target.value}`
 })
 
 // Change the date slider
-document.getElementById("timeSlider").addEventListener("change", function (e) {
+document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
     const latlong = [12, 12]
-    VIEWER.initializeLeaflet(latlong, sliderYear) 
+    VIEWER.initializeLeaflet(latlong, sliderYear)
 })
 
 // Reset to the default view...maybe just page reset?
-document.getElementById("resetView").addEventListener("click", function (e) {
+document.getElementById("resetView").addEventListener("click", function(e) {
     VIEWER.reset(e)
 })
 
-VIEWER.reset = function(event){
-    VIEWER.initializeLeaflet([12,12],"0-12-31")
+VIEWER.reset = function(event) {
+    VIEWER.initializeLeaflet([12, 12], "0-12-31")
 }
 
 VIEWER.init()
