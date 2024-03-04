@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+    @author Bryan Haberberger
+    https://github.com/thehabes
+-->
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="">
+        <link rel="stylesheet" href="./marker-clustering/MarkerCluster.Default.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="./marker-clustering/leaflet.markercluster-src.js"></script>
+        <script src="./app.js" type="module"></script>
+        <link rel="stylesheet" href="./styling/inset.css" />
+        <style>
+            
+        </style>
+    </head>
+
+    <body class="container">
+        <div class="row" id="contentAbove"> 
+            <div class="col"> 
+                <span class=""> SOMETHING FANCY ABOVE</span>
+            </div>
+        </div>
+
+        <div class="row" id="mapContent">
+            <div id="infoContainer" class="col-3">
+                <div class="slider-container">
+                    <div class="slider-controls">
+                        <div class="inline"> << </div> <h5 id="slider-value" class="inline">Year: N/A</h5> <div class="inline"> >> </div>
+                    </div>
+                    <div class="slide"> 
+                        <h5 class="inline">1789</h5>
+                        <input id="timeSlider" class="inline" type="range"  min="1789" max="1832" value="1832" step="1">
+                        <h5 class="inline">1832</h5>
+                    </div>
+                </div>
+                <h3 class="focused-location"> Location, LO </h3>
+                <h6> Employees </h6>
+                <div class="info-scroller">
+                    <ul>
+                        <li> 
+                            <h5 class="info-title"> Gunning Bedford </h5>
+                            <div class="info-extra"> Position Lorem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> John Blair </h5>
+                            <div class="info-extra"> Position Ipsem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Dianne Brearley </h5>
+                            <div class="info-extra"> Position Lorem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> William Cushing </h5>
+                            <div class="info-extra"> Position Ipsem</div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> James Duane </h5>
+                            <div class="info-extra"> Position Lorem</div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Julie Warner </h5>
+                            <div class="info-extra"> Position Ipsem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Harry Innes </h5>
+                            <div class="info-extra"> Position Lorem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> John Jackson </h5>
+                            <div class="info-extra"> Position Ipsem </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Jackie Joyner-Kersee </h5>
+                            <div class="info-extra"> Elite Position </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Peter Kastor </h5>
+                            <div class="info-extra"> Best Position </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Bryan Haberberger </h5>
+                            <div class="info-extra"> Code Guy </div>
+                        </li>
+                        <li> 
+                            <h5 class="info-title"> Peter Griffin </h5>
+                            <div class="info-extra"> Other Guy </div>
+                        </li>
+                    </ul>
+                </div>
+            </div> 
+            <div id="leafletInstanceContainer" class="col-9">
+                <div id="loadingMessage" style="text-align: center;">
+                    Gathering Federal Employee Data...<br>
+                </div>
+                <div id="resetContainer" class="">
+                    <input id="resetView" type="button" class="button secondary" value="Locations For All Years" />
+                </div>
+            </div>
+        </div>
+        
+
+
+        <div class="row" id="contentBelow"> 
+            <div class="col"> 
+                <span class=""> SOMETHING FANCY BELOW </span>
+            </div>
+        </div>
+    </body>
+
+</html>

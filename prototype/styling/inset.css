@@ -1,0 +1,245 @@
+/**
+ * @author Bryan Haberger
+ * https://github.com/thehabes
+ */
+
+/*
+
+
+Fonts
+Page Titles: Libre Baskerville Regular, 35pt
+Subheadings A: Libre Baskerville Regular, 25pt
+Subheadings B: Libre Baskerville Regular, 17pt
+Map Location Name: Libre Baskerville Bold, 20pt
+Title Subheads: Rockwell Regular, 17pt
+Body Copy: Source Sans Pro Regular, 16pt
+Colors
+Deep Green: 173E3A
+Limestone: FBFAF9
+Beige: D8D2C5
+Accessible Gray: 333326
+Dark Gray: 707070
+Medium Gray: D6D6D6
+Light Gray: E3E3E2
+Turquoise: 2B8282
+Standard Green: 007360
+Web Orange: B85323
+Blue: 005F85
+
+https://marcomm.wustl.edu/resources/branding-logo-toolkit/fonts/
+https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
+
+*/
+@import url(https://unpkg.com/chota@latest);
+
+@font-face {
+  font-family: "LB Regular";
+  src: url('./washu-fonts/LibreBaskerville-Regular.otf');
+  font-weight: regular;
+}
+
+@font-face {
+  font-family: "LB Bold";
+  src: url('./washu-fonts/LibreBaskerville-Bold.otf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "LB Italic";
+  src: url('./washu-fonts/LibreBaskerville-Italic.otf');
+  font-weight: italic;
+}
+
+@font-face {
+  font-family: "SSP Regular";
+  src: url('./washu-fonts/SourceSansPro-Regular.otf');
+  font-weight: regular;
+}
+
+@font-face {
+  font-family: "Rockwell Regular";
+  src: url('./washu-fonts/SourceSansPro-Regular.otf');
+  font-weight: regular;
+}
+
+:root {
+  --bg-color: #ffffff;
+  --bg-secondary-color: #f3f3f6;
+  --color-primary: #173E3A;
+  --color-lightGrey: #E3E3E2;
+  --color-grey: #D6D6D6;
+  --color-darkGrey: #707070;
+  --color-error: #d43939;
+  --color-success: #28bd14;
+  --grid-maxWidth: 100%;
+  --grid-gutter: 2rem;
+  --font-size: 1.2rem;
+  --font-color: #707070;
+  --font-family-sans: "SSP Regular";
+  --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "LB Regular";
+}
+
+p {
+  font-family: "SSP Regular";
+  font-size: 16pt;
+}
+
+#contentAbove{
+  background-color: black;
+  padding: 1em 0em;
+  margin: 1em 0em;
+}
+
+#contentBelow{
+  background-color: black;
+  padding: 5em 0em;
+  margin: 1em 0em;
+}
+
+#leafletInstanceContainer{
+  height: auto;
+  min-height: 45em;
+  width: 100%;
+  background-image: url(../images/Logo.png);
+  background-size: 45em;
+  background-position: center 6em;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  border: 2px solid black;
+  z-index: 0;
+}
+
+#loadingMessage {
+  text-align: center;
+  background-color: darkgrey;
+  padding: 2em 0em;
+  font-size: 14pt;
+}
+
+#infoContainer {
+  border: 2px solid black;
+  padding: 5px;
+  z-index: 1;
+}
+
+#resetContainer{
+  z-index: 401;
+  position: absolute;
+  display: block;
+  bottom: 2em;
+  right: 0;
+}
+
+.slider-container {
+  text-align: center;
+}
+
+.info-scroller{
+  max-height: 35em;
+  overflow: auto;
+}
+
+.info-scroller ul{
+   list-style-type: none;
+}
+
+.info-scroller ul h5{
+  color: #2B8282;
+  margin: 0;
+}
+
+.info-extra {
+  margin-bottom: 0.5em;
+}
+
+#currentCoords {
+    font-weight: bold;
+}
+
+.tag {
+    color: white;
+}
+
+.grouped {
+    flex-flow: wrap;
+}
+
+.grouped div {
+    display: inline-flex;
+}
+
+.grouped input {
+    height: 1.5em;
+    width: 8em !important;
+}
+
+.featureInfo {
+    margin: 4px 0px;
+/*    font-family: monospace;*/
+    font-size: 8pt;
+    border-bottom: 1px solid black;
+    padding: 4px 0px;
+}
+
+.featureInfo label {
+    margin-right: 6px;
+    font-family: "Rockwell Regular";
+}
+
+.featureInfo img,
+.leaflet-popup-content img {
+    max-height: 270px;
+}
+
+input[type="checkbox"] {
+    width: 2rem;
+    height: 2rem;
+}
+
+/*.slider-container {
+    font-family: "Roboto";
+}*/
+
+/*#timeSliderSpan {
+    display: inline-block;
+}*/
+
+.is-not-visible {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
+.is-toggled-off {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
+.is-hidden {
+    display: none;
+}
+
+path {
+    -webkit-transition: visibility 1.5s, opacity 1.5s linear;
+    -moz-transition: visibility 1.5s, opacity 1.5s linear;
+    -o-transition: visibility 1.5s, opacity 1.5s linear;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+.leaflet-control-layers-base span,
+.leaflet-control-layers-overlays span {
+    font-size: 10pt;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.slide {
+  display: flex;
+}
