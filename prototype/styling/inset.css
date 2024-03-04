@@ -63,20 +63,15 @@ https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
 }
 
 :root {
-  --bg-color: #ffffff;
-  --bg-secondary-color: #f3f3f6;
   --color-primary: #173E3A;
   --color-lightGrey: #E3E3E2;
   --color-grey: #D6D6D6;
   --color-darkGrey: #707070;
-  --color-error: #d43939;
-  --color-success: #28bd14;
   --grid-maxWidth: 100%;
   --grid-gutter: 2rem;
   --font-size: 1.2rem;
   --font-color: #707070;
   --font-family-sans: "SSP Regular";
-  --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -131,7 +126,16 @@ p {
   position: absolute;
   display: block;
   bottom: 2em;
-  right: 0;
+  right: 0.25em;
+}
+
+.button.primary {
+  color: #B85323;
+  background: white;
+  text-transform: uppercase;
+  padding: 0.25em 0.5em;
+  border-radius: unset;
+  font-weight: bold;
 }
 
 .slider-container {
@@ -158,10 +162,12 @@ p {
 
 .year-inc {
   padding-left: 2em;
+  cursor: pointer;
 }
 
 .year-dec {
   padding-right: 2em;
+  cursor: pointer;
 }
 
 #currentCoords {
@@ -250,4 +256,5 @@ path {
 
 .slide {
   display: flex;
+  cursor: default;
 }
