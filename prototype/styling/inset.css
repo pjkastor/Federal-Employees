@@ -140,6 +140,14 @@ p {
 
 .slider-container {
   text-align: center;
+  color: white;
+  background-color: #173E3A;
+}
+
+.slide h5 {
+  margin: 0;
+  padding-top: 0.75em;
+  margin: 0em 2em;
 }
 
 .info-scroller{
@@ -168,6 +176,16 @@ p {
 .year-dec {
   padding-right: 2em;
   cursor: pointer;
+}
+
+.leaflet-control-zoom-in {
+  color: white !important;
+  background-color: #B85323 !important;
+}
+
+.leaflet-control-zoom-out {
+  color: white !important;
+  background-color: #B85323 !important;
 }
 
 #currentCoords {
