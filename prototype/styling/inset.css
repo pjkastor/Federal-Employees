@@ -156,6 +156,14 @@ p {
   margin-bottom: 0.5em;
 }
 
+.year-inc {
+  padding-left: 2em;
+}
+
+.year-dec {
+  padding-right: 2em;
+}
+
 #currentCoords {
     font-weight: bold;
 }
