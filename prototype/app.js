@@ -109,7 +109,7 @@ VIEWER.updateGeometry = function(event) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let latlong = [12, 12] //default starting coords
+    let latlong = [21, 30] //default starting coords
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
@@ -428,12 +428,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.mymap = L.map('leafletInstanceContainer', {
             center: coords,
             zoom: 2,
+            zoomControl: false,
+            attributionControl: false,
             layers: VIEWER.selectedLayers
         })
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+        VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
     }
 
-    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView([12, 12], 2)
+    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView([21, 30], 2)
 
     VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
@@ -445,7 +448,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
-    infoContainer.classList.remove("is-hidden")
+    resetView.classList.remove("is-hidden")
+    document.querySelector(".slider-container").classList.remove("is-hidden")
+    // infoContainer.classList.remove("is-hidden")
 
 }
 
@@ -549,7 +554,7 @@ document.getElementById("timeSlider").addEventListener("input", function(e) {
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
-    const latlong = [12, 12]
+    const latlong = [21, 30]
     VIEWER.initializeLeaflet(latlong, sliderYear)
 })
 
@@ -559,7 +564,7 @@ document.getElementById("resetView").addEventListener("click", function(e) {
 })
 
 VIEWER.reset = function(event) {
-    VIEWER.initializeLeaflet([12, 12], "0-12-31")
+    VIEWER.initializeLeaflet([21, 30], "0-12-31")
 }
 
 VIEWER.init()

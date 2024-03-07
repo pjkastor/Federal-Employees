@@ -18,16 +18,13 @@
             
         </style>
     </head>
-
     <body class="container">
-        <div class="row" id="contentAbove"> 
-            <div class="col"> 
-                <span class=""> SOMETHING FANCY ABOVE</span>
-            </div>
+        <div class="row"> 
+            <div id="contentAbove" class="col"></div>
         </div>
 
-        <div class="row" id="mapContent">
-            <div id="infoContainer" class="col-3">
+        <div class="row" id="pageContent">
+<!--             <div id="infoContainer">
                 <div class="slider-container">
                     <div class="slider-controls">
                         <div class="inline year-dec"> << </div> <h5 id="slider-value" class="inline">N/A</h5> <div class="inline year-inc"> >> </div>
@@ -92,23 +89,33 @@
                         </li>
                     </ul>
                 </div>
-            </div> 
-            <div id="leafletInstanceContainer" class="col-9">
-                <div id="loadingMessage" style="text-align: center;">
-                    Gathering Federal Employee Data...<br>
+            </div>  -->
+            <div class="washU-inline col-2"></div>
+            <div class="col-8">
+                <div class="slider-container is-hidden">
+                    <div class="slider-controls">
+                        <div class="inline year-dec"> << </div> <h5 id="slider-value" class="inline">N/A</h5> <div class="inline year-inc"> >> </div>
+                    </div>
+                    <div class="slide"> 
+                        <h5 class="inline">1789</h5>
+                        <input id="timeSlider" class="inline" type="range"  min="1789" max="1832" value="1832" step="1">
+                        <h5 class="inline">1832</h5>
+                    </div>
                 </div>
-                <div id="resetContainer" class="">
-                    <input id="resetView" type="button" class="button primary" value="see all locations" />
+                <div id="leafletInstanceContainer">
+                    <div id="loadingMessage" style="text-align: center;">
+                        Gathering Federal Employee Data...<br>
+                    </div>
+                    <div id="resetContainer" class="">
+                        <input id="resetView" type="button" class="button primary is-hidden" value="see all locations" />
+                    </div>    
                 </div>
             </div>
+            <div class="washU-inline col-2"></div>
         </div>
-        
 
-
-        <div class="row" id="contentBelow"> 
-            <div class="col"> 
-                <span class=""> SOMETHING FANCY BELOW </span>
-            </div>
+        <div class="row"> 
+            <div id="contentBelow" class="col"> </div>
         </div>
     </body>
 

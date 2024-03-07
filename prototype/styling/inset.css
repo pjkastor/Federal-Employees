@@ -84,20 +84,35 @@ p {
 }
 
 #contentAbove{
-  background-color: black;
+/*  
   padding: 1em 0em;
   margin: 1em 0em;
+  */
+  background-color: #3c3d3d;
+  color: white;
+  height: 10vh;
+  background-image: url(../images/washU-single.png);
+  background-size: auto 10vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
 }
 
 #contentBelow{
-  background-color: black;
-  padding: 5em 0em;
-  margin: 1em 0em;
+/*padding: 5em 0em;
+  margin: 1em 0em;*/
+  background-color: #3c3d3d;
+  color: white;
+  background-image: url(../images/washU-single.png);
+  height: 21vh;
+  background-size: auto 21vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
 }
 
 #leafletInstanceContainer{
-  height: auto;
-  min-height: 45em;
+  height: 55vh;
   width: 100%;
   background-image: url(../images/Logo.png);
   background-size: 45em;
@@ -121,14 +136,6 @@ p {
   z-index: 1;
 }
 
-#resetContainer{
-  z-index: 401;
-  position: absolute;
-  display: block;
-  bottom: 2em;
-  right: 0.25em;
-}
-
 .button.primary {
   color: #B85323;
   background: white;
@@ -139,9 +146,12 @@ p {
 }
 
 .slider-container {
+  position: relative;
   text-align: center;
   color: white;
   background-color: #173E3A;
+  z-index: 401;
+  min-height: 8vh;
 }
 
 .slide h5 {
@@ -275,4 +285,31 @@ path {
 .slide {
   display: flex;
   cursor: default;
+}
+
+.washU-inline {
+  color: white;
+  background-color: #a51417;
+  background-image: url(../images/washU-centered.png);
+  background-position: center;
+  background-size: 26em;
+  background-repeat: no-repeat; 
+}
+
+.leaflet-control-zoom {     
+  position: absolute;
+  top: -9em;
+  right: 0em;
+} 
+
+.leaflet-control-layers{
+  top: 6em;
+}
+
+#resetContainer{
+  z-index: 401;
+  position: absolute;
+  display: block;
+  bottom: 1em;
+  right: 0.25em;
 }
