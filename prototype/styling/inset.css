@@ -91,11 +91,11 @@ p {
   background-color: #3c3d3d;
   color: white;
   height: 10vh;
-  background-image: url(../images/washU-single.png);
+/*  background-image: url(../images/washU-single.png);
   background-size: auto 10vh;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: local;
+  background-attachment: local;*/
 }
 
 #contentBelow{
@@ -112,7 +112,7 @@ p {
 }
 
 #leafletInstanceContainer{
-  height: 55vh;
+  height: 83vh;
   width: 100%;
   background-image: url(../images/Logo.png);
   background-size: 45em;
@@ -145,13 +145,26 @@ p {
   font-weight: bold;
 }
 
+.button.secondary {
+  color: white;
+  background: #2B8282;
+  text-transform: uppercase;
+  padding: 0.25em 0.5em;
+  font-weight: bold;
+}
+
+.employeesLink{
+  font-size: 90%;
+}
+
 .slider-container {
-  position: relative;
+  position: absolute;
   text-align: center;
   color: white;
   background-color: #173E3A;
   z-index: 401;
   min-height: 8vh;
+  width: calc(95.96667% - var(--grid-gutter));
 }
 
 .slide h5 {
