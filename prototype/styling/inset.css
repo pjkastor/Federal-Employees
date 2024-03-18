@@ -91,6 +91,9 @@ p {
   background-color: #3c3d3d;
   color: white;
   height: 10vh;
+  line-height: 7vh;
+  font-size: 14pt;
+  text-align: center;
 /*  background-image: url(../images/washU-single.png);
   background-size: auto 10vh;
   background-position: center;
@@ -143,6 +146,10 @@ p {
   padding: 0.25em 0.5em;
   border-radius: unset;
   font-weight: bold;
+}
+
+#resetView{
+  border: 2px solid #B85323;
 }
 
 .button.secondary {
