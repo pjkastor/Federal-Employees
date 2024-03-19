@@ -73,6 +73,12 @@ VIEWER.userInputDate = "0-12-31"
 //GeoJSON contexts to verify
 VIEWER.geojson_contexts = ["https://geojson.org/geojson-ld/geojson-context.jsonld", "http://geojson.org/geojson-ld/geojson-context.jsonld"]
 
+//Starting Zoom level based on interface
+VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
+
+//Starting coords based on interface
+VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
+
 VIEWER.isJSON = function(obj) {
     let r = false
     let json = {}
@@ -112,7 +118,6 @@ VIEWER.updateGeometry = function(event) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let latlong = [21, 30] //default starting coords
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
@@ -186,7 +191,7 @@ VIEWER.init = async function() {
     console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(latlong, "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
 
 /**
@@ -435,96 +440,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     } else {
         VIEWER.mymap = L.map('leafletInstanceContainer', {
             center: coords,
-            zoom: 2,
             zoomControl: false,
+            zoom: VIEWER.startZoom,
             attributionControl: false,
             layers: VIEWER.selectedLayers
         })
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
         VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
-
-        //TODO make the slider a control you can add to the map.  That will help with containerization.
-        L.Control.TimeSlider = L.Control.extend({
-            onAdd: function(map) {
-                let slider_container = L.DomUtil.create('div')
-                slider_container.classList.add("slider-container")
-
-                let slider_controls = L.DomUtil.create('div')
-                slider_controls.classList.add("slider-controls")
-                let year_dec = L.DomUtil.create('div')
-                let year_inc = L.DomUtil.create('div')
-                let slider_value = L.DomUtil.create('h5')
-                year_dec.classList.add("inline")
-                year_dec.classList.add("year-dec")
-                year_dec.innerText="<<"
-                year_inc.classList.add("inline")
-                year_inc.classList.add("year-inc")
-                year_inc.innerText=">>"
-                slider_value.classList.add("inline")
-                slider_value.setAttribute("id", "slider-value")
-                slider_value.innerText = "N/A"
-
-                
-                let slide = L.DomUtil.create('div')
-                slide.classList.add("slide")
-                let h1 = L.DomUtil.create('h5')
-                let h2 = L.DomUtil.create('h5')
-                let timeSlider = L.DomUtil.create('input')
-                h1.classList.add("inline")
-                h2.classList.add("inline")
-                h1.innerText = "1789"
-                h2.innerText = "1832"
-                timeSlider.classList.add("inline")
-                timeSlider.setAttribute("id", "timeSlider")
-                timeSlider.setAttribute("type", "range")
-                timeSlider.setAttribute("min", "1789")
-                timeSlider.setAttribute("max", "1832")
-                timeSlider.setAttribute("value", "1832")
-                timeSlider.setAttribute("step", "1")
-
-
-                slide.appendChild(h1)
-                slide.appendChild(timeSlider)
-                slide.appendChild(h2)
-
-                slider_controls.appendChild(year_dec)
-                slider_controls.appendChild(slider_value)
-                slider_controls.appendChild(year_inc)
-
-                slider_container.appendChild(slider_controls)
-                slider_container.appendChild(slide)
-
-
-                // Change the selected date shown to the user.
-                timeSlider.addEventListener("input", function(e) {
-                    const elem = e.target.closest(".slider-container")
-                    elem.querySelector("#slider-value").innerText = document.location.href.includes("inset.html") ? e.target.value : `Year: ${e.target.value}`
-                })
-
-                // Change the date slider
-                timeSlider.addEventListener("change", function(e) {
-                    // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
-                    var sliderYear = e.target.value + "-12-31"
-                    const latlong = [21, 30]
-                    VIEWER.initializeLeaflet(latlong, sliderYear)
-                })
-
-                return slider_container
-            },
-
-            onRemove: function(map) {
-                // Nothing to do here
-            }
-        })
-
-        L.control.slider = function(opts={}) {
-            return new L.Control.TimeSlider(opts)
-        }
-
-        //VIEWER.mymap.addControl(L.control.slider({"position":"topleft"}))
     }
 
-    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView([21, 30], 2)
+    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
 
     VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
@@ -538,14 +463,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     loadingMessage.classList.add("is-hidden")
     resetView.classList.remove("is-hidden")
     document.querySelector(".slider-container").classList.remove("is-hidden")
-
-    // Fix how the slider container works as a control so it can be full width
-    // let leafletParent = document.querySelector(".slider-container").parentElement
-    // leafletParent.classList.remove("leaflet-top")
-    // leafletParent.classList.remove("leaflet-left")
-    // document.querySelector(".slider-container").classList.remove("is-hidden")
-    // infoContainer.classList.remove("is-hidden")
-
+    const infoContainer = document.getElementById("infoContainer")
+    if(infoContainer) infoContainer.classList.remove("is-hidden")
 }
 
 /**
@@ -655,8 +574,7 @@ document.getElementById("timeSlider").addEventListener("input", function(e) {
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
-    const latlong = [21, 30]
-    VIEWER.initializeLeaflet(latlong, sliderYear)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear)
 })
 
 // Reset to the default view...maybe just page reset?
@@ -665,7 +583,7 @@ document.getElementById("resetView").addEventListener("click", function(e) {
 })
 
 VIEWER.reset = function(event) {
-    VIEWER.initializeLeaflet([21, 30], "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
 
 VIEWER.init()

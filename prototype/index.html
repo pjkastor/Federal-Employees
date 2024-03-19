@@ -27,23 +27,14 @@
             For more information see the <a class="text-bold" target="_blank" href="https://habesoftware.rocks/TODO#readme"> Readme</a>.
         </p>
     </div>
-    <div id="infoContainer" class="is-hidden">
-        <div class="slider-container">
-            <span>
-                <h5>1789</h5>
-            </span>
-            <input type="range" id="timeSlider" min="1789" max="1832" value="1832" step="1">
-            <span>
-                <h5>1832</h5>
-            </span>
+    <div class="slider-container is-hidden">
+        <div class="slider-controls">
+            <div class="inline year-dec"> << </div> <h5 id="slider-value" class="inline">N/A</h5> <div class="inline year-inc"> >> </div>
         </div>
-        <div class="row">
-            <div class="col-2">
-                <h5 id="slider-value">Year: N/A</h5>
-            </div>
-            <div class="col-10">
-                <input id="resetView" type="button" class="button secondary pull-right" value="Locations For All Years" />
-            </div>
+        <div class="slide"> 
+            <h5 class="inline">1789</h5>
+            <input id="timeSlider" class="inline" type="range"  min="1789" max="1832" value="1832" step="1">
+            <h5 class="inline">1832</h5>
         </div>
     </div>
     <div id="viewerBody" class="container">
