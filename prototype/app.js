@@ -3,6 +3,9 @@
  * https://github.com/thehabes 
  */
 
+// TODO heat map
+// https://leafletjs.com/examples/choropleth/
+
 let VIEWER = {}
 
 VIEWER.geoJsonByLayers = {}
@@ -70,6 +73,12 @@ VIEWER.userInputDate = "0-12-31"
 //GeoJSON contexts to verify
 VIEWER.geojson_contexts = ["https://geojson.org/geojson-ld/geojson-context.jsonld", "http://geojson.org/geojson-ld/geojson-context.jsonld"]
 
+//Starting Zoom level based on interface
+VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
+
+//Starting coords based on interface
+VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
+
 VIEWER.isJSON = function(obj) {
     let r = false
     let json = {}
@@ -109,7 +118,6 @@ VIEWER.updateGeometry = function(event) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let latlong = [12, 12] //default starting coords
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
@@ -183,7 +191,7 @@ VIEWER.init = async function() {
     console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(latlong, "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
 
 /**
@@ -262,9 +270,14 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 default:
             }
         }
-    } else {
-        document.getElementById("timeSlider").value = "1832"
-        document.getElementById("slider-value").innerHTML = "Year: N/A"
+    } 
+    else {
+        if(document.getElementById("timeSlider")){
+            document.getElementById("timeSlider").value = "1832"
+        }
+        if(document.getElementById("slider-value")){
+            document.getElementById("slider-value").innerHTML = document.location.href.includes("inset.html") ? "N/A" : "Year: N/A"
+        }
     }
 
     VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
@@ -427,13 +440,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     } else {
         VIEWER.mymap = L.map('leafletInstanceContainer', {
             center: coords,
-            zoom: 2,
+            zoomControl: false,
+            zoom: VIEWER.startZoom,
+            attributionControl: false,
             layers: VIEWER.selectedLayers
         })
         VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+        VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
     }
 
-    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView([12, 12], 2)
+    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
 
     VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
@@ -445,8 +461,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     leafletInstanceContainer.style.backgroundImage = "none"
     loadingMessage.classList.add("is-hidden")
-    infoContainer.classList.remove("is-hidden")
-
+    resetView.classList.remove("is-hidden")
+    document.querySelector(".slider-container").classList.remove("is-hidden")
+    const infoContainer = document.getElementById("infoContainer")
+    if(infoContainer) infoContainer.classList.remove("is-hidden")
 }
 
 /**
@@ -524,7 +542,15 @@ VIEWER.formatPopup = function(feature, layer) {
         } else if (feature.properties["END_DATE"]) {
             layer.options.endDate = feature.properties["END_DATE"]
         }
-        popupContent += `</div>`
+        feature.properties.employeesLink = true
+        if(feature.properties["employeesLink"]){
+            // TODO this button should load the page for employees that worked at this location, target _blank
+            popupContent += `
+            <div class="featureInfo is-center">
+                <input type="button" class="button secondary employeesLink" value="see who worked here">
+            </div>`
+        }
+        
         layer.bindPopup(popupContent)
     }
 }
@@ -539,17 +565,16 @@ VIEWER.getURLParameter = function(variable) {
     return (false)
 }
 
-// Change the selected date shown to the user.
+// // Change the selected date shown to the user.
 document.getElementById("timeSlider").addEventListener("input", function(e) {
-    document.getElementById("slider-value").innerText = `Year: ${e.target.value}`
+    document.getElementById("slider-value").innerText = document.location.href.includes("inset.html") ? e.target.value : `Year: ${e.target.value}`
 })
 
 // Change the date slider
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     var sliderYear = e.target.value + "-12-31"
-    const latlong = [12, 12]
-    VIEWER.initializeLeaflet(latlong, sliderYear)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear)
 })
 
 // Reset to the default view...maybe just page reset?
@@ -558,7 +583,7 @@ document.getElementById("resetView").addEventListener("click", function(e) {
 })
 
 VIEWER.reset = function(event) {
-    VIEWER.initializeLeaflet([12, 12], "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
 
 VIEWER.init()

@@ -1,0 +1,335 @@
+/**
+ * @author Bryan Haberger
+ * https://github.com/thehabes
+ */
+
+/*
+
+
+Fonts
+Page Titles: Libre Baskerville Regular, 35pt
+Subheadings A: Libre Baskerville Regular, 25pt
+Subheadings B: Libre Baskerville Regular, 17pt
+Map Location Name: Libre Baskerville Bold, 20pt
+Title Subheads: Rockwell Regular, 17pt
+Body Copy: Source Sans Pro Regular, 16pt
+Colors
+Deep Green: 173E3A
+Limestone: FBFAF9
+Beige: D8D2C5
+Accessible Gray: 333326
+Dark Gray: 707070
+Medium Gray: D6D6D6
+Light Gray: E3E3E2
+Turquoise: 2B8282
+Standard Green: 007360
+Web Orange: B85323
+Blue: 005F85
+
+https://marcomm.wustl.edu/resources/branding-logo-toolkit/fonts/
+https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
+
+*/
+@import url(https://unpkg.com/chota@latest);
+
+@font-face {
+  font-family: "LB Regular";
+  src: url('./washu-fonts/LibreBaskerville-Regular.otf');
+  font-weight: regular;
+}
+
+@font-face {
+  font-family: "LB Bold";
+  src: url('./washu-fonts/LibreBaskerville-Bold.otf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "LB Italic";
+  src: url('./washu-fonts/LibreBaskerville-Italic.otf');
+  font-weight: italic;
+}
+
+@font-face {
+  font-family: "SSP Regular";
+  src: url('./washu-fonts/SourceSansPro-Regular.otf');
+  font-weight: regular;
+}
+
+@font-face {
+  font-family: "Rockwell Regular";
+  src: url('./washu-fonts/SourceSansPro-Regular.otf');
+  font-weight: regular;
+}
+
+:root {
+  --color-primary: #173E3A;
+  --color-lightGrey: #E3E3E2;
+  --color-grey: #D6D6D6;
+  --color-darkGrey: #707070;
+  --grid-maxWidth: 100%;
+  --grid-gutter: 2rem;
+  --font-size: 1.2rem;
+  --font-color: #707070;
+  --font-family-sans: "SSP Regular";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "LB Regular";
+}
+
+p {
+  font-family: "SSP Regular";
+  font-size: 16pt;
+}
+
+#contentAbove{
+/*  
+  padding: 1em 0em;
+  margin: 1em 0em;
+  */
+  background-color: #3c3d3d;
+  color: white;
+  height: 10vh;
+  line-height: 7vh;
+  font-size: 14pt;
+  text-align: center;
+/*  background-image: url(../images/washU-single.png);
+  background-size: auto 10vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;*/
+}
+
+#contentBelow{
+/*padding: 5em 0em;
+  margin: 1em 0em;*/
+  background-color: #3c3d3d;
+  color: white;
+  background-image: url(../images/washU-single.png);
+  height: 21vh;
+  background-size: auto 21vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}
+
+#leafletInstanceContainer{
+  height: 83vh;
+  width: 100%;
+  background-image: url(../images/Logo.png);
+  background-size: 45em;
+  background-position: center 6em;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  border: 2px solid black;
+  z-index: 0;
+}
+
+#loadingMessage {
+  text-align: center;
+  background-color: darkgrey;
+  padding: 2em 0em;
+  font-size: 14pt;
+}
+
+#infoContainer {
+  border: 2px solid black;
+  padding: 5px;
+  z-index: 1;
+}
+
+.button.primary {
+  color: #B85323;
+  background: white;
+  text-transform: uppercase;
+  padding: 0.25em 0.5em;
+  border-radius: unset;
+  font-weight: bold;
+}
+
+#resetView{
+  border: 2px solid #B85323;
+}
+
+.button.secondary {
+  color: white;
+  background: #2B8282;
+  text-transform: uppercase;
+  padding: 0.25em 0.5em;
+  font-weight: bold;
+}
+
+.employeesLink{
+  font-size: 90%;
+}
+
+.slider-container {
+  position: absolute;
+  text-align: center;
+  color: white;
+  background-color: #173E3A;
+  z-index: 401;
+  min-height: 8vh;
+  width: calc(95.96667% - var(--grid-gutter));
+}
+
+.slide h5 {
+  margin: 0;
+  padding-top: 0.75em;
+  margin: 0em 2em;
+}
+
+.info-scroller{
+  max-height: 35em;
+  overflow: auto;
+}
+
+.info-scroller ul{
+   list-style-type: none;
+}
+
+.info-scroller ul h5{
+  color: #2B8282;
+  margin: 0;
+}
+
+.info-extra {
+  margin-bottom: 0.5em;
+}
+
+.year-inc {
+  padding-left: 2em;
+  cursor: pointer;
+}
+
+.year-dec {
+  padding-right: 2em;
+  cursor: pointer;
+}
+
+.leaflet-control-zoom-in {
+  color: white !important;
+  background-color: #B85323 !important;
+}
+
+.leaflet-control-zoom-out {
+  color: white !important;
+  background-color: #B85323 !important;
+}
+
+#currentCoords {
+    font-weight: bold;
+}
+
+.tag {
+    color: white;
+}
+
+.grouped {
+    flex-flow: wrap;
+}
+
+.grouped div {
+    display: inline-flex;
+}
+
+.grouped input {
+    height: 1.5em;
+    width: 8em !important;
+}
+
+.featureInfo {
+    margin: 4px 0px;
+/*    font-family: monospace;*/
+    font-size: 8pt;
+    border-bottom: 1px solid black;
+    padding: 4px 0px;
+}
+
+.featureInfo label {
+    margin-right: 6px;
+    font-family: "Rockwell Regular";
+}
+
+.featureInfo img,
+.leaflet-popup-content img {
+    max-height: 270px;
+}
+
+input[type="checkbox"] {
+    width: 2rem;
+    height: 2rem;
+}
+
+/*.slider-container {
+    font-family: "Roboto";
+}*/
+
+/*#timeSliderSpan {
+    display: inline-block;
+}*/
+
+.is-not-visible {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
+.is-toggled-off {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+}
+
+.is-hidden {
+    display: none;
+}
+
+path {
+    -webkit-transition: visibility 1.5s, opacity 1.5s linear;
+    -moz-transition: visibility 1.5s, opacity 1.5s linear;
+    -o-transition: visibility 1.5s, opacity 1.5s linear;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+.leaflet-control-layers-base span,
+.leaflet-control-layers-overlays span {
+    font-size: 10pt;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.slide {
+  display: flex;
+  cursor: default;
+}
+
+.washU-inline {
+  color: white;
+  background-color: #a51417;
+  background-image: url(../images/washU-centered.png);
+  background-position: center;
+  background-size: 26em;
+  background-repeat: no-repeat; 
+}
+
+.leaflet-control-zoom {     
+  position: absolute;
+  top: -9em;
+  right: 0em;
+} 
+
+.leaflet-control-layers{
+  top: 6em;
+}
+
+#resetContainer{
+  z-index: 401;
+  position: absolute;
+  display: block;
+  bottom: 1em;
+  right: 0.25em;
+}

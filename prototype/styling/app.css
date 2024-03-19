@@ -8,7 +8,7 @@ body {
 
 #leafletInstanceContainer {
     height: 70em;
-    background-image: url(images/Logo.png);
+    background-image: url(../images/Logo.png);
     background-size: 35em;
     background-position: center 2em;
     /*    
