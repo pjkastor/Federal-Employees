@@ -56,6 +56,28 @@ async function convertAllLocationsToFeatureCollection(){
     console.log(fc)
 }
 
+function addEmployeeCountsToCounties(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/PA_Counties_Employee_County_By_Year.json").then(resp => resp.json()).catch(err => {return []})
+
+    for(count of counts){
+        const countyID = count["Newberry Name"]
+        const countyName = count["County Name"]
+        delete count["Newberry Name"]
+        delete count["County Name"]
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c["ID"] === countyID) {
+                c.properties = Object.assign(c.propertes, count)
+            }
+            console.log("county is now")
+            console.log(c)
+            return c
+        })
+    }
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
 // TODO new funtionality prototyping. I want the counties to know their district
 // countyBoundaries.features = countyBoundaries.features.filter(cnty => cnty?.properties?.STATE_TERR === "Pennsylvania")
 // .map(cntyObj => {

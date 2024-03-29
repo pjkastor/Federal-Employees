@@ -115,7 +115,7 @@ p {
 }
 
 #leafletInstanceContainer{
-  height: 83vh;
+  height: 100%;
   width: 100%;
   background-image: url(../images/Logo.png);
   background-size: 45em;
@@ -171,7 +171,7 @@ p {
   background-color: #173E3A;
   z-index: 401;
   min-height: 8vh;
-  width: calc(95.96667% - var(--grid-gutter));
+  width: calc(99.96667% - var(--grid-gutter));
 }
 
 .slide h5 {
@@ -333,3 +333,13 @@ path {
   bottom: 1em;
   right: 0.25em;
 }
+
+#kastorMap {
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/*body{
+  height: inherit;
+}*/
