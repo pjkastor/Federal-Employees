@@ -83,37 +83,6 @@ p {
   font-size: 16pt;
 }
 
-#contentAbove{
-/*  
-  padding: 1em 0em;
-  margin: 1em 0em;
-  */
-  background-color: #3c3d3d;
-  color: white;
-  height: 10vh;
-  line-height: 7vh;
-  font-size: 14pt;
-  text-align: center;
-/*  background-image: url(../images/washU-single.png);
-  background-size: auto 10vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: local;*/
-}
-
-#contentBelow{
-/*padding: 5em 0em;
-  margin: 1em 0em;*/
-  background-color: #3c3d3d;
-  color: white;
-  background-image: url(../images/washU-single.png);
-  height: 21vh;
-  background-size: auto 21vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: local;
-}
-
 #leafletInstanceContainer{
   height: 100%;
   width: 100%;
@@ -171,7 +140,7 @@ p {
   background-color: #173E3A;
   z-index: 401;
   min-height: 8vh;
-  width: calc(99.96667% - var(--grid-gutter));
+  width: 100%;
 }
 
 .slide h5 {
@@ -338,6 +307,13 @@ path {
     height: 100vh;
     padding: 0;
     margin: 0;
+}
+
+.col-12{
+  margin: 0;
+  flex: 0 0 100%;
+  max-width: 100%;
+/*  margin: 0 calc(99.96667% - var(--grid-gutter));*/
 }
 
 /*body{
