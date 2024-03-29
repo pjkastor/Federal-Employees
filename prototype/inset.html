@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+    @author Bryan Haberberger
+    https://github.com/thehabes
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="">
+        <link rel="stylesheet" href="./marker-clustering/MarkerCluster.Default.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="./marker-clustering/leaflet.markercluster-src.js"></script>
+        <script src="./app.js" type="module"></script>
+        <link rel="stylesheet" href="./styling/inset.css" />
+    </head>
+    <body>
+        <div class="row" id="kastorMap">
+            <div class="col-12">
+                <div class="slider-container is-hidden">
+                    <div class="slider-controls">
+                        <div class="inline year-dec"> << </div> <h5 id="slider-value" class="inline">N/A</h5> <div class="inline year-inc"> >> </div>
+                    </div>
+                    <div class="slide"> 
+                        <h5 class="inline">1789</h5>
+                        <input id="timeSlider" class="inline" type="range"  min="1789" max="1832" value="1832" step="1">
+                        <h5 class="inline">1832</h5>
+                    </div>
+                </div>
+                <div id="leafletInstanceContainer">
+                    <div id="loadingMessage" style="text-align: center;">
+                        Gathering Federal Employee Data...<br>
+                    </div>
+                    <div id="resetContainer" class="">
+                        <input id="resetView" type="button" class="button primary is-hidden" value="see all locations" />
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
