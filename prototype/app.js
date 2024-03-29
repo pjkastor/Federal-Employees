@@ -290,7 +290,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 className: name.replaceAll(" ", "_")
             }
         },
-        onEachFeature: VIEWER.formatPopup
+        onEachFeature: VIEWER.formatPopup2
     })
 
     VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
@@ -303,7 +303,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 className: name.replaceAll(" ", "_")
             }
         },
-        onEachFeature: VIEWER.formatCountyPopup
+        onEachFeature: VIEWER.formatPopup2
     })
 
     VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
@@ -473,7 +473,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
  * 
  * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
-VIEWER.formatCountyPopup = function(feature, layer) {
+VIEWER.formatPopup2 = function(feature, layer) {
     function determineEmployeeCount(feature) {
         const datemap = feature?.properties?.employeeCount
         if (!datemap) return null
@@ -504,8 +504,14 @@ VIEWER.formatCountyPopup = function(feature, layer) {
         if (feature.properties["STATE_TERR"]) {
             popupContent += `<div class="featureInfo"><label>Territory:</label> ${feature.properties["STATE_TERR"]} </div> `
         }
-        if (feature.properties["Type"]) {
-            popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
+        if (feature.properties["FULL_NAME"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["FULL_NAME"]} </div> `
+        }
+        if (feature.properties["CNTY_TYPE"]) {
+            popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
+        }
+        if (feature.properties["TERR_TYPE"]) {
+            popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["TERR_TYPE"]}</div>`
         }
         if (feature.properties["Earliest Date"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
@@ -540,7 +546,6 @@ VIEWER.formatCountyPopup = function(feature, layer) {
                 <input type="button" class="button secondary employeesLink" value="see who worked here">
             </div>`
         }
-        
         layer.bindPopup(popupContent)
     }
 }
