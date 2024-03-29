@@ -580,8 +580,6 @@ VIEWER.formatPopup = function(feature, layer) {
         }
         return titleForChosenYear
     }
-
-
     let popupContent = "<div class='featurePopUp'>"
     let i = 0
     let langs = []
