@@ -56,24 +56,25 @@ async function convertAllLocationsToFeatureCollection(){
     console.log(fc)
 }
 
-function addEmployeeCountsToCounties(){
+async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
     let counts = await fetch("./data/PA_Counties_Employee_County_By_Year.json").then(resp => resp.json()).catch(err => {return []})
-
+    let alterations = 0
     for(count of counts){
         const countyID = count["Newberry Name"]
         const countyName = count["County Name"]
         delete count["Newberry Name"]
         delete count["County Name"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
-            if(c["ID"] === countyID) {
-                c.properties = Object.assign(c.propertes, count)
+            if(c.properties.ID === countyID) {
+                c.properties.employeeCount = count
+                alterations ++
             }
-            console.log("county is now")
-            console.log(c)
             return c
         })
     }
+    console.log(`ALTERATIONS: ${alterations}`)
+    console.log("FEATURE COLLECTION")
     console.log(countiesFeatureCollection)
     return countiesFeatureCollection
 }

@@ -123,7 +123,7 @@ VIEWER.init = async function() {
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
-    let countyBoundaries = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
+    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => { return {} })
     let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => { return {} })
     let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
@@ -303,7 +303,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 className: name.replaceAll(" ", "_")
             }
         },
-        onEachFeature: VIEWER.formatPopup
+        onEachFeature: VIEWER.formatCountyPopup
     })
 
     VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
@@ -465,6 +465,84 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     document.querySelector(".slider-container").classList.remove("is-hidden")
     const infoContainer = document.getElementById("infoContainer")
     if(infoContainer) infoContainer.classList.remove("is-hidden")
+}
+
+/**
+ * Define what information from each Feature belongs in the popup
+ * that appears.  We want to show labels, summaries and thumbnails.
+ * 
+ * TODO do we want this classic popup mechanic or a more static one like on the OG?
+ */
+VIEWER.formatCountyPopup = function(feature, layer) {
+    function determineEmployeeCount(feature) {
+        const datemap = feature?.properties?.employeeCount
+        if (!datemap) return null
+        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
+        const mostrecent = years_in_order.pop()
+        let countForChosenYear = datemap[mostrecent]
+        if (parseInt(VIEWER.userInputDate) > 0) {
+            countForChosenYear = null
+            for (let i = 0; i < years_in_order.length; i++) {
+                const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
+                const the_year = years_in_order[i]
+                if (the_year === parseInt(VIEWER.userInputDate)) {
+                    countForChosenYear = feature.properties.employeeCount[the_year]
+                    break
+                }
+                if (the_year > parseInt(VIEWER.userInputDate)) {
+                    countForChosenYear = feature.properties.employeeCount[prev_year]
+                    break
+                }
+            }
+        }
+        return countForChosenYear
+    }
+
+    let popupContent = "<div class='featurePopUp'>"
+
+    if (feature.properties) {
+        if (feature.properties["STATE_TERR"]) {
+            popupContent += `<div class="featureInfo"><label>Territory:</label> ${feature.properties["STATE_TERR"]} </div> `
+        }
+        if (feature.properties["Type"]) {
+            popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
+        }
+        if (feature.properties["Earliest Date"]) {
+            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
+        } else if (feature.properties["START_DATE"]) {
+            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
+        }
+        if (feature.properties["Latest Date"]) {
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["Latest Date"])}</div>`
+        } else if (feature.properties["END_DATE"]) {
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
+        }
+        if (feature.properties["Earliest Date"]) {
+            layer.options.startDate = feature.properties["Earliest Date"]
+        } else if (feature.properties["START_DATE"]) {
+            layer.options.startDate = feature.properties["START_DATE"]
+        }
+        if (feature.properties["Latest Date"]) {
+            layer.options.endDate = feature.properties["Latest Date"]
+        } else if (feature.properties["END_DATE"]) {
+            layer.options.endDate = feature.properties["END_DATE"]
+        }
+        if(feature.properties.employeeCount){
+            const count = determineEmployeeCount(feature)
+            layer.options.employeeCount = count
+            popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
+        }
+        feature.properties.employeesLink = true
+        if(feature.properties["employeesLink"]){
+            // TODO this button should load the page for employees that worked at this location, target _blank
+            popupContent += `
+            <div class="featureInfo is-center">
+                <input type="button" class="button secondary employeesLink" value="see who worked here">
+            </div>`
+        }
+        
+        layer.bindPopup(popupContent)
+    }
 }
 
 /**
