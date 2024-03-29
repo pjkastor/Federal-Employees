@@ -295,13 +295,34 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
+            const count = VIEWER.determineEmployeeCount(feature)
+            function getColor(d) {
+                d = parseInt(d)
+                const color = 
+                   d > 35  ? '#800026' :
+                   d > 30  ? '#BD0026' :
+                   d > 25  ? '#E31A1C' :
+                   d > 20  ? '#FC4E2A' :
+                   d > 15  ? '#FD8D3C' :
+                   d > 10  ? '#FEB24C' :
+                   d > 5   ? '#FED976' :
+                             '#FFEDA0'
+                return color
+            }
+
             const name = feature.properties._name ?? ""
-            return {
-                color: "#008080",
-                fillColor: "#008080",
-                fillOpacity: 0.00,
+            const fcolor = getColor(count)
+            const style_obj = 
+            {
+                fillColor: fcolor,
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7,
                 className: name.replaceAll(" ", "_")
             }
+            return style_obj
         },
         onEachFeature: VIEWER.formatPopup2
     })
@@ -474,30 +495,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
  * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup2 = function(feature, layer) {
-    function determineEmployeeCount(feature) {
-        const datemap = feature?.properties?.employeeCount
-        if (!datemap) return null
-        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
-        const mostrecent = years_in_order.pop()
-        let countForChosenYear = datemap[mostrecent]
-        if (parseInt(VIEWER.userInputDate) > 0) {
-            countForChosenYear = null
-            for (let i = 0; i < years_in_order.length; i++) {
-                const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
-                const the_year = years_in_order[i]
-                if (the_year === parseInt(VIEWER.userInputDate)) {
-                    countForChosenYear = feature.properties.employeeCount[the_year]
-                    break
-                }
-                if (the_year > parseInt(VIEWER.userInputDate)) {
-                    countForChosenYear = feature.properties.employeeCount[prev_year]
-                    break
-                }
-            }
-        }
-        return countForChosenYear
-    }
-
     let popupContent = "<div class='featurePopUp'>"
 
     if (feature.properties) {
@@ -534,7 +531,7 @@ VIEWER.formatPopup2 = function(feature, layer) {
             layer.options.endDate = feature.properties["END_DATE"]
         }
         if(feature.properties.employeeCount){
-            const count = determineEmployeeCount(feature)
+            const count = VIEWER.determineEmployeeCount(feature)
             layer.options.employeeCount = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
         }
@@ -666,5 +663,29 @@ document.getElementById("resetView").addEventListener("click", function(e) {
 VIEWER.reset = function(event) {
     VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
+
+VIEWER.determineEmployeeCount = function(feature) {
+        const datemap = feature?.properties?.employeeCount
+        if (!datemap) return 0
+        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
+        const mostrecent = years_in_order.pop()
+        let countForChosenYear = datemap[mostrecent]
+        if (parseInt(VIEWER.userInputDate) > 0) {
+            countForChosenYear = 0
+            for (let i = 0; i < years_in_order.length; i++) {
+                const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
+                const the_year = years_in_order[i]
+                if (the_year === parseInt(VIEWER.userInputDate)) {
+                    countForChosenYear = feature.properties.employeeCount[the_year]
+                    break
+                }
+                if (the_year > parseInt(VIEWER.userInputDate)) {
+                    countForChosenYear = feature.properties.employeeCount[prev_year]
+                    break
+                }
+            }
+        }
+        return countForChosenYear
+    }
 
 VIEWER.init()
