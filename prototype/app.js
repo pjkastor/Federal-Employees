@@ -295,6 +295,19 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
+            const name = feature.properties._name ?? ""
+            return {
+                color: "#008080",
+                fillColor: "#008080",
+                fillOpacity: 0.00,
+                className: name.replaceAll(" ", "_")
+            }
+        },
+        onEachFeature: VIEWER.formatPopup2
+    })
+
+    VIEWER.geoJsonLayers.countyHeatmapFeatures = L.geoJSON(geoMarkers.counties, {
+        style: function(feature) {
             const count = VIEWER.determineEmployeeCount(feature)
             function getColor(d) {
                 d = parseInt(d)
@@ -424,6 +437,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
         "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
         "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
+        "County Boundaries Heatmap": VIEWER.geoJsonLayers.countyHeatmapFeatures,
         "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
         "Clustered Locations": VIEWER.locationsClusterLayer
     }
@@ -477,6 +491,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
             if(
                 chk.nextElementSibling.innerText.trim() === "County Boundaries"
+                || chk.nextElementSibling.innerText.trim()  === "County Boundaries Heatmap"
                 || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
             )
             {
