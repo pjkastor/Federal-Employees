@@ -306,7 +306,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                    d > 15  ? '#FD8D3C' :
                    d > 10  ? '#FEB24C' :
                    d > 5   ? '#FED976' :
-                             '#FFEDA0'
+                   d > 0   ? '#FFEDA0' :
+                   "transparent"
                 return color
             }
 
@@ -470,8 +471,27 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
     }
 
-    if (parseInt(userInputDate) === 0) VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+    // Can only show State and County boundaries if a year is selected.  Hide these options until then.
+    if (parseInt(userInputDate) === 0) {
+        VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+            if(
+                chk.nextElementSibling.innerText.trim() === "County Boundaries"
+                || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
+            )
+            {
+                if(chk.checked) chk.click()
+                chk.parentElement.classList.add("is-hidden")
+            }
 
+        })
+    }
+    else{
+        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+            chk.parentElement.classList.remove("is-hidden")
+        })
+    }
+    
     VIEWER.mymap.on("overlayadd", function(event) {
         VIEWER.locationsClusterLayer.bringToFront()
     })
@@ -491,8 +511,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 /**
  * Define what information from each Feature belongs in the popup
  * that appears.  We want to show labels, summaries and thumbnails.
- * 
- * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup2 = function(feature, layer) {
     let popupContent = "<div class='featurePopUp'>"
@@ -550,8 +568,6 @@ VIEWER.formatPopup2 = function(feature, layer) {
 /**
  * Define what information from each Feature belongs in the popup
  * that appears.  We want to show labels, summaries and thumbnails.
- * 
- * TODO do we want this classic popup mechanic or a more static one like on the OG?
  */
 VIEWER.formatPopup = function(feature, layer) {
     function determineStateTitle(feature) {
@@ -665,27 +681,27 @@ VIEWER.reset = function(event) {
 }
 
 VIEWER.determineEmployeeCount = function(feature) {
-        const datemap = feature?.properties?.employeeCount
-        if (!datemap) return 0
-        const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
-        const mostrecent = years_in_order.pop()
-        let countForChosenYear = datemap[mostrecent]
-        if (parseInt(VIEWER.userInputDate) > 0) {
-            countForChosenYear = 0
-            for (let i = 0; i < years_in_order.length; i++) {
-                const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
-                const the_year = years_in_order[i]
-                if (the_year === parseInt(VIEWER.userInputDate)) {
-                    countForChosenYear = feature.properties.employeeCount[the_year]
-                    break
-                }
-                if (the_year > parseInt(VIEWER.userInputDate)) {
-                    countForChosenYear = feature.properties.employeeCount[prev_year]
-                    break
-                }
+    const datemap = feature?.properties?.employeeCount
+    if (!datemap) return -1
+    const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
+    const mostrecent = years_in_order.pop()
+    let countForChosenYear = datemap[mostrecent]
+    if (parseInt(VIEWER.userInputDate) > 0) {
+        countForChosenYear = 0
+        for (let i = 0; i < years_in_order.length; i++) {
+            const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
+            const the_year = years_in_order[i]
+            if (the_year === parseInt(VIEWER.userInputDate)) {
+                countForChosenYear = feature.properties.employeeCount[the_year]
+                break
+            }
+            if (the_year > parseInt(VIEWER.userInputDate)) {
+                countForChosenYear = feature.properties.employeeCount[prev_year]
+                break
             }
         }
-        return countForChosenYear
     }
+    return countForChosenYear
+}
 
 VIEWER.init()
