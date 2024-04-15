@@ -58,13 +58,13 @@ async function convertAllLocationsToFeatureCollection(){
 
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    let counts = await fetch("./data/PA_Counties_Employee_County_By_Year.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
-        const countyID = count["Newberry Name"]
-        const countyName = count["County Name"]
-        delete count["Newberry Name"]
-        delete count["County Name"]
+        const countyID = count["Newberry County"]
+        delete count["Newberry County"]
+        delete count["County"]
+        delete count["State"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
             if(c.properties.ID === countyID) {
                 c.properties.employeeCount = count
@@ -72,6 +72,19 @@ async function addEmployeeCountsToCounties(){
             }
             return c
         })
+    }
+    console.log(`ALTERATIONS: ${alterations}`)
+    console.log("FEATURE COLLECTION")
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
+async function fixBadCountyID(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
+    for(f of countiesFeatureCollection.features){
+        const countyID = f.properties["ID"]
+        const fixed = countyID.replace("s_", "_")
+        f.properties["ID"] = fixed        
     }
     console.log(`ALTERATIONS: ${alterations}`)
     console.log("FEATURE COLLECTION")

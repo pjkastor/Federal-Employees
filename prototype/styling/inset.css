@@ -143,10 +143,9 @@ p {
   width: 100%;
 }
 
-.slide h5 {
+.slider-controls h5 {
   margin: 0;
   padding-top: 0.75em;
-  margin: 0em 2em;
 }
 
 .info-scroller{
@@ -168,12 +167,12 @@ p {
 }
 
 .year-inc {
-  padding-left: 2em;
+  margin-left: 3em;
   cursor: pointer;
 }
 
 .year-dec {
-  padding-right: 2em;
+  margin-right: 3em;
   cursor: pointer;
 }
 
@@ -314,6 +313,16 @@ path {
   flex: 0 0 100%;
   max-width: 100%;
 /*  margin: 0 calc(99.96667% - var(--grid-gutter));*/
+}
+
+.small-icon{
+    height: 2.25em;
+}
+
+.icon-fix{
+  height: 0;
+  width: 0;
+  visibility: hidden;
 }
 
 /*body{

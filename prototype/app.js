@@ -306,7 +306,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         onEachFeature: VIEWER.formatPopup2
     })
 
-    VIEWER.geoJsonLayers.countyHeatmapFeatures = L.geoJSON(geoMarkers.counties, {
+    VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
         style: function(feature) {
             const count = VIEWER.determineEmployeeCount(feature)
             function getColor(d) {
@@ -320,7 +320,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                    d > 10  ? '#FEB24C' :
                    d > 5   ? '#FED976' :
                    d > 0   ? '#FFEDA0' :
-                   "transparent"
+                   "white"
                 return color
             }
 
@@ -437,7 +437,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
         "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
         "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
-        "County Boundaries Heatmap": VIEWER.geoJsonLayers.countyHeatmapFeatures,
+        "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
         "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
         "Clustered Locations": VIEWER.locationsClusterLayer
     }
@@ -491,7 +491,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
             if(
                 chk.nextElementSibling.innerText.trim() === "County Boundaries"
-                || chk.nextElementSibling.innerText.trim()  === "County Boundaries Heatmap"
+                || chk.nextElementSibling.innerText.trim()  === "Postmasters Heatmap"
                 || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
             )
             {
@@ -702,6 +702,7 @@ VIEWER.determineEmployeeCount = function(feature) {
     const mostrecent = years_in_order.pop()
     let countForChosenYear = datemap[mostrecent]
     if (parseInt(VIEWER.userInputDate) > 0) {
+        // Ask about this.  If the latest year recorded is 1829 and the chosen year is 1831, should I show 1829's numbers?
         countForChosenYear = 0
         for (let i = 0; i < years_in_order.length; i++) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
