@@ -169,11 +169,26 @@ p {
 .year-inc {
   margin-left: 3em;
   cursor: pointer;
+  transition: box-shadow 1.5s;
+}
+
+.year-inc:hover {
+  box-shadow: 
+    2px 0px 16px 6px white,
+    0px 0px 14px 4px white inset;
+
 }
 
 .year-dec {
   margin-right: 3em;
   cursor: pointer;
+  transition: box-shadow 1.5s;
+}
+
+.year-dec:hover {
+  box-shadow: 
+    2px 0px 16px 6px white,
+    0px 0px 14px 4px white inset;
 }
 
 .leaflet-control-zoom-in {

@@ -691,6 +691,24 @@ document.getElementById("resetView").addEventListener("click", function(e) {
     VIEWER.reset(e)
 })
 
+// Reset to the default view...maybe just page reset?
+document.querySelector(".year-inc").addEventListener("click", function(e) {
+    let currentYear = parseInt(document.getElementById("slider-value").innerText)
+    if(!currentYear || currentYear === 1832) return
+    currentYear++
+    //document.getElementById("slider-value").innerText = currentYear
+    VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
+})
+
+// Reset to the default view...maybe just page reset?
+document.querySelector(".year-dec").addEventListener("click", function(e) {
+    let currentYear = parseInt(document.getElementById("slider-value").innerText)
+    if(!currentYear || currentYear === 1789) return
+    currentYear--
+    document.getElementById("slider-value").innerText = currentYear
+    VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
+})
+
 VIEWER.reset = function(event) {
     VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
