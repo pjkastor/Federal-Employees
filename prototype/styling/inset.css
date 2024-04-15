@@ -146,6 +146,7 @@ p {
 .slider-controls h5 {
   margin: 0;
   padding-top: 0.75em;
+  cursor: default;
 }
 
 .info-scroller{
