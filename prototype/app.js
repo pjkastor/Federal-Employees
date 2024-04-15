@@ -696,7 +696,7 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
     if(!currentYear || currentYear === 1832) return
     currentYear++
-    //document.getElementById("slider-value").innerText = currentYear
+    document.getElementById("slider-value").innerText = currentYear
     VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
 })
 
