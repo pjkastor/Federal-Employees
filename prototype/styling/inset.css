@@ -96,10 +96,14 @@ p {
 }
 
 #leafletInstanceContainer.has-loaded{
-  background-size: 100%;
+  background-size: 150em;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: local;
+}
+
+.leaflet-container{
+  background-color: white;
 }
 
 #loadingMessage {

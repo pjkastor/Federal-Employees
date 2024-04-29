@@ -79,7 +79,7 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 //Starting coords based on interface
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
-document.addEventListener("LeafletInitialized", event => {
+document.addEventListener("KastorLeafletInitialized", event => {
     // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
     loadingMessage.classList.add("is-hidden")
     loadingMessage.innerHTML = `Arranging Federal Employee Data...<br>`
@@ -545,9 +545,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             VIEWER.locationsClusterLayer.bringToFront()
         })
 
-        const initialized = new CustomEvent("LeafletInitialized")
+        const initialized = new CustomEvent("KastorLeafletInitialized")
         document.dispatchEvent(initialized)
-
 
     },150)
 
