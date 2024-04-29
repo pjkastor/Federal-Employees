@@ -105,10 +105,11 @@ p {
 #loadingMessage {
   text-align: center;
   background-color: darkgrey;
+  color: black;
   padding: 2em 0em;
   font-size: 14pt;
   position: relative;
-  1-index: 1000;
+  z-index: 10;
 }
 
 #infoContainer {

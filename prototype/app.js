@@ -80,7 +80,9 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
 document.addEventListener("LeafletInitialized", event => {
+    // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
     loadingMessage.classList.add("is-hidden")
+    loadingMessage.innerHTML = `Arranging Federal Employee Data...<br>`
     resetView.classList.remove("is-hidden")
     const infoContainer = document.getElementById("infoContainer")
     if(infoContainer) infoContainer.classList.remove("is-hidden")
@@ -90,8 +92,6 @@ document.addEventListener("LeafletInitialized", event => {
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     leafletInstanceContainer.classList.add("has-loaded")
 })
-
-
 
 VIEWER.isJSON = function(obj) {
     let r = false
@@ -255,6 +255,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         }
     }
     else{
+        // Prepare for 'loading' modal and pagination
         leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.add("is-hidden")
         leafletInstanceContainer.querySelector(".leaflet-control-container").classList.add("is-hidden")
         const infoContainer = document.getElementById("infoContainer")
