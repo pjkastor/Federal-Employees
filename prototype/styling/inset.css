@@ -95,11 +95,20 @@ p {
   z-index: 0;
 }
 
+#leafletInstanceContainer.has-loaded{
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}
+
 #loadingMessage {
   text-align: center;
   background-color: darkgrey;
   padding: 2em 0em;
   font-size: 14pt;
+  position: relative;
+  1-index: 1000;
 }
 
 #infoContainer {

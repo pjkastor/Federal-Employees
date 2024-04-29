@@ -79,6 +79,20 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 //Starting coords based on interface
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
+document.addEventListener("LeafletInitialized", event => {
+    loadingMessage.classList.add("is-hidden")
+    resetView.classList.remove("is-hidden")
+    const infoContainer = document.getElementById("infoContainer")
+    if(infoContainer) infoContainer.classList.remove("is-hidden")
+    document.querySelector(".slider-container").classList.remove("is-hidden")
+    leafletInstanceContainer.style.backgroundImage = "none"
+    leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
+    leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
+    leafletInstanceContainer.classList.add("has-loaded")
+})
+
+
+
 VIEWER.isJSON = function(obj) {
     let r = false
     let json = {}
@@ -200,7 +214,6 @@ VIEWER.init = async function() {
  */
 VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     let selectedControls = null
-    let geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
     if (VIEWER.mymap === null) {
 
         VIEWER.baseLayers.mapbox_satellite_layer =
@@ -241,286 +254,299 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
         }
     }
-
-    if (parseInt(userInputDate) > 0) {
-        VIEWER.userInputDate = userInputDate
-        // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-        for (const entry in geoMarkers) {
-            switch (entry) {
-                case "locations":
-                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        // If it does not have a date, should we keep it on the map?  Yes for now.
-                        if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
-                        const sDate = new Date(f.properties["Earliest Date"])
-                        const eDate = new Date(f.properties["Latest Date"])
-                        const currDate = new Date(userInputDate)
-                        return sDate <= currDate && eDate >= currDate
-                    })
-                    break
-                case "states":
-                case "counties":
-                    geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
-                        const sDate = new Date(f.properties["START_DATE"])
-                        const eDate = new Date(f.properties["END_DATE"])
-                        const currDate = new Date(userInputDate)
-                        return sDate < currDate && eDate >= currDate
-                    })
-                    break
-                default:
-            }
-        }
-    } 
-    else {
-        if(document.getElementById("timeSlider")){
-            document.getElementById("timeSlider").value = "1832"
-        }
-        if(document.getElementById("slider-value")){
-            document.getElementById("slider-value").innerHTML = document.location.href.includes("inset.html") ? "N/A" : "Year: N/A"
-        }
-    }
-
-    VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
-        style: function(feature) {
-            const name = feature.properties._name ?? ""
-            return {
-                color: "#005A9C",
-                fillColor: "#005A9C",
-                fillOpacity: 0.00,
-                className: name.replaceAll(" ", "_")
-            }
-        },
-        onEachFeature: VIEWER.formatPopup2
-    })
-
-    VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
-        style: function(feature) {
-            const name = feature.properties._name ?? ""
-            return {
-                color: "#008080",
-                fillColor: "#008080",
-                fillOpacity: 0.00,
-                className: name.replaceAll(" ", "_")
-            }
-        },
-        onEachFeature: VIEWER.formatPopup2
-    })
-
-    VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
-        style: function(feature) {
-            const count = VIEWER.determineEmployeeCount(feature)
-            function getColor(d) {
-                d = parseInt(d)
-                const color = 
-                   d > 35  ? '#800026' :
-                   d > 30  ? '#BD0026' :
-                   d > 25  ? '#E31A1C' :
-                   d > 20  ? '#FC4E2A' :
-                   d > 15  ? '#FD8D3C' :
-                   d > 10  ? '#FEB24C' :
-                   d > 5   ? '#FED976' :
-                   d > 0   ? '#FFEDA0' :
-                   "white"
-                return color
-            }
-
-            const name = feature.properties._name ?? ""
-            const fcolor = getColor(count)
-            const style_obj = 
-            {
-                fillColor: fcolor,
-                weight: 2,
-                opacity: 1,
-                color: 'white',
-                dashArray: '3',
-                fillOpacity: 0.7,
-                className: name.replaceAll(" ", "_")
-            }
-            return style_obj
-        },
-        onEachFeature: VIEWER.formatPopup2
-    })
-
-    VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
-        style: function(feature) {
-            const name = feature.properties._name ?? ""
-            return {
-                color: "blue",
-                fillColor: "blue",
-                fillOpacity: 0.00,
-                className: name.replaceAll(" ", "_")
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
-        style: function(feature) {
-            const name = feature.properties._name ?? ""
-            return {
-                color: "purple",
-                fillColor: "purple",
-                fillOpacity: 0.00,
-                className: name.replaceAll(" ", "_")
-            }
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
-        pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ?? ""
-            const capitalIcon = L.icon({
-                iconUrl: './images/star.png',
-                iconSize: [16, 16], // size of the icon
-                iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
-                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-            })
-
-            // Make the Capital a 'star' Icon
-            if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
-
-            return L.circleMarker(latlng, {
-                radius: 6,
-                fillColor: "yellow",
-                color: "black",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 1,
-                className: name.replaceAll(" ", "_")
-            })
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    const clusters = L.geoJSON(geoMarkers.locations, {
-        pointToLayer: function(feature, latlng) {
-            const name = feature.properties._name ?? ""
-
-            const capitalIcon = L.icon({
-                iconUrl: './images/star.png',
-                iconSize: [16, 16], // size of the icon
-                iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
-                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-            })
-            // Make the Capital a 'star' Icon
-            if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
-            return L.circleMarker(latlng, {
-                radius: 6,
-                fillColor: "yellow",
-                color: "black",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 1,
-                className: "clusterPoint"
-            })
-        },
-        onEachFeature: VIEWER.formatPopup
-    })
-
-    // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
-    if (VIEWER.locationsClusterLayer) {
-        VIEWER.locationsClusterLayer.clearLayers()
-        VIEWER.locationsClusterLayer.addLayer(clusters)
-    } else {
-        VIEWER.locationsClusterLayer = L.markerClusterGroup({
-            disableClusteringAtZoom: 6,
-            showCoverageOnHover: false,
-            spiderfyOnMaxZoom: true,
-            spiderLegPolylineOptions: { weight: 1.5, color: 'yellow', opacity: 0.75 }
-        })
-        VIEWER.locationsClusterLayer.addLayer(clusters)
-    }
-
-    VIEWER.main_layers = {
-        "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
-        "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
-        "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
-        "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
-        "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
-        "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
-        "Clustered Locations": VIEWER.locationsClusterLayer
-    }
-
-    VIEWER.selectedLayers = [
-        VIEWER.baseLayers.mapbox_satellite_layer,
-        VIEWER.locationsClusterLayer
-    ]
-
-    if (VIEWER.mymap) {
-        // Which layers are active?  We will need to make them active again after we rebuild them filtered.
-        VIEWER.selectedLayers = []
-        //Main Layers
-        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']:checked").forEach(chk => {
-            const layername = chk.nextElementSibling.innerText.trim()
-            VIEWER.selectedLayers.push(VIEWER.main_layers[layername])
-        })
-        //Base Layer...only one 
-        VIEWER.layerControl._container.querySelectorAll("input[type='radio']:checked").forEach(chk => {
-            const layername = chk.nextElementSibling.innerText.trim()
-            VIEWER.selectedLayers.push(VIEWER.baseMaps[layername])
-        })
-        VIEWER.layerControl.remove()
-        VIEWER.mymap.eachLayer(function(layer) {
-            // Clear the L.GeoJSON layers.  Remember locationsClusterLayer is a layer group.  Clearing and redrawing is handled differently.
-            if (layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint") {
-                layer.remove()
-            }
-        })
-        VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-        VIEWER.selectedLayers.forEach(l => {
-            if (!l.hasOwnProperty("tiles")) {
-                l.addTo(VIEWER.mymap)
-            }
-        })
-    } else {
-        VIEWER.mymap = L.map('leafletInstanceContainer', {
-            center: coords,
-            zoomControl: false,
-            zoom: VIEWER.startZoom,
-            attributionControl: false,
-            layers: VIEWER.selectedLayers
-        })
-        VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-        VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
-    }
-
-    // Can only show State and County boundaries if a year is selected.  Hide these options until then.
-    if (parseInt(userInputDate) === 0) {
-        VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
-        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-            if(
-                chk.nextElementSibling.innerText.trim() === "County Boundaries"
-                || chk.nextElementSibling.innerText.trim()  === "Postmasters Heatmap"
-                || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
-            )
-            {
-                if(chk.checked) chk.click()
-                chk.parentElement.classList.add("is-hidden")
-            }
-
-        })
-    }
     else{
-        VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-            chk.parentElement.classList.remove("is-hidden")
-        })
+        leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.add("is-hidden")
+        leafletInstanceContainer.querySelector(".leaflet-control-container").classList.add("is-hidden")
+        const infoContainer = document.getElementById("infoContainer")
+        if(infoContainer) infoContainer.classList.add("is-hidden")
+        document.querySelector(".slider-container").classList.add("is-hidden")
+        resetView.classList.add("is-hidden")
+        leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
+        loadingMessage.classList.remove("is-hidden")
     }
+
+    setTimeout(function(){
+        let geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
+        if (parseInt(userInputDate) > 0) {
+            VIEWER.userInputDate = userInputDate
+            // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
+            for (const entry in geoMarkers) {
+                switch (entry) {
+                    case "locations":
+                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            // If it does not have a date, should we keep it on the map?  Yes for now.
+                            if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
+                            const sDate = new Date(f.properties["Earliest Date"])
+                            const eDate = new Date(f.properties["Latest Date"])
+                            const currDate = new Date(userInputDate)
+                            return sDate <= currDate && eDate >= currDate
+                        })
+                        break
+                    case "states":
+                    case "counties":
+                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
+                            const sDate = new Date(f.properties["START_DATE"])
+                            const eDate = new Date(f.properties["END_DATE"])
+                            const currDate = new Date(userInputDate)
+                            return sDate < currDate && eDate >= currDate
+                        })
+                        break
+                    default:
+                }
+            }
+        } 
+        else {
+            if(document.getElementById("timeSlider")){
+                document.getElementById("timeSlider").value = "1832"
+            }
+            if(document.getElementById("slider-value")){
+                document.getElementById("slider-value").innerHTML = document.location.href.includes("inset.html") ? "N/A" : "Year: N/A"
+            }
+        }
+
+        VIEWER.geoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "#005A9C",
+                    fillColor: "#005A9C",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup2
+        })
+
+        VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "#008080",
+                    fillColor: "#008080",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup2
+        })
+
+        VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
+            style: function(feature) {
+                const count = VIEWER.determineEmployeeCount(feature)
+                function getColor(d) {
+                    d = parseInt(d)
+                    const color = 
+                       d > 35  ? '#800026' :
+                       d > 30  ? '#BD0026' :
+                       d > 25  ? '#E31A1C' :
+                       d > 20  ? '#FC4E2A' :
+                       d > 15  ? '#FD8D3C' :
+                       d > 10  ? '#FEB24C' :
+                       d > 5   ? '#FED976' :
+                       d > 0   ? '#FFEDA0' :
+                       "white"
+                    return color
+                }
+
+                const name = feature.properties._name ?? ""
+                const fcolor = getColor(count)
+                const style_obj = 
+                {
+                    fillColor: fcolor,
+                    weight: 2,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.7,
+                    className: name.replaceAll(" ", "_")
+                }
+                return style_obj
+            },
+            onEachFeature: VIEWER.formatPopup2
+        })
+
+        VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "blue",
+                    fillColor: "blue",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "purple",
+                    fillColor: "purple",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
+            pointToLayer: function(feature, latlng) {
+                const name = feature.properties._name ?? ""
+                const capitalIcon = L.icon({
+                    iconUrl: './images/star.png',
+                    iconSize: [16, 16], // size of the icon
+                    iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                })
+
+                // Make the Capital a 'star' Icon
+                if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
+
+                return L.circleMarker(latlng, {
+                    radius: 6,
+                    fillColor: "yellow",
+                    color: "black",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 1,
+                    className: name.replaceAll(" ", "_")
+                })
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        const clusters = L.geoJSON(geoMarkers.locations, {
+            pointToLayer: function(feature, latlng) {
+                const name = feature.properties._name ?? ""
+
+                const capitalIcon = L.icon({
+                    iconUrl: './images/star.png',
+                    iconSize: [16, 16], // size of the icon
+                    iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                })
+                // Make the Capital a 'star' Icon
+                if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
+                return L.circleMarker(latlng, {
+                    radius: 6,
+                    fillColor: "yellow",
+                    color: "black",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 1,
+                    className: "clusterPoint"
+                })
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
+        if (VIEWER.locationsClusterLayer) {
+            VIEWER.locationsClusterLayer.clearLayers()
+            VIEWER.locationsClusterLayer.addLayer(clusters)
+        } else {
+            VIEWER.locationsClusterLayer = L.markerClusterGroup({
+                disableClusteringAtZoom: 6,
+                showCoverageOnHover: false,
+                spiderfyOnMaxZoom: true,
+                spiderLegPolylineOptions: { weight: 1.5, color: 'yellow', opacity: 0.75 }
+            })
+            VIEWER.locationsClusterLayer.addLayer(clusters)
+        }
+
+        VIEWER.main_layers = {
+            "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
+            "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
+            "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
+            "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
+            "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
+            "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
+            "Clustered Locations": VIEWER.locationsClusterLayer
+        }
+
+        VIEWER.selectedLayers = [
+            VIEWER.baseLayers.mapbox_satellite_layer,
+            VIEWER.locationsClusterLayer
+        ]
+
+        if (VIEWER.mymap) {
+            // Which layers are active?  We will need to make them active again after we rebuild them filtered.
+            VIEWER.selectedLayers = []
+            //Main Layers
+            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']:checked").forEach(chk => {
+                const layername = chk.nextElementSibling.innerText.trim()
+                VIEWER.selectedLayers.push(VIEWER.main_layers[layername])
+            })
+            //Base Layer...only one 
+            VIEWER.layerControl._container.querySelectorAll("input[type='radio']:checked").forEach(chk => {
+                const layername = chk.nextElementSibling.innerText.trim()
+                VIEWER.selectedLayers.push(VIEWER.baseMaps[layername])
+            })
+            VIEWER.layerControl.remove()
+            VIEWER.mymap.eachLayer(function(layer) {
+                // Clear the L.GeoJSON layers.  Remember locationsClusterLayer is a layer group.  Clearing and redrawing is handled differently.
+                if (layer.hasOwnProperty("feature") && layer.options.className !== "clusterPoint") {
+                    layer.remove()
+                }
+            })
+            VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+            VIEWER.selectedLayers.forEach(l => {
+                if (!l.hasOwnProperty("tiles")) {
+                    l.addTo(VIEWER.mymap)
+                }
+            })
+        } else {
+            VIEWER.mymap = L.map('leafletInstanceContainer', {
+                center: coords,
+                zoomControl: false,
+                zoom: VIEWER.startZoom,
+                attributionControl: false,
+                layers: VIEWER.selectedLayers
+            })
+            VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
+            VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
+        }
+
+        // Can only show State and County boundaries if a year is selected.  Hide these options until then.
+        if (parseInt(userInputDate) === 0) {
+            VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+                if(
+                    chk.nextElementSibling.innerText.trim() === "County Boundaries"
+                    || chk.nextElementSibling.innerText.trim()  === "Postmasters Heatmap"
+                    || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
+                )
+                {
+                    if(chk.checked) chk.click()
+                    chk.parentElement.classList.add("is-hidden")
+                }
+
+            })
+        }
+        else{
+            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+                chk.parentElement.classList.remove("is-hidden")
+            })
+        }
+        
+        VIEWER.mymap.on("overlayadd", function(event) {
+            VIEWER.locationsClusterLayer.bringToFront()
+        })
+
+        VIEWER.mymap.on("overlayadd", function(event) {
+            VIEWER.locationsClusterLayer.bringToFront()
+        })
+
+        const initialized = new CustomEvent("LeafletInitialized")
+        document.dispatchEvent(initialized)
+
+
+    },150)
+
     
-    VIEWER.mymap.on("overlayadd", function(event) {
-        VIEWER.locationsClusterLayer.bringToFront()
-    })
-
-    VIEWER.mymap.on("overlayadd", function(event) {
-        VIEWER.locationsClusterLayer.bringToFront()
-    })
-
-    leafletInstanceContainer.style.backgroundImage = "none"
-    loadingMessage.classList.add("is-hidden")
-    resetView.classList.remove("is-hidden")
-    document.querySelector(".slider-container").classList.remove("is-hidden")
-    const infoContainer = document.getElementById("infoContainer")
-    if(infoContainer) infoContainer.classList.remove("is-hidden")
 }
 
 /**
@@ -721,7 +747,7 @@ VIEWER.determineEmployeeCount = function(feature) {
     let countForChosenYear = datemap[mostrecent]
     if (parseInt(VIEWER.userInputDate) > 0) {
         // Ask about this.  If the latest year recorded is 1829 and the chosen year is 1831, should I show 1829's numbers?
-        countForChosenYear = 0
+        //countForChosenYear = 0
         for (let i = 0; i < years_in_order.length; i++) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
             const the_year = years_in_order[i]
