@@ -266,13 +266,14 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
     }
 
     setTimeout(function(){
-        let geoMarkers = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers))
+        let geoMarkers = {}
         if (parseInt(userInputDate) > 0) {
             VIEWER.userInputDate = userInputDate
             // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
-            for (const entry in geoMarkers) {
+            for (const entry in VIEWER.geoJsonByLayers) {
                 switch (entry) {
                     case "locations":
+                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             // If it does not have a date, should we keep it on the map?  Yes for now.
                             if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
@@ -284,6 +285,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                         break
                     case "states":
                     case "counties":
+                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
                             const sDate = new Date(f.properties["START_DATE"])
@@ -293,10 +295,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                         })
                         break
                     default:
+                        geoMarkers[entry] = VIEWER.geoJsonByLayers[entry]
                 }
             }
         } 
         else {
+            geoMarkers = VIEWER.geoJsonByLayers
             if(document.getElementById("timeSlider")){
                 document.getElementById("timeSlider").value = "1832"
             }
