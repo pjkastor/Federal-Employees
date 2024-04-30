@@ -3,9 +3,6 @@
  * https://github.com/thehabes 
  */
 
-// TODO heat map
-// https://leafletjs.com/examples/choropleth/
-
 let VIEWER = {}
 
 VIEWER.geoJsonByLayers = {}
@@ -70,9 +67,6 @@ VIEWER.mymap = null
 //Keep track of the date chosen by the user.
 VIEWER.userInputDate = "0-12-31"
 
-//GeoJSON contexts to verify
-VIEWER.geojson_contexts = ["https://geojson.org/geojson-ld/geojson-context.jsonld", "http://geojson.org/geojson-ld/geojson-context.jsonld"]
-
 //Starting Zoom level based on interface
 VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 
@@ -104,27 +98,6 @@ VIEWER.isJSON = function(obj) {
     }
     return r
 }
-
-/**
- * For supplying latitude/longitude values via the coordinate number inputs.
- * Position the Leaflet map and update the diplayed coordinate text.
- * Note that order matters, so we are specifically saying what is Lat and what is Long.
- */
-VIEWER.updateGeometry = function(event) {
-    event.preventDefault()
-    let lat = clickedLat ? clickedLat : leafLat.value
-    lat = parseInt(lat * 1000000) / 1000000
-    let long = clickedLong ? clickedLong : leafLong.value
-    long = parseInt(long * 1000000) / 1000000
-    if (lat && long) {
-        VIEWER.mymap.setView([lat, long], 16)
-        let coords = `lat: ${leafLat.value}, lon: ${leafLong.value}`
-        document.getElementById("currentCoords").innerHTML = `[${coords}]`
-    }
-    leafLat.value = lat
-    leafLong.value = long
-}
-
 
 /**
  * Initialize the application.
@@ -175,7 +148,6 @@ VIEWER.init = async function() {
         f.geometry.coordinates[1] = tempX
         return f
     })
-
     specificPeople["_fields"].forEach((element) => {
         peopleFields.push(element["Fied"])
     })
@@ -232,14 +204,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             maxZoom: 10
         })
 
-
         VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 8
         })
 
         VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 8
-        });
+        })
 
         VIEWER.baseLayers.Esri_Ocean = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 10
@@ -692,16 +663,6 @@ VIEWER.formatPopup = function(feature, layer) {
         
         layer.bindPopup(popupContent)
     }
-}
-
-VIEWER.getURLParameter = function(variable) {
-    var query = window.location.search.substring(1)
-    var vars = query.split("&")
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=")
-        if (pair[0] == variable) { return pair[1] }
-    }
-    return (false)
 }
 
 // // Change the selected date shown to the user.
