@@ -106,3 +106,35 @@ async function fixBadCountyID(){
 //     stateObj.properties.circuits = judicialCircuits._data.filter(circuit => circuit?.State === stateObj.properties.ABBR_NAME)
 //     return stateObj
 // })
+
+async function convertCountiesToXML(){
+    const countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
+    let flatObjs = []
+    countiesFeatureCollection.features.forEach(f => {
+        let props = f.properties
+        delete f.properties
+        delete f.geometry
+        delete f.type
+        delete props.employeeCount
+        f = Object.assign(f, props)
+        flatObjs.push(f)
+    })
+    console.log(flatObjs)
+    OBJtoXML(flatObjs)
+    function OBJtoXML(jsonarr) {
+      let xml = '<newberry-counties>'
+      for(let obj of jsonarr){
+        xml += "<county>"
+        for (var prop in obj) {
+            let val = obj[prop] ? obj[prop] : "no_value"
+            xml += `<${prop}> ${obj[prop]} </${prop}>`
+        }
+        xml += "</county>"
+      }
+      xml += '</newberry-counties>'
+      xml = xml.replaceAll(/<\/?[0-9]{1,}>/g, '')
+      xml = xml.replaceAll("&", "&amp;")
+      console.log(xml)
+      return xml
+    }
+}
