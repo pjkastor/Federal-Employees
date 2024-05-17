@@ -46,5 +46,18 @@
                 </div>
             </div>
         </div>
+        <script>
+            async function hideNH(){
+                let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+                countiesFeatureCollection.features.forEach(county => {
+                    if(county.properties.STATE_TERR === "New Hampshire"){
+                        county.properties.employeeCountNH = county.properties.employeeCount
+                        delete county.properties.employeeCount
+                    }
+                })
+                console.log(countiesFeatureCollection)
+                return countiesFeatureCollection
+            }
+        </script>
     </body>
 </html>

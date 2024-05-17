@@ -57,14 +57,17 @@ async function convertAllLocationsToFeatureCollection(){
 }
 
 async function addEmployeeCountsToCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/CountyEmployees_new.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
         const countyID = count["Newberry County"]
         delete count["Newberry County"]
-        delete count["County"]
+        delete count["Newberry County2"]
         delete count["State"]
+        delete count["Column3"]
+        delete count["Column4"]
+        delete count["Column5"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
             if(c.properties.ID === countyID) {
                 c.properties.employeeCount = count
@@ -76,6 +79,17 @@ async function addEmployeeCountsToCounties(){
     console.log(`ALTERATIONS: ${alterations}`)
     console.log("FEATURE COLLECTION")
     console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
+async function hideNH(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.forEach(county => {
+        if(count.properties.STATE_TERR === "New Hampshire"){
+            count.properties.employeeCountNH = count.properties.employeeCount
+            delete count.properties.employeeCount
+        }
+    })
     return countiesFeatureCollection
 }
 
@@ -107,9 +121,22 @@ async function fixBadCountyID(){
 //     return stateObj
 // })
 
+async function updateCounties(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    const newbCounties = await fetch("./data/updatedCountyMetadata.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(f => {
+        // Find the corresponding feature in newbCounties and absorb the properties
+        let id = f.properties.ID_NUM
+        let metadata = newbCounties.filter(f => f.properties.ID_NUM === id)[0]
+        let combined = Object.assign(f.properties, metadata)
+        f.properties = combined
+    })
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
 async function convertCountiesToXML(){
     const countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    let flatObjs = []
     countiesFeatureCollection.features.forEach(f => {
         let props = f.properties
         delete f.properties

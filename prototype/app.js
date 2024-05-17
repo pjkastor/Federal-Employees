@@ -499,7 +499,17 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     if(chk.checked) chk.click()
                     chk.parentElement.classList.add("is-hidden")
                 }
-
+                else if(
+                    chk.nextElementSibling.innerText.trim() === "Specific Locations" 
+                    || chk.nextElementSibling.innerText.trim() === "1814 Tax Districts" 
+                    || chk.nextElementSibling.innerText.trim() === "1798 Tax Districts"
+                )
+                {
+                    if(chk.checked) chk.click()
+                }
+                else if(chk.nextElementSibling.innerText.trim() === "Clustered Locations"){
+                    if(!chk.checked) chk.click()
+                }
             })
         }
         else{
