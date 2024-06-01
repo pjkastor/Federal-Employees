@@ -76,7 +76,7 @@ VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : 
 document.addEventListener("KastorLeafletInitialized", event => {
     // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
     loadingMessage.classList.add("is-hidden")
-    loadingMessage.innerHTML = `Arranging Federal Employee Data...<br>`
+    loadingMessage.innerHTML = `Arranging Map Data...<br>`
     resetView.classList.remove("is-hidden")
     const infoContainer = document.getElementById("infoContainer")
     if(infoContainer) infoContainer.classList.remove("is-hidden")
@@ -106,18 +106,53 @@ VIEWER.isJSON = function(obj) {
  */
 VIEWER.init = async function() {
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
-    let specificPeople = await fetch("./data/KastorPeopleNY.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
+    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
+    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
+    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
+    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
+    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
     let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => { return {} })
-    let judicialDistricts = await fetch("./data/judicial_districts.json").then(resp => resp.json()).catch(err => { return {} })
-    let judicialCircuits = await fetch("./data/judicial_circuits.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
     //loadInput.value = "Apply Options"
     let peopleData = []
     let geoJsonByLayers = {}
+
+    pa_1818_district.features = pa_1818_district.features.map(f => {
+        if (!f.hasOwnProperty("properties")) f.properties = {}
+        //f.properties._name = pa_1818_district._name
+        f.properties._name = "judicial_disctrict"
+        return f
+    })
+    pa_1823_district.features = pa_1823_district.features.map(f => {
+        if (!f.hasOwnProperty("properties")) f.properties = {}
+        //f.properties._name = pa_1823_district._name
+        f.properties._name = "judicial_disctrict"
+        return f
+    })
+
+    first_circuit_1789.features = first_circuit_1789.features.map(f => {
+        if (!f.hasOwnProperty("properties")) f.properties = {}
+        //f.properties._name = first_circuit_1789._name
+        f.properties._name = "judicial_circuit"
+        return f
+    })
+    second_circuit_1789.features = second_circuit_1789.features.map(f => {
+        if (!f.hasOwnProperty("properties")) f.properties = {}
+        //f.properties._name = second_circuit_1789._name
+        f.properties._name = "judicial_circuit"
+        return f
+    })
+    third_circuit_1789.features = third_circuit_1789.features.map(f => {
+        if (!f.hasOwnProperty("properties")) f.properties = {}
+        //f.properties._name = third_circuit_1789._name
+        f.properties._name = "judicial_circuit"
+        return f
+    })
+
     tax_1798.features = tax_1798.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = tax_1798._name
@@ -148,24 +183,25 @@ VIEWER.init = async function() {
         f.geometry.coordinates[1] = tempX
         return f
     })
-    specificPeople["_fields"].forEach((element) => {
-        peopleFields.push(element["Fied"])
-    })
-    peopleFields.push("Geocoding ID")
 
-    specificPeople._data.map((item) => {
-        const filteredItem = {}
-        peopleFields.forEach((field) => {
-            if (item.hasOwnProperty(field)) {
-                filteredItem[field] = item[field]
-            }
-        })
-        peopleData.push(filteredItem)
-    })
+    // VIEWER.geoJsonByLayers.pa_1818_district = pa_1818_district
+    // VIEWER.geoJsonByLayers.pa_1823_district = pa_1823_district
+    // VIEWER.geoJsonByLayers.first_circuit_1789 = first_circuit_1789
+    // VIEWER.geoJsonByLayers.second_circuit_1789 = second_circuit_1789
+    // VIEWER.geoJsonByLayers.third_circuit_1789 = third_circuit_1789
 
-    peopleData.sort(function(a, b) {
-        return a.GovernmentEmployeeNumber - b.GovernmentEmployeeNumber
-    })
+    VIEWER.geoJsonByLayers.judicial_districts = 
+        {
+            "__name":"judicial_districts", 
+            "@type": "FeatureCollection",
+            "features": [...pa_1818_district.features, ...pa_1823_district.features]
+        }
+    VIEWER.geoJsonByLayers.judicial_circuits = 
+        {
+            "__name":"judicial_circuits", 
+            "@type": "FeatureCollection",
+            "features": [...first_circuit_1789.features, ...second_circuit_1789.features, ...third_circuit_1789.features ]
+        }
 
     VIEWER.geoJsonByLayers.locations = locationData
     VIEWER.geoJsonByLayers.counties = countyBoundaries
@@ -173,9 +209,9 @@ VIEWER.init = async function() {
     VIEWER.geoJsonByLayers.tax_1798 = tax_1798
     VIEWER.geoJsonByLayers.tax_1814 = tax_1814
 
-    const locations_without_coordinates = locationData.features.filter(f => f.geometry.coordinates[0] === null || f.geometry.coordinates[1] === null)
-    console.warn("The following locations do not have coordinates.  They will not appear on the map.")
-    console.log(locations_without_coordinates)
+    // const locations_without_coordinates = locationData.features.filter(f => f.geometry.coordinates[0] === null || f.geometry.coordinates[1] === null)
+    // console.warn("The following locations do not have coordinates.  They will not appear on the map.")
+    // console.log(locations_without_coordinates)
 
     VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
 }
@@ -266,6 +302,18 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             return sDate < currDate && eDate >= currDate
                         })
                         break
+                    case "judicial_districts":
+                    case "judicial_circuits":
+                        // geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
+                        // geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                        //     if (!f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year")) return true
+                        //     // These are all just years but that should be OK
+                        //     const sDate = new Date(f.properties["Start_Year"]+"")
+                        //     const eDate = new Date(f.properties["End_Year"]+"")
+                        //     const currDate = new Date(userInputDate)
+                        //     return sDate < currDate && eDate >= currDate
+                        // })
+                        break
                     default:
                         geoMarkers[entry] = VIEWER.geoJsonByLayers[entry]
                 }
@@ -340,6 +388,32 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 return style_obj
             },
             onEachFeature: VIEWER.formatPopup2
+        })
+
+        VIEWER.geoJsonLayers.judicial_districts = L.geoJSON(geoMarkers.judicial_districts, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "#4d4dff",
+                    fillColor: "#4d4dff",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
+        VIEWER.geoJsonLayers.judicial_circuits = L.geoJSON(geoMarkers.judicial_circuits, {
+            style: function(feature) {
+                const name = feature.properties._name ?? ""
+                return {
+                    color: "#cc00cc",
+                    fillColor: "#cc00cc",
+                    fillOpacity: 0.00,
+                    className: name.replaceAll(" ", "_")
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
         })
 
         VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
@@ -436,6 +510,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.main_layers = {
             "1798 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1798,
             "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
+            "Judicial Districts": VIEWER.geoJsonLayers.judicial_districts,
+            "Judicial Circuits": VIEWER.geoJsonLayers.judicial_circuits,
             "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
             "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
@@ -503,6 +579,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     chk.nextElementSibling.innerText.trim() === "Specific Locations" 
                     || chk.nextElementSibling.innerText.trim() === "1814 Tax Districts" 
                     || chk.nextElementSibling.innerText.trim() === "1798 Tax Districts"
+                    || chk.nextElementSibling.innerText.trim() === "Judicial Districts" 
+                    || chk.nextElementSibling.innerText.trim() === "Judicial Circuits"
                 )
                 {
                     if(chk.checked) chk.click()
@@ -626,6 +704,12 @@ VIEWER.formatPopup = function(feature, layer) {
     if (feature.properties) {
         if (feature.properties["Geocoding Location"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding Location"]} </div>`
+        }
+        if (feature.properties["District"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["District"]} </div>`
+        }
+        if (feature.properties["Circuit"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Circuit"]} </div>`
         }
         if (feature.properties["Sector"]) {
             popupContent += `<div class="featureInfo"><label>Sector:</label> ${feature.properties["Sector"]} </div>`
