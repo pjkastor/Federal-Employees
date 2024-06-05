@@ -117,7 +117,6 @@ VIEWER.init = async function() {
     let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
-    //loadInput.value = "Apply Options"
     let peopleData = []
     let geoJsonByLayers = {}
 
@@ -304,15 +303,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                         break
                     case "judicial_districts":
                     case "judicial_circuits":
-                        // geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
-                        // geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                        //     if (!f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year")) return true
-                        //     // These are all just years but that should be OK
-                        //     const sDate = new Date(f.properties["Start_Year"]+"")
-                        //     const eDate = new Date(f.properties["End_Year"]+"")
-                        //     const currDate = new Date(userInputDate)
-                        //     return sDate < currDate && eDate >= currDate
-                        // })
+                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
+                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            if (!f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year")) return true
+                            // These are all just years but that should be OK
+                            const sDate = new Date(f.properties["Start_Year"]+"")
+                            const eDate = new Date(f.properties["End_Year"]+"")
+                            const currDate = new Date(userInputDate)
+                            return sDate < currDate && eDate >= currDate
+                        })
                         break
                     default:
                         geoMarkers[entry] = VIEWER.geoJsonByLayers[entry]
