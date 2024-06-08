@@ -47,37 +47,7 @@
             </div>
         </div>
         <script>
-/**
- * Run this after converting the AllLocations spreadsheet to JSON.
- * It will make the state titles a date map.
- */ 
-async function mapEmployeeLinksOntoLocations(){
-    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
-    let links = await fetch("./data/location_employee_links.json").then(resp => resp.json()).catch(err => {return []})
-    let match = 0
-    // Runtime could be improved but already runs in less than a couple seconds.
-    for(let link_obj of links){
-        let ping = false
-        for(let loc_obj of locations.features){
-            if(loc_obj.properties["Geocode Number"] && loc_obj.properties["Geocode Number"] === link_obj["Geocode Number"]){
-                match++
-                ping = true
-                if(loc_obj.properties?.employeesLink){
-                    console.log(`Curious thing...${loc_obj.properties["Geocode Number"]}`)
-                }
-                else{
-                    loc_obj.properties.employeesLink = link_obj["Locality"]
-                }
-            }
-        }
-    }
-    const misses = locations.features.filter(f=> !f.properties.hasOwnProperty("employeesLink"))
-    console.log(`The following Locations did not recieve the employees link:${misses.length}`)
-    console.log(misses)
-    console.log("Here is the updated file")
-    console.log(locations)
-    return locations
-}
+
         </script>
     </body>
 </html>
