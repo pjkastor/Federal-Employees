@@ -625,6 +625,9 @@ VIEWER.formatPopup2 = function(feature, layer) {
         if (feature.properties["FULL_NAME"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["FULL_NAME"]} </div> `
         }
+        else if (feature.properties["NAME"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["NAME"]} </div> `
+        }
         if (feature.properties["CNTY_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
         }
@@ -702,6 +705,9 @@ VIEWER.formatPopup = function(feature, layer) {
     if (feature.properties) {
         if (feature.properties["Geocoding Location"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding Location"]} </div>`
+        }
+        else if (feature.properties["Name"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Name"]} </div>`
         }
         if (feature.properties["District"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["District"]} </div>`
