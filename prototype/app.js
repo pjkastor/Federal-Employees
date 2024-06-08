@@ -105,7 +105,7 @@ VIEWER.isJSON = function(obj) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
+    let locationData = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
@@ -656,12 +656,11 @@ VIEWER.formatPopup2 = function(feature, layer) {
             layer.options.employeeCount = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
         }
-        feature.properties.employeesLink = true
         if(feature.properties["employeesLink"]){
             // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
-                <input type="button" class="button secondary employeesLink" value="see who worked here">
+                <a href="${feature.properties["employeesLink"]}" target="_blank" class="button secondary employeesLink">see who worked here</a>
             </div>`
         }
         layer.bindPopup(popupContent)
@@ -745,12 +744,11 @@ VIEWER.formatPopup = function(feature, layer) {
         } else if (feature.properties["END_DATE"]) {
             layer.options.endDate = feature.properties["END_DATE"]
         }
-        feature.properties.employeesLink = true
         if(feature.properties["employeesLink"]){
             // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
-                <input type="button" class="button secondary employeesLink" value="see who worked here">
+                <a href="${feature.properties["employeesLink"]}" target="_blank" class="button secondary employeesLink">see who worked here</a>
             </div>`
         }
         

@@ -26,6 +26,31 @@ async function mapStateTitleChangesOntoLocations(){
 }
 
 /**
+ * Run this after converting the AllLocations spreadsheet to JSON.
+ * It will make the state titles a date map.
+ */ 
+async function mapEmployeeLinksOntoLocations(){
+    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+    let links = await fetch("./data/location_employee_links.json").then(resp => resp.json()).catch(err => {return []})
+
+    // Runtime could be improved but already runs in less than a couple seconds.
+    for(let link_obj of links){
+        for(let loc_obj of locations.features){
+            if(loc_obj["Geocode Number"] && loc_obj["Geocode Number"] === link_obj.properties["Geocode Number"]){
+                if(loc_obj?.employeesLink){
+                    console.log(`Curious thing...${loc_obj["Geocode Number"]}`)
+                }
+                else{
+                    loc_obj.employeesLink = link_obj.properties["Geocode Number"]    
+                }
+            }
+        }
+    }
+    console.log(locations)
+    return locations
+}
+
+/**
  * Do this after converting the AllLocations spreadsheet.
  */ 
 async function convertAllLocationsToFeatureCollection(){
@@ -79,17 +104,6 @@ async function addEmployeeCountsToCounties(){
     console.log(`ALTERATIONS: ${alterations}`)
     console.log("FEATURE COLLECTION")
     console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}
-
-async function hideNH(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.forEach(county => {
-        if(count.properties.STATE_TERR === "New Hampshire"){
-            count.properties.employeeCountNH = count.properties.employeeCount
-            delete count.properties.employeeCount
-        }
-    })
     return countiesFeatureCollection
 }
 
@@ -164,4 +178,16 @@ async function convertCountiesToXML(){
       console.log(xml)
       return xml
     }
+}
+
+async function hideNH(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(county => {
+        if(county.properties.STATE_TERR === "New Hampshire"){
+            county.properties.employeeCountNH = county.properties.employeeCount
+            delete county.properties.employeeCount
+        }
+    })
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
 }
