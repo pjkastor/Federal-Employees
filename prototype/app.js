@@ -444,25 +444,77 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties._name ?? ""
-                const capitalIcon = L.icon({
-                    iconUrl: './images/star.png',
-                    iconSize: [16, 16], // size of the icon
-                    iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
-                    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-                })
-
+                
                 // Make the Capital a 'star' Icon
-                if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
+                if (feature.properties.STATE_ABBREV === "Capital") {
+                    const capitalIcon = L.icon({
+                        iconUrl: './images/map-icons/star.png',
+                        iconSize: [16, 16], // size of the icon
+                        iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                    })
+                    return L.marker(latlng, { icon: capitalIcon })
+                }
 
-                return L.circleMarker(latlng, {
-                    radius: 6,
-                    fillColor: "yellow",
-                    color: "black",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 1,
-                    className: name.replaceAll(" ", "_")
-                })
+                const type = feature.properties?.Type
+                let icon = null
+                switch(type){
+                    case "Maritime Station":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Maritime2.png',
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Lighthouse":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Lighthouse2.png',
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Overseas Locality":
+                       icon = L.icon({
+                            iconUrl: './images/map-icons/Locality1.png',
+                            iconSize: [38, 38], // size of the icon
+                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break 
+                    case "U.S. Locality":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Locality2.png',
+                            iconSize: [38, 38], // size of the icon
+                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Building":
+                            icon = L.icon({
+                                iconUrl: './images/map-icons/Building2.png',
+                                iconSize: [24, 24], // size of the icon
+                                iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                            })
+                    break
+                    default:
+                }
+                if(icon){
+                    return L.marker(latlng, { "icon": icon })
+                }
+                else{
+                    return L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "yellow",
+                        color: "black",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 1,
+                        className: name.replaceAll(" ", "_")
+                    })    
+                }
             },
             onEachFeature: VIEWER.formatPopup
         })
@@ -471,23 +523,67 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties._name ?? ""
 
-                const capitalIcon = L.icon({
-                    iconUrl: './images/star.png',
-                    iconSize: [16, 16], // size of the icon
-                    iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
-                    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-                })
-                // Make the Capital a 'star' Icon
-                if (feature.properties.STATE_ABBREV === "Capital") return L.marker(latlng, { icon: capitalIcon })
-                return L.circleMarker(latlng, {
-                    radius: 6,
-                    fillColor: "yellow",
-                    color: "black",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 1,
-                    className: "clusterPoint"
-                })
+                if (feature.properties.STATE_ABBREV === "Capital") {
+                    const capitalIcon = L.icon({
+                        iconUrl: './images/map-icons/star.png',
+                        iconSize: [16, 16], // size of the icon
+                        iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                    })
+                    return L.marker(latlng, { icon: capitalIcon })
+                }
+
+                const type = feature.properties?.Type
+                let icon = null
+                // switch(type){
+                //     case "Maritime Station":
+                //         icon = L.icon({
+                //             iconUrl: './images/map-icons/Maritime2.png',
+                //             iconSize: [16, 16], // size of the icon
+                //             iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                //             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                //         })
+                //     break
+                //     case "Lighthouse":
+                //         icon = L.icon({
+                //             iconUrl: './images/map-icons/Lighthouse2.png',
+                //             iconSize: [16, 16], // size of the icon
+                //             iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                //             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                //         })
+                //     break
+                //     case "U.S. Locality":
+                //         icon = L.icon({
+                //             iconUrl: './images/map-icons/Locality2.png',
+                //             iconSize: [16, 16], // size of the icon
+                //             iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                //             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                //         })
+                //     break
+                //     case "Building":
+                //             icon = L.icon({
+                //                 iconUrl: './images/map-icons/Building2.png',
+                //                 iconSize: [16, 16], // size of the icon
+                //                 iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                //                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                //             })
+                //     break
+                //     default:
+                // }
+                if(icon){
+                    return L.marker(latlng, { "icon": icon })
+                }
+                else{
+                    return L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "yellow",
+                        color: "black",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 1,
+                        className: name.replaceAll(" ", "_")
+                    })    
+                }
             },
             onEachFeature: VIEWER.formatPopup
         })
