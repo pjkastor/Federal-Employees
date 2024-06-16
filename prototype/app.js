@@ -105,7 +105,7 @@ VIEWER.isJSON = function(obj) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let locationData = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} })
+    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
@@ -398,11 +398,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
         VIEWER.geoJsonLayers.judicial_circuits = L.geoJSON(geoMarkers.judicial_circuits, {
             style: function(feature) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties["Circuit"] ?? ""
+                const fill =
+                    (name.includes("First")) ? "brown" :
+                    (name.includes("Second")) ? "green" :
+                    (name.includes("Third")) ? "orange" : "#cc00cc"
                 return {
                     color: "#cc00cc",
-                    fillColor: "#cc00cc",
-                    fillOpacity: 0.00,
+                    fillColor: fill,
+                    fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
             },
@@ -528,10 +532,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 }
 
                 const type = feature.properties?.Type
-                // TODO change color based on type
+                const fill =
+                    (type == "Maritime Station") ? "teal" :
+                    (type == "Lighthouse") ? "yellow" :
+                    (type == "Overseas Locality") ? "orange" : 
+                    (type == "U.S. Locality") ? "blue" : 
+                    (type == "Building") ? "lightgrey" : "red"
                 return L.circleMarker(latlng, {
                     radius: 6,
-                    fillColor: "yellow",
+                    fillColor: fill,
                     color: "black",
                     weight: 1,
                     opacity: 1,
@@ -551,7 +560,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 disableClusteringAtZoom: 6,
                 showCoverageOnHover: false,
                 spiderfyOnMaxZoom: true,
-                spiderLegPolylineOptions: { weight: 1.5, color: 'yellow', opacity: 0.75 }
+                spiderLegPolylineOptions: { weight: 1.5, color: 'gray', opacity: 0.75 }
             })
             VIEWER.locationsClusterLayer.addLayer(clusters)
         }
@@ -564,7 +573,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
             "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
-            "Specific Locations": VIEWER.geoJsonLayers.locationFeatures,
+            "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayer
         }
 
@@ -625,7 +634,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     chk.parentElement.classList.add("is-hidden")
                 }
                 else if(
-                    chk.nextElementSibling.innerText.trim() === "Specific Locations" 
+                    chk.nextElementSibling.innerText.trim() === "Individual Locations" 
                     || chk.nextElementSibling.innerText.trim() === "1814 Tax Districts" 
                     || chk.nextElementSibling.innerText.trim() === "1798 Tax Districts"
                     || chk.nextElementSibling.innerText.trim() === "Judicial Districts" 

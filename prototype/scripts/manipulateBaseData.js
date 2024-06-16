@@ -5,7 +5,7 @@ const hello = "hello world"
  */ 
 async function mapStateTitleChangesOntoLocations(){
 
-    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
     let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
 
     // Runtime could be improved but already runs in less than a couple seconds.
@@ -30,7 +30,7 @@ async function mapStateTitleChangesOntoLocations(){
  * It will make the state titles a date map.
  */ 
 async function mapEmployeeLinksOntoLocations(){
-    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
     let links = await fetch("./data/location_employee_links.json").then(resp => resp.json()).catch(err => {return []})
 
     // Runtime could be improved but already runs in less than a couple seconds.
@@ -54,7 +54,7 @@ async function mapEmployeeLinksOntoLocations(){
  * Do this after converting the AllLocations spreadsheet.
  */ 
 async function convertAllLocationsToFeatureCollection(){
-    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
     let fc = {
           "type": "FeatureCollection",
           "name": "AllLocations",
