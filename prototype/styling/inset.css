@@ -351,7 +351,7 @@ path {
 #kastorMapLegend{
   position: absolute;
   font-size: 10pt;
-  background-color: #f7f7f7;
+  background-color: #ad9b47;
   width: fit-content;
   box-shadow: 8px 0px 22px gray;
   bottom: 1em;
@@ -368,7 +368,16 @@ path {
 
 #kastorMapLegend h7{
   font-weight: bold;
-  font-decoration: underline;
+  text-decoration: underline;
+}
+
+#kastorMapLegend ul{
+  margin-left: -1em;
+  font-weight: bold;
+}
+
+.legendIcon{
+  min-height: 38px;
 }
 
 .col-12{
@@ -394,24 +403,55 @@ path {
 
 .m-icon{
   background-image: url(../images/map-icons/Maritime2.png);
+  background-repeat: no-repeat;
+  position: relative;
+  top: 7px;
+  display: inline-block;
+  background-size: 36px 36px;
+  height: 38px;
+  width: 36px;
 }
 
 .l-icon{
   background-image: url(../images/map-icons/Lighthouse2.png);
+  background-repeat: no-repeat;
+  position: relative;
+  top: 14px;
+  display: inline-block;
+  background-size: 30px 30px;
+  height: 38px;
+  width: 30px;
 }
 
 .o-icon{
   background-image: url(../images/map-icons/Locality1.png);
+  background-repeat: no-repeat;
+  position: relative;
+  top: 10px;
+  display: inline-block;
+  background-size: 38px 38px;
+  height: 38px;
+  width: 38px;
 }
 
 .u-icon{
   background-image: url(../images/map-icons/Locality2.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  background-size: 38px 38px;
+  height: 38px;
+  width: 38px;
 }
 
 .b-icon{
   background-image: url(../images/map-icons/Building2.png);
-}
-
-.un-icon{
-  background-image: url(../images/map-icons/Building2.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  top: 19px;
+  background-size: 24px 24px;
+  height: 38px;
+  width: 24px;
 }
