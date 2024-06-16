@@ -84,6 +84,7 @@ document.addEventListener("KastorLeafletInitialized", event => {
     leafletInstanceContainer.style.backgroundImage = "none"
     leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
+    kastorMapLegend.classList.remove("is-hidden")
     leafletInstanceContainer.classList.add("has-loaded")
 })
 
@@ -264,6 +265,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         resetView.classList.add("is-hidden")
         leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
         loadingMessage.classList.remove("is-hidden")
+        kastorMapLegend.classList.add("is-hidden")
     }
 
     setTimeout(function(){
@@ -402,7 +404,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 const fill =
                     (name.includes("First")) ? "brown" :
                     (name.includes("Second")) ? "green" :
-                    (name.includes("Third")) ? "orange" : "#cc00cc"
+                    (name.includes("Third")) ? "orange" : "#FFFDD0"
                 return {
                     color: "#cc00cc",
                     fillColor: fill,
@@ -532,12 +534,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 }
 
                 const type = feature.properties?.Type
-                const fill =
-                    (type == "Maritime Station") ? "teal" :
+                let fill =
+                    (type == "Maritime Station") ? "#008080" :
                     (type == "Lighthouse") ? "yellow" :
                     (type == "Overseas Locality") ? "orange" : 
                     (type == "U.S. Locality") ? "blue" : 
-                    (type == "Building") ? "lightgrey" : "red"
+                    (type == "Building") ? "lightgrey" : "#FFFDD0"
+                if(feature.properties?.US === "No") fill = "#7A55A6"
                 return L.circleMarker(latlng, {
                     radius: 6,
                     fillColor: fill,
@@ -735,8 +738,9 @@ VIEWER.formatPopup2 = function(feature, layer) {
  */
 VIEWER.formatPopup = function(feature, layer) {
     function determineStateTitle(feature) {
-        const datemap = feature ?.properties ?.STATE_TITLE
+        const datemap = feature?.properties?.STATE_TITLE
         if (!datemap) return null
+        if (typeof datemap === "string") return datemap
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
         const mostrecent = years_in_order.pop()
         let titleForChosenYear = datemap[mostrecent]

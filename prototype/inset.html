@@ -19,6 +19,9 @@
             <div class="col-12">
                 <div class="slider-container is-hidden">
                     <div class="slider-controls">
+                        <div id="instructionsContainer" class="">
+                            <input id="instructions" type="button" class="button primary" value="how to use" />
+                        </div> 
                         <div class="inline year-dec" title="Move backward one year"> 
                             <span class="inline small-icon"><<</span>
                             <img src="./images/tardis.ico" class="inline small-icon"/> 
@@ -29,6 +32,9 @@
                             <img src="./images/tardis.ico" class="inline small-icon"/> 
                             <span class="inline small-icon">>></span>
                         </div>
+                        <div id="resetContainer" class="">
+                            <input id="resetView" type="button" class="button primary" value="see all locations" />
+                        </div>   
                     </div>
                     <div class="slide"> 
                         <h5 class="inline">1789</h5>
@@ -39,10 +45,33 @@
                 <div id="leafletInstanceContainer">
                     <div id="loadingMessage" style="text-align: center;">
                         Gathering Federal Employee Data...<br>
+                    </div> 
+                    <div id="kastorMapLegend" class="is-hidden">
+                        <h5>Map Legend</h5>
+                        <h7>Location Colors</h7>
+                        <ul>
+                            <li><span style="color:#008080;">Maritime Station</span></li>
+                            <li><span style="color:yellow;">Lighthouset</span></li>
+                            <li><span style="color:orange;">Overseas Locality</span></li>
+                            <li><span style="color:blue;">U.S. Locality</span></li>
+                            <li><span style="color:lightgrey;">Building</span></li>
+                            <li><span style="color:#7A55A6;">Non U.S.</span></li>
+                        </ul>
+                        <h7> Location Icons </h7>
+                        <ul>
+                            <li><span>Maritime Station</span>: <i class="m-icon"></i></li>
+                            <li><span>Lighthouse</span>: <i class="l-icon"></i></li>
+                            <li><span>Overseas Locality</span>: <i class="o-icon"></i></li>
+                            <li><span>U.S. Locality</span>: <i class="u-icon"></i></li>
+                            <li><span>Building</span>: <i class="b-icon"></i></li>
+                        </ul>
+                        <h7> Judicial Circuit Colors </h7>
+                        <ul>
+                            <li><span style="color:brown;">First Circuit</span></li>
+                            <li><span style="color:green;">Second Circuit</span></li>
+                            <li><span style="color:orange;">Third Circuit</span></li>
+                        </ul>
                     </div>
-                    <div id="resetContainer" class="">
-                        <input id="resetView" type="button" class="button primary is-hidden" value="see all locations" />
-                    </div>    
                 </div>
             </div>
         </div>

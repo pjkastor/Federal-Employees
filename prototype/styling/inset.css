@@ -131,7 +131,7 @@ p {
   font-weight: bold;
 }
 
-#resetView{
+#resetView, #instructions{
   border: 2px solid #B85323;
 }
 
@@ -296,6 +296,10 @@ path {
     font-size: 10pt;
 }
 
+.leaflet-control-layers-toggle{
+  background-image: url(../images/layers.png);
+}
+
 .inline {
   display: inline-flex;
 }
@@ -325,17 +329,46 @@ path {
 }
 
 #resetContainer{
-  z-index: 401;
-  position: absolute;
-  display: block;
-  bottom: 1em;
-  right: 0.25em;
+  z-index: 1;
+  position: relative;
+  display: inline-block;
+  margin-left: 2em;
+}
+
+#instructionsContainer{
+  z-index: 1;
+  position: relative;
+  display: inline-block;
+  margin-right: 2em;
 }
 
 #kastorMap {
     height: 100vh;
     padding: 0;
     margin: 0;
+}
+
+#kastorMapLegend{
+  position: absolute;
+  font-size: 10pt;
+  background-color: #f7f7f7;
+  width: fit-content;
+  box-shadow: 8px 0px 22px gray;
+  bottom: 1em;
+  left: 1em;
+  padding: 1em;
+  z-index: 401;
+  color: black;
+}
+
+#kastorMapLegend h5{
+  text-align: center;
+  font-weight: bold;
+}
+
+#kastorMapLegend h7{
+  font-weight: bold;
+  font-decoration: underline;
 }
 
 .col-12{
@@ -358,3 +391,27 @@ path {
 /*body{
   height: inherit;
 }*/
+
+.m-icon{
+  background-image: url(../images/map-icons/Maritime2.png);
+}
+
+.l-icon{
+  background-image: url(../images/map-icons/Lighthouse2.png);
+}
+
+.o-icon{
+  background-image: url(../images/map-icons/Locality1.png);
+}
+
+.u-icon{
+  background-image: url(../images/map-icons/Locality2.png);
+}
+
+.b-icon{
+  background-image: url(../images/map-icons/Building2.png);
+}
+
+.un-icon{
+  background-image: url(../images/map-icons/Building2.png);
+}
