@@ -223,8 +223,8 @@ async function addTaxMetadata(){
             no_1814_metadata.push(f)
             return
         }
-        let combined = Object.assign(f.properties, metadata[0])
-        f.properties = combined
+        //let combined = Object.assign(f.properties, metadata[0])
+        f.properties = metadata[0]
     })
 
     tax_1798_geo.features.forEach(f => {
@@ -244,8 +244,8 @@ async function addTaxMetadata(){
             no_1798_metadata.push(f)
             return
         }
-        let combined = Object.assign(f.properties, metadata[0])
-        f.properties = combined
+        //let combined = Object.assign(f.properties, metadata[0])
+        f.properties = metadata[0]
     })
 
     console.log("duplicates 1798")
