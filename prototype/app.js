@@ -109,11 +109,68 @@ VIEWER.init = async function() {
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
-    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
-    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823_Districts.geojson").then(resp => resp.json()).catch(err => { return {} })
-    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
-    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
-    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1789.geojson").then(resp => resp.json()).catch(err => { return {} })
+    let ct_district = await fetch("./data/judicial_districts/CT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let de_district = await fetch("./data/judicial_districts/DE_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ga_district = await fetch("./data/judicial_districts/GA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ky_district = await fetch("./data/judicial_districts/KY_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ma_district = await fetch("./data/judicial_districts/MA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let md_district = await fetch("./data/judicial_districts/MD_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let me_district = await fetch("./data/judicial_districts/ME_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_district = await fetch("./data/judicial_districts/NC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_district_1801 = await fetch("./data/judicial_districts/NC_District_1801.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nh_district = await fetch("./data/judicial_districts/NH_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nj_district = await fetch("./data/judicial_districts/NJ_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nj_district_1801 = await fetch("./data/judicial_districts/NJ_District_1801.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_district = await fetch("./data/judicial_districts/NY_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_district = await fetch("./data/judicial_districts/PA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823_Districts.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ri_district = await fetch("./data/judicial_districts/RI_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sc_district = await fetch("./data/judicial_districts/SC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let tn_district = await fetch("./data/judicial_districts/TN_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_district = await fetch("./data/judicial_districts/VA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let vt_district = await fetch("./data/judicial_districts/VT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let judicial_districts = 
+        {
+            "__name":"judicial_districts", 
+            "@type": "FeatureCollection",
+            "features": [
+                ...ct_district,
+                ...de_district,
+                ...ga_district,
+                ...ky_district,
+                ...ma_district,
+                ...md_district,
+                ...me_district,
+                ...nc_district,
+                ...nc_district_1801,
+                ...nh_district,
+                ...nj_district,
+                ...nj_district_1801,
+                ...ny_district,
+                ...pa_district,
+                ...pa_1818_district, 
+                ...pa_1823_district,
+                ...ri_district,
+                ...sc_district,
+                ...tn_district,
+                ...va_district,
+                ...vt_district
+            ]
+        }
+    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let judicial_circuits = 
+        {
+            "__name":"judicial_circuits", 
+            "@type": "FeatureCollection",
+            "features": [
+                ...first_circuit_1789,
+                ...second_circuit_1789,
+                ...third_circuit_1789
+            ]
+        }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
     let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
@@ -121,38 +178,18 @@ VIEWER.init = async function() {
     let peopleData = []
     let geoJsonByLayers = {}
 
-    pa_1818_district.features = pa_1818_district.features.map(f => {
+    judicial_districts.features = judicial_districts.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
-        //f.properties._name = pa_1818_district._name
-        f.properties._name = "judicial_disctrict"
-        return f
-    })
-    pa_1823_district.features = pa_1823_district.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        //f.properties._name = pa_1823_district._name
         f.properties._name = "judicial_disctrict"
         return f
     })
 
-    first_circuit_1789.features = first_circuit_1789.features.map(f => {
+    judicial_circuits.features = judicial_circuits.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
-        //f.properties._name = first_circuit_1789._name
         f.properties._name = "judicial_circuit"
         return f
     })
-    second_circuit_1789.features = second_circuit_1789.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        //f.properties._name = second_circuit_1789._name
-        f.properties._name = "judicial_circuit"
-        return f
-    })
-    third_circuit_1789.features = third_circuit_1789.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        //f.properties._name = third_circuit_1789._name
-        f.properties._name = "judicial_circuit"
-        return f
-    })
-
+    
     tax_1798.features = tax_1798.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = tax_1798._name
@@ -184,18 +221,8 @@ VIEWER.init = async function() {
         return f
     })
 
-    VIEWER.geoJsonByLayers.judicial_districts = 
-        {
-            "__name":"judicial_districts", 
-            "@type": "FeatureCollection",
-            "features": [...pa_1818_district.features, ...pa_1823_district.features]
-        }
-    VIEWER.geoJsonByLayers.judicial_circuits = 
-        {
-            "__name":"judicial_circuits", 
-            "@type": "FeatureCollection",
-            "features": [...first_circuit_1789.features, ...second_circuit_1789.features, ...third_circuit_1789.features ]
-        }
+    VIEWER.geoJsonByLayers.judicial_districts = judicial_districts
+    VIEWER.geoJsonByLayers.judicial_circuits = judicial_circuits
 
     VIEWER.geoJsonByLayers.locations = locationData
     VIEWER.geoJsonByLayers.counties = countyBoundaries
@@ -303,8 +330,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             if (!f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year")) return true
                             // These are all just years but that should be OK
-                            const sDate = new Date(f.properties["Start_Year"]+"")
-                            const eDate = new Date(f.properties["End_Year"]+"")
+                            const sDate = new Date(f.properties["Start_Date"]+"")
+                            const eDate = new Date(f.properties["End_Date"]+"")
                             const currDate = new Date(userInputDate)
                             return sDate < currDate && eDate >= currDate
                         })
