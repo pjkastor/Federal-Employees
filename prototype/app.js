@@ -158,9 +158,14 @@ VIEWER.init = async function() {
                 ...vt_district
             ]
         }
-    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let fourth_circuit_1789 = await fetch("./data/judicial_circuits/Fourth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let fifth_circuit_1789 = await fetch("./data/judicial_circuits/Fifth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sixth_circuit_1789 = await fetch("./data/judicial_circuits/Sixth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_circuit_1789 = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+
     let judicial_circuits = 
         {
             "__name":"judicial_circuits", 
@@ -168,7 +173,11 @@ VIEWER.init = async function() {
             "features": [
                 ...first_circuit_1789,
                 ...second_circuit_1789,
-                ...third_circuit_1789
+                ...third_circuit_1789,
+                ...fourth_circuit_1789,
+                ...fifth_circuit_1789,
+                ...sixth_circuit_1789,
+                ...dc_circuit_1789
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
@@ -431,9 +440,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 const fill =
                     (name.includes("First")) ? "brown" :
                     (name.includes("Second")) ? "green" :
-                    (name.includes("Third")) ? "orange" : "#FFFDD0"
+                    (name.includes("Third")) ? "orange" :
+                    (name.includes("Fourth")) ? "purple" :
+                    (name.includes("Fifth")) ? "blue" :
+                    (name.includes("Sixth")) ? "gray" : 
+                    (name.includes("DC")) ? "red" : "#FFFDD0"
                 return {
-                    color: "#cc00cc",
+                    color: fill,
                     fillColor: fill,
                     fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
