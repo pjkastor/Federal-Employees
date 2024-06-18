@@ -337,7 +337,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "judicial_circuits":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            if (!f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year")) return true
+                            if (!f.properties.hasOwnProperty("Start_Date") && f.properties.hasOwnProperty("End_Date")) return true
                             // These are all just years but that should be OK
                             const sDate = new Date(f.properties["Start_Date"]+"")
                             const eDate = new Date(f.properties["End_Date"]+"")
