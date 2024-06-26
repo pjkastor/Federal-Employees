@@ -20,7 +20,7 @@
                 <div class="slider-container is-hidden">
                     <div class="slider-controls">
                         <div id="instructionsContainer" class="">
-                            <input id="instructions" type="button" class="button primary" value="how to use" />
+                            <input id="instructions" type="button" class="button primary" value="how to use" onclick="openHowTo()" />
                         </div> 
                         <div class="inline year-dec" title="Move backward one year"> 
                             <span class="inline small-icon"><<</span>
@@ -57,26 +57,67 @@
                             <li><span style="color:lightgrey;">Building</span></li>
                             <li><span style="color:#7A55A6;">Non U.S.</span></li>
                         </ul>
-                        <h7> Location Icons </h7>
-                        <ul>
-                            <li class="legendIcon"><span>Maritime Station</span>: <i class="m-icon"></i></li>
-                            <li class="legendIcon"><span>Lighthouse</span>: <i class="l-icon"></i></li>
-                            <li class="legendIcon"><span>Overseas Locality</span>: <i class="o-icon"></i></li>
-                            <li class="legendIcon"><span>U.S. Locality</span>: <i class="u-icon"></i></li>
-                            <li class="legendIcon"><span>Building</span>: <i class="b-icon"></i></li>
-                        </ul>
-                        <h7> Judicial Circuit Colors </h7>
-                        <ul>
-                            <li><span style="color:brown;">First Circuit</span></li>
-                            <li><span style="color:green;">Second Circuit</span></li>
-                            <li><span style="color:orange;">Third Circuit</span></li>
-                        </ul>
                     </div>
+                </div>
+            </div>
+            <div id="howToContainer" class="is-hidden">
+                <div id="howTo" class="">
+                    <input id="closeHowTo" class="button primary" value="close" onclick="closeHowTo(event)" />
+                    <h2> Interface Help </h2>
+                    <p>
+                        This map visualizes the locations where federal employees did their work.  It is built on a series of layers, which you can choose by selecting <span class="layersIcon"></span>
+                    </p>
+                    <ul>
+                        <li>
+                            Individual locations (clustered in groups at maximum distance, dots at mid-zoom, and icons at maximum zoom).
+                        </li>
+                        <li>
+                            Jurisdictional boundaries (federal judicial districts and judicial circuits and well as tax collection districts).
+                        </li>
+                        <li>
+                            Counties (these operate as the basis for showing the location of postmasters, and counties are color weighted by the number of postmaster records for each county).
+                        </li>
+                        <li>
+                            Various basemaps (both topographical maps of the natural landscape and detailed maps showing human-built features on the landscape).  Current global maps contain numerous features (states, highways, cities, etc.) that did not exist in the early American republic, but they are able to reach a closer level of magnification than topographical maps.
+                        </li>
+                    </ul>
+                    
+                    <p>
+                        Map locations take two forms:
+                    </p>
+                    
+                    <ul>
+                        <li>
+                            Most are specific locations, ranging from individual cities and towns to specific buildings, depending on the specificity of the original source data.
+                        </li>
+                        <li>
+                            Some public officials were not located in an individual city or town, but rather were assigned to multiple locations or to an entire state.
+                        </li>
+                    </ul>
+                    
+                    <p> 
+                        The map defaults to showing every location from 1789-1829, and you can always restore this default by selecting “SEE ALL LOCATIONS” to the right of the time slider.
+                    </p>
+
+                    <p> Location Icons </p>
+                    <ul>
+                        <li class="legendIcon"><span>Maritime Station</span>: <i class="m-icon"></i></li>
+                        <li class="legendIcon"><span>Lighthouse</span>: <i class="l-icon"></i></li>
+                        <li class="legendIcon"><span>Overseas Locality</span>: <i class="o-icon"></i></li>
+                        <li class="legendIcon"><span>U.S. Locality</span>: <i class="u-icon"></i></li>
+                        <li class="legendIcon"><span>Building</span>: <i class="b-icon"></i></li>
+                    </ul>
                 </div>
             </div>
         </div>
         <script>
+            function closeHowTo(event){
+                howToContainer.classList.add("is-hidden")
+            }
 
+            function openHowTo(event){
+                howToContainer.classList.remove("is-hidden")
+            }
         </script>
     </body>
 </html>

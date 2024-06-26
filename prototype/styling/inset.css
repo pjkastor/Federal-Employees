@@ -300,6 +300,10 @@ path {
   background-image: url(../images/layers.png);
 }
 
+.layersIcon{
+  background-image: url(../images/layers.png);
+}
+
 .inline {
   display: inline-flex;
 }
@@ -454,4 +458,56 @@ path {
   background-size: 24px 24px;
   height: 38px;
   width: 24px;
+}
+
+#howTo{
+    position: relative;
+    margin: 0 auto;
+    background-color: #173E3A;
+    color: lightgray;
+    width: 90%;
+    top: 3em;
+    overflow-y: auto;
+    padding: 2em;
+    max-height: 90%;
+}
+
+#howTo ul{
+  font-size: 11pt;
+}
+
+#howTo p{
+  font-size: 14pt;
+}
+
+#howTo h2{
+  color: white;
+}
+
+#howToContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .85);
+    z-index: 500;
+}
+
+#closeHowTo{
+    width: 5em;
+    position: absolute;
+    right: 0em;
+    margin: -1em 1em;
+}
+
+.layersIcon{
+    background-image: url(../images/layers.png);
+    background-position: 2px;
+    width: 44px;
+    height: 44px;
+    position: relative;
+    display: inline-block;
+    top: 18px;
+    margin-left: 10px;
 }
