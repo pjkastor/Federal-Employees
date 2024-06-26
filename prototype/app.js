@@ -181,7 +181,7 @@ VIEWER.init = async function() {
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
-    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => { return {} })
+    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []

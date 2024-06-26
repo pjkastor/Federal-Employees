@@ -83,7 +83,7 @@ async function convertAllLocationsToFeatureCollection(){
 
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
-    let counts = await fetch("./data/CountyEmployees_new.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
         const countyID = count["Newberry County"]
