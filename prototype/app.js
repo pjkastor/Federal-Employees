@@ -9,7 +9,7 @@ VIEWER.geoJsonByLayers = {}
 
 VIEWER.geoJsonLayers = {}
 
-VIEWER.locationsClusterLayer = null
+VIEWER.locationsClusterLayerGroup = null
 
 VIEWER.main_layers = null
 
@@ -73,8 +73,11 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 //Starting coords based on interface
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
-VIEWER.zoomInScenario = true
+VIEWER.currentZoomLevel = VIEWER.startZoom
 
+VIEWER.cluster_points = null
+
+VIEWER.cluster_icons = null
 
 document.addEventListener("KastorLeafletInitialized", event => {
     // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
@@ -91,31 +94,19 @@ document.addEventListener("KastorLeafletInitialized", event => {
     leafletInstanceContainer.classList.add("has-loaded")
 })
 
-VIEWER.iconsAtZoomLevel = function(level){
+VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel){
     if(!VIEWER.mymap) return
-    if(!level) return
-    if(level === 8){
-        if(VIEWER.zoomInScenario){
-            VIEWER.zoomInScenario = false
-            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-                if(chk.nextElementSibling.innerText.trim() === "Clustered Locations") {
-                    if(chk.checked) {
-                        chk.click()
-                    }
-                }
-            })
-
-            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-                if(chk.nextElementSibling.innerText.trim() === "Individual Locations") {
-                    if(!chk.checked) {
-                        chk.click()
-                    }
-                }
-            })   
-        }
-        else{
-            VIEWER.zoomInScenario = true
-        }
+    if(!oldlevel || !newlevel) return
+    const maxZoom = VIEWER.mymap.getMaxZoom()
+    const zoomInScenario = (newlevel > oldlevel)
+    VIEWER.locationsClusterLayerGroup.clearLayers()
+    if(newlevel >= 8){
+        // Hide the cluster points and show the cluster icons
+        VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_icons)
+    }
+    else{
+        // Show the cluster points and hide the cluster icons
+        VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_points)
     }
 }
 
@@ -589,8 +580,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             },
             onEachFeature: VIEWER.formatPopup
         })
-
-        const clusters = L.geoJSON(geoMarkers.locations, {
+        
+        /**
+         * An option to switch between markers and icons on this layer is desired.
+         * It could be made completeley custom and combine both the point and icon markers.
+         * Then, on zoom, we can toggle.
+         */ 
+        VIEWER.cluster_points = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties._name ?? ""
 
@@ -625,18 +621,102 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             onEachFeature: VIEWER.formatPopup
         })
 
+        VIEWER.cluster_icons = L.geoJSON(geoMarkers.locations, {
+            pointToLayer: function(feature, latlng) {
+                const name = feature.properties._name ?? ""
+                
+                // Make the Capital a 'star' Icon
+                if (feature.properties.STATE_ABBREV === "Capital") {
+                    const capitalIcon = L.icon({
+                        iconUrl: './images/map-icons/star.png',
+                        iconSize: [16, 16], // size of the icon
+                        iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
+                        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                    })
+                    return L.marker(latlng, { icon: capitalIcon })
+                }
+
+                const type = feature.properties?.Type
+                let icon = null
+                switch(type){
+                    case "Maritime Station":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Maritime2.png',
+                            iconSize: [36, 36], // size of the icon
+                            iconAnchor: [18, 20], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Lighthouse":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Lighthouse2.png',
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Overseas Locality":
+                       icon = L.icon({
+                            iconUrl: './images/map-icons/Locality1.png',
+                            iconSize: [38, 38], // size of the icon
+                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break 
+                    case "U.S. Locality":
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Locality2.png',
+                            iconSize: [38, 38], // size of the icon
+                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                    break
+                    case "Building":
+                            icon = L.icon({
+                                iconUrl: './images/map-icons/Building2.png',
+                                iconSize: [24, 24], // size of the icon
+                                iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                            })
+                    break
+                    default:
+                }
+                if(icon){
+                    return L.marker(latlng, { "icon": icon })
+                }
+                else{
+                    return L.circleMarker(latlng, {
+                        radius: 6,
+                        fillColor: "yellow",
+                        color: "black",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 1,
+                        className: "clusterIcon"
+                    })    
+                }
+            },
+            onEachFeature: VIEWER.formatPopup
+        })
+
         // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
-        if (VIEWER.locationsClusterLayer) {
-            VIEWER.locationsClusterLayer.clearLayers()
-            VIEWER.locationsClusterLayer.addLayer(clusters)
+        if (VIEWER.locationsClusterLayerGroup) {
+            VIEWER.locationsClusterLayerGroup.clearLayers()
         } else {
-            VIEWER.locationsClusterLayer = L.markerClusterGroup({
+            VIEWER.locationsClusterLayerGroup = L.markerClusterGroup({
                 disableClusteringAtZoom: 6,
                 showCoverageOnHover: false,
                 spiderfyOnMaxZoom: true,
                 spiderLegPolylineOptions: { weight: 1.5, color: 'gray', opacity: 0.75 }
             })
-            VIEWER.locationsClusterLayer.addLayer(clusters)
+        }
+        if(VIEWER.currentZoomLevel >= 8){
+            // Hide the cluster points and show the cluster icons
+            VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_icons)
+        }
+        else{
+            // Show the cluster points and hide the cluster icons
+            VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_points)
         }
 
         VIEWER.main_layers = {
@@ -648,12 +728,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
             "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
-            "Clustered Locations": VIEWER.locationsClusterLayer
+            "Clustered Locations": VIEWER.locationsClusterLayerGroup
         }
 
         VIEWER.selectedLayers = [
             VIEWER.baseLayers.mapbox_satellite_layer,
-            VIEWER.locationsClusterLayer
+            VIEWER.locationsClusterLayerGroup
         ]
 
         if (VIEWER.mymap) {
@@ -732,21 +812,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             VIEWER.locationsClusterLayer.bringToFront()
         })
 
-        VIEWER.mymap.addEventListener("overlayadd", function(event) {
-            VIEWER.locationsClusterLayer.bringToFront()
-        })
-
         VIEWER.mymap.addEventListener("zoomend", function (event) {
-            const currentLevel = event.target._zoom
-            VIEWER.iconsAtZoomLevel(currentLevel)
+            const oldlevel = VIEWER.currentZoomLevel
+            VIEWER.currentZoomLevel = event.target._zoom
+            VIEWER.iconsAtZoomLevel(oldlevel, VIEWER.currentZoomLevel)
         })
 
         const initialized = new CustomEvent("KastorLeafletInitialized")
         document.dispatchEvent(initialized)
 
     },150)
-
-    
 }
 
 /**
