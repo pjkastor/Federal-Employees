@@ -531,7 +531,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Lighthouse2.png',
+                            iconUrl: './images/map-icons/FontAwesome/lighthouse-regular.svg',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -555,7 +555,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Building":
                             icon = L.icon({
-                                iconUrl: './images/map-icons/Building2.png',
+                                iconUrl: './images/map-icons/FontAwesome/building-columns-solid.svg',
                                 iconSize: [24, 24], // size of the icon
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -649,7 +649,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Lighthouse2.png',
+                            iconUrl: './images/map-icons/FontAwesome/lighthouse-regular.svg',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -673,7 +673,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Building":
                             icon = L.icon({
-                                iconUrl: './images/map-icons/Building2.png',
+                                iconUrl: './images/map-icons/FontAwesome/building-columns-solid.svg',
                                 iconSize: [24, 24], // size of the icon
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -809,7 +809,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         }
         
         VIEWER.mymap.addEventListener("overlayadd", function(event) {
-            VIEWER.locationsClusterLayer.bringToFront()
+            VIEWER.locationsClusterLayerGroup.bringToFront()
         })
 
         VIEWER.mymap.addEventListener("zoomend", function (event) {
