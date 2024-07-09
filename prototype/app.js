@@ -265,7 +265,7 @@ VIEWER.init = async function() {
     // console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     // console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "1829-01-01")
 }
 
 /**
@@ -561,6 +561,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                             })
                     break
+                    case "State":
+                        //TODO
+                    break
+                    case "Native American Locality":
+                        //TODO
+                    break
                     default:
                 }
                 if(icon){
@@ -602,11 +608,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
                 const type = feature.properties?.Type
                 let fill =
-                    (type == "Maritime Station") ? "#008080" :
-                    (type == "Lighthouse") ? "yellow" :
-                    (type == "Overseas Locality") ? "orange" : 
-                    (type == "U.S. Locality") ? "blue" : 
-                    (type == "Building") ? "lightgrey" : "#FFFDD0"
+                    (type === "Maritime Station") ? "#008080" :
+                    (type === "Lighthouse") ? "yellow" :
+                    (type === "Overseas Locality") ? "orange" : 
+                    (type === "U.S. Locality") ? "blue" : 
+                    (type === "State") ? "pink" :
+                    (type === "Building") ? "lightgrey" :
+                    (type === "Native American Locality") ? "brown" : "red"
                 if(feature.properties?.US === "No") fill = "#7A55A6"
                 return L.circleMarker(latlng, {
                     radius: 6,
@@ -678,6 +686,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                             })
+                    break
+                    case "State":
+                        //TODO
+                    break
+                case "Native American Locality":
+                        //TODO
                     break
                     default:
                 }

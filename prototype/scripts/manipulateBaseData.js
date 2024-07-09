@@ -274,3 +274,14 @@ async function addTaxMetadata(){
 
     return true
 }
+
+async function hideDuplicatesInNewberryData(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(county => {
+        if(county.properties.STATE_TERR === "New Hampshire"){
+            
+        }
+    })
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
