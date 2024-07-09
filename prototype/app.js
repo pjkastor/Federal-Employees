@@ -65,7 +65,7 @@ VIEWER.resource = {}
 VIEWER.mymap = null
 
 //Keep track of the date chosen by the user.
-VIEWER.userInputDate = "0-12-31"
+VIEWER.userInputDate = "1829-12-31"
 
 //Starting Zoom level based on interface
 VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
@@ -203,7 +203,7 @@ VIEWER.init = async function() {
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
-    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
+    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
@@ -265,7 +265,7 @@ VIEWER.init = async function() {
     // console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     // console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(VIEWER.startCoords, "1829-01-01")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "1829-12-31")
 }
 
 /**
