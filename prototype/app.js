@@ -73,6 +73,9 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 //Starting coords based on interface
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
+VIEWER.zoomInScenario = true
+
+
 document.addEventListener("KastorLeafletInitialized", event => {
     // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
     loadingMessage.classList.add("is-hidden")
@@ -87,6 +90,34 @@ document.addEventListener("KastorLeafletInitialized", event => {
     kastorMapLegend.classList.remove("is-hidden")
     leafletInstanceContainer.classList.add("has-loaded")
 })
+
+VIEWER.iconsAtZoomLevel = function(level){
+    if(!VIEWER.mymap) return
+    if(!level) return
+    if(level === 8){
+        if(VIEWER.zoomInScenario){
+            VIEWER.zoomInScenario = false
+            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+                if(chk.nextElementSibling.innerText.trim() === "Clustered Locations") {
+                    if(chk.checked) {
+                        chk.click()
+                    }
+                }
+            })
+
+            VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+                if(chk.nextElementSibling.innerText.trim() === "Individual Locations") {
+                    if(!chk.checked) {
+                        chk.click()
+                    }
+                }
+            })   
+        }
+        else{
+            VIEWER.zoomInScenario = true
+        }
+    }
+}
 
 VIEWER.isJSON = function(obj) {
     let r = false
@@ -588,7 +619,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     weight: 1,
                     opacity: 1,
                     fillOpacity: 1,
-                    className: name.replaceAll(" ", "_")
+                    className: "clusterPoint"
                 })    
             },
             onEachFeature: VIEWER.formatPopup
@@ -697,12 +728,17 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             })
         }
         
-        VIEWER.mymap.on("overlayadd", function(event) {
+        VIEWER.mymap.addEventListener("overlayadd", function(event) {
             VIEWER.locationsClusterLayer.bringToFront()
         })
 
-        VIEWER.mymap.on("overlayadd", function(event) {
+        VIEWER.mymap.addEventListener("overlayadd", function(event) {
             VIEWER.locationsClusterLayer.bringToFront()
+        })
+
+        VIEWER.mymap.addEventListener("zoomend", function (event) {
+            const currentLevel = event.target._zoom
+            VIEWER.iconsAtZoomLevel(currentLevel)
         })
 
         const initialized = new CustomEvent("KastorLeafletInitialized")
