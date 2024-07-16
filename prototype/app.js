@@ -386,9 +386,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             style: function(feature) {
                 const name = feature.properties._name ?? ""
                 return {
-                    color: "#005A9C",
+                    color: "white",
                     fillColor: "#005A9C",
-                    fillOpacity: 0.00,
+                    fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
             },
