@@ -180,26 +180,56 @@ VIEWER.init = async function() {
                 ...vt_district
             ]
         }
-    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let third_circuit_1789 = await fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let fourth_circuit_1789 = await fetch("./data/judicial_circuits/Fourth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let fifth_circuit_1789 = await fetch("./data/judicial_circuits/Fifth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let sixth_circuit_1789 = await fetch("./data/judicial_circuits/Sixth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let dc_circuit_1789 = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1800 = await fetch("./data/judicial_circuits/First_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1802 = await fetch("./data/judicial_circuits/First_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1807 = await fetch("./data/judicial_circuits/First_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let second_circuit_1800 = await fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let second_circuit_1802 = await fetch("./data/judicial_circuits/Second_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let third_circuit_1800 = await fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let third_circuit_1802 = await fetch("./data/judicial_circuits/Third_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let fourth_circuit_1800 = await fetch("./data/judicial_circuits/Fourth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let fourth_circuit_1802 = await fetch("./data/judicial_circuits/Fourth_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let fifth_circuit_1800 = await fetch("./data/judicial_circuits/Fifth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let fifth_circuit_1802 = await fetch("./data/judicial_circuits/Fifth_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let sixth_circuit_1800 = await fetch("./data/judicial_circuits/Sixth_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sixth_circuit_1802 = await fetch("./data/judicial_circuits/Sixth_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let seventh_circuit_1807 = await fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    
+    let dc_circuit_1800 = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
 
     let judicial_circuits = 
         {
             "__name":"judicial_circuits", 
             "@type": "FeatureCollection",
             "features": [
-                ...first_circuit_1789,
-                ...second_circuit_1789,
-                ...third_circuit_1789,
-                ...fourth_circuit_1789,
-                ...fifth_circuit_1789,
-                ...sixth_circuit_1789,
-                ...dc_circuit_1789
+                ...first_circuit_1800,
+                ...first_circuit_1802,
+                ...first_circuit_1807,
+
+                ...second_circuit_1800,
+                ...second_circuit_1802,
+
+                ...third_circuit_1800,
+                ...third_circuit_1802,
+
+                ...fourth_circuit_1800,
+                ...fourth_circuit_1802,
+
+                ...fifth_circuit_1800,
+                ...fifth_circuit_1802,
+
+                ...sixth_circuit_1800,
+                ...sixth_circuit_1802,
+
+                ...seventh_circuit_1807,
+
+                ...dc_circuit_1800
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
@@ -399,9 +429,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
             style: function(feature) {
                 const name = feature.properties._name ?? ""
                 return {
-                    color: "#008080",
+                    color: "white",
                     fillColor: "#008080",
-                    fillOpacity: 0.00,
+                    fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
             },
@@ -523,7 +553,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 switch(type){
                     case "Maritime Station":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Maritime2.png',
+                            iconUrl: './images/map-icons/TEST.Maritime.png',
                             iconSize: [36, 36], // size of the icon
                             iconAnchor: [18, 20], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -531,7 +561,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/FontAwesome/lighthouse-regular.svg',
+                            iconUrl: './images/map-icons/TEST.Lighthouse.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -539,7 +569,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Overseas Locality":
                        icon = L.icon({
-                            iconUrl: './images/map-icons/Locality1.png',
+                            iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
                             iconSize: [38, 38], // size of the icon
                             iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -547,7 +577,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Locality2.png',
+                            iconUrl: './images/map-icons/TEST.Location.png',
                             iconSize: [38, 38], // size of the icon
                             iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -555,7 +585,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Building":
                             icon = L.icon({
-                                iconUrl: './images/map-icons/FontAwesome/building-columns-solid.svg',
+                                iconUrl: './images/map-icons/TEST.Building.png',
                                 iconSize: [24, 24], // size of the icon
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -649,7 +679,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 switch(type){
                     case "Maritime Station":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Maritime2.png',
+                            iconUrl: './images/map-icons/TEST.Maritime.png',
                             iconSize: [36, 36], // size of the icon
                             iconAnchor: [18, 20], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -657,7 +687,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/FontAwesome/lighthouse-regular.svg',
+                            iconUrl: './images/map-icons/TEST.Lighthouse.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -665,7 +695,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Overseas Locality":
                        icon = L.icon({
-                            iconUrl: './images/map-icons/Locality1.png',
+                            iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
                             iconSize: [38, 38], // size of the icon
                             iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -673,7 +703,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/Locality2.png',
+                            iconUrl: './images/map-icons/TEST.Location.png',
                             iconSize: [38, 38], // size of the icon
                             iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -681,7 +711,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Building":
                             icon = L.icon({
-                                iconUrl: './images/map-icons/FontAwesome/building-columns-solid.svg',
+                                iconUrl: './images/map-icons/TEST.Building.png',
                                 iconSize: [24, 24], // size of the icon
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -690,7 +720,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "State":
                         //TODO
                     break
-                case "Native American Locality":
+                    case "Native American Locality":
                         //TODO
                     break
                     default:
