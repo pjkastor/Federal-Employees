@@ -874,16 +874,37 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
  */
 VIEWER.formatPopup2 = function(feature, layer) {
     let popupContent = "<div class='featurePopUp'>"
-
+    let modName = null
+    let n = null
     if (feature.properties) {
         if (feature.properties["STATE_TERR"]) {
             popupContent += `<div class="featureInfo"><label>Territory:</label> ${feature.properties["STATE_TERR"]} </div> `
         }
         if (feature.properties["FULL_NAME"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["FULL_NAME"]} </div> `
+            n = feature.properties["FULL_NAME"].split(" ")
+            n = n.map(w => {
+                if(w === "NICHOLAS"){
+                    console.log('ARG')
+                }
+                w = w.toLowerCase()
+                w = w[0].toUpperCase() + w.slice(1)
+                return w
+            })
+            modName = n.join(" ")
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${modName} </div> `
         }
         else if (feature.properties["NAME"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["NAME"]} </div> `
+            n = feature.properties["NAME"].split(" ")
+            n = n.map(w => {
+                if(w === "NICHOLAS"){
+                    console.log('ARG')
+                }
+                w = w.toLowerCase()
+                w = w[0].toUpperCase() + w.slice(1)
+                return w
+            })
+            modName = n.join(" ")
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${modName} </div>`
         }
         if (feature.properties["CNTY_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
@@ -964,14 +985,11 @@ VIEWER.formatPopup = function(feature, layer) {
         if (feature.properties["Geocoding Location"]) {
             popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding Location"]} </div>`
         }
-        else if (feature.properties["Name"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Name"]} </div>`
-        }
         if (feature.properties["District"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["District"]} </div>`
+            popupContent += `<div class="featureInfo"><label>District:</label> ${feature.properties["District"]} </div>`
         }
         if (feature.properties["Circuit"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Circuit"]} </div>`
+            popupContent += `<div class="featureInfo"><label>Circuit:</label> ${feature.properties["Circuit"]} </div>`
         }
         if (feature.properties["Sector"]) {
             popupContent += `<div class="featureInfo"><label>Sector:</label> ${feature.properties["Sector"]} </div>`
