@@ -986,7 +986,7 @@ VIEWER.formatPopup = function(feature, layer) {
             }
         }
         if (feature.properties["Type"]) {
-            popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"]}</div>`
+            popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"].replace("Locality", "Location")}</div>`
         }
         if (feature.properties["Earliest Date"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
