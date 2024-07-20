@@ -554,8 +554,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "Maritime Station":
                         icon = L.icon({
                             iconUrl: './images/map-icons/TEST.Maritime.png',
-                            iconSize: [36, 36], // size of the icon
-                            iconAnchor: [18, 20], // point of the icon which will correspond to marker's location
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
@@ -570,16 +570,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "Overseas Locality":
                        icon = L.icon({
                             iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
-                            iconSize: [38, 38], // size of the icon
-                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
                             iconUrl: './images/map-icons/TEST.Location.png',
-                            iconSize: [38, 38], // size of the icon
-                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
@@ -680,8 +680,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "Maritime Station":
                         icon = L.icon({
                             iconUrl: './images/map-icons/TEST.Maritime.png',
-                            iconSize: [36, 36], // size of the icon
-                            iconAnchor: [18, 20], // point of the icon which will correspond to marker's location
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
@@ -696,16 +696,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     case "Overseas Locality":
                        icon = L.icon({
                             iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
-                            iconSize: [38, 38], // size of the icon
-                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
                             iconUrl: './images/map-icons/TEST.Location.png',
-                            iconSize: [38, 38], // size of the icon
-                            iconAnchor: [19, 16], // point of the icon which will correspond to marker's location
+                            iconSize: [30, 30], // size of the icon
+                            iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
