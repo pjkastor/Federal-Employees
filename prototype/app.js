@@ -883,9 +883,6 @@ VIEWER.formatPopup2 = function(feature, layer) {
         if (feature.properties["FULL_NAME"]) {
             n = feature.properties["FULL_NAME"].split(" ")
             n = n.map(w => {
-                if(w === "NICHOLAS"){
-                    console.log('ARG')
-                }
                 w = w.toLowerCase()
                 w = w[0].toUpperCase() + w.slice(1)
                 return w
@@ -896,9 +893,6 @@ VIEWER.formatPopup2 = function(feature, layer) {
         else if (feature.properties["NAME"]) {
             n = feature.properties["NAME"].split(" ")
             n = n.map(w => {
-                if(w === "NICHOLAS"){
-                    console.log('ARG')
-                }
                 w = w.toLowerCase()
                 w = w[0].toUpperCase() + w.slice(1)
                 return w
