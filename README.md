@@ -1,2 +1,2 @@
-# Building a Federal Government
+# Creating a Federal Government
  Web map interfaces that reconstruct the federal workforce during the period from 1789, when the federal government came into being after ratification of the Constitution, through 1829, when a series of political and policymaking changes redefined federal governance.  The goal is to connect the federal employees to where they worked and make those connections browsable on one or multiple open source web map interfaces.  The data can be ported between them, but user experiences will be different in each platform.  We look to offer a space where different platforms can be unified and interoperate with only slight variations in web map views and interactions.  
