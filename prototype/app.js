@@ -180,13 +180,21 @@ VIEWER.init = async function() {
                 ...vt_district
             ]
         }
+
+    let first_circuit_1789 = await fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1790 = await fetch("./data/judicial_circuits/First_Circuit_1790.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let first_circuit_1791 = await fetch("./data/judicial_circuits/First_Circuit_1791.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let first_circuit_1800 = await fetch("./data/judicial_circuits/First_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let first_circuit_1802 = await fetch("./data/judicial_circuits/First_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let first_circuit_1807 = await fetch("./data/judicial_circuits/First_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
+    let second_circuit_1789 = await fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let second_circuit_1800 = await fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let second_circuit_1802 = await fetch("./data/judicial_circuits/Second_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
+    let third_circuit_1789n = await fetch("./data/judicial_circuits/Third_Circuit_1789_n.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let third_circuit_1789a = await fetch("./data/judicial_circuits/Third_Circuit_1789a.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let third_circuit_1790 = await fetch("./data/judicial_circuits/Third_Circuit_1790.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let third_circuit_1800 = await fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let third_circuit_1802 = await fetch("./data/judicial_circuits/Third_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
@@ -201,20 +209,27 @@ VIEWER.init = async function() {
     
     let seventh_circuit_1807 = await fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
-    let dc_circuit_1800 = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_circuit = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
 
     let judicial_circuits = 
         {
             "__name":"judicial_circuits", 
             "@type": "FeatureCollection",
             "features": [
+                ...first_circuit_1789,
+                ...first_circuit_1790,
+                ...first_circuit_1791,
                 ...first_circuit_1800,
                 ...first_circuit_1802,
                 ...first_circuit_1807,
 
+                ...second_circuit_1789,
                 ...second_circuit_1800,
                 ...second_circuit_1802,
 
+                ...third_circuit_1789n,
+                ...third_circuit_1789a,
+                ...third_circuit_1790,
                 ...third_circuit_1800,
                 ...third_circuit_1802,
 
@@ -229,7 +244,7 @@ VIEWER.init = async function() {
 
                 ...seventh_circuit_1807,
 
-                ...dc_circuit_1800
+                ...dc_circuit
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
