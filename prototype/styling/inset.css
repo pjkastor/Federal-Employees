@@ -477,6 +477,18 @@ path {
   width: 24px;
 }
 
+.star-icon{
+  background-image: url(../images/map-icons/Capital.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  top: 7px;
+  left: 8px;
+  background-size: 30px 30px;
+  height: 30px;
+  width: 30px;
+}
+
 #howTo{
     position: relative;
     margin: 0 auto;

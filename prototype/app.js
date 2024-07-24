@@ -587,7 +587,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 // Make the Capital a 'star' Icon
                 if (feature.properties.STATE_ABBREV === "Capital") {
                     const capitalIcon = L.icon({
-                        iconUrl: './images/map-icons/star.png',
+                        iconUrl: './images/map-icons/Capital.png',
                         iconSize: [16, 16], // size of the icon
                         iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
                         popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -677,7 +677,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
                 if (feature.properties.STATE_ABBREV === "Capital") {
                     const capitalIcon = L.icon({
-                        iconUrl: './images/map-icons/star.png',
+                        iconUrl: './images/map-icons/Capital.png',
                         iconSize: [16, 16], // size of the icon
                         iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
                         popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -715,7 +715,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 // Make the Capital a 'star' Icon
                 if (feature.properties.STATE_ABBREV === "Capital") {
                     const capitalIcon = L.icon({
-                        iconUrl: './images/map-icons/star.png',
+                        iconUrl: './images/map-icons/Capital.png',
                         iconSize: [16, 16], // size of the icon
                         iconAnchor: [8, 9], // point of the icon which will correspond to marker's location
                         popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
