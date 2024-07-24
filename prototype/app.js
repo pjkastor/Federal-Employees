@@ -443,7 +443,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                                 ) return true
                             // These are all just years but that should be OK
                             const sDate = f.properties.hasOwnProperty("Start_Date") ? new Date(f.properties["Start_Date"]+"") : new Date(f.properties["Start_Year"]+"")
-                            const eDate = new Date(f.properties["End_Date"]+"") ? new Date(f.properties["End_Date"]+"") : new Date(f.properties["End_Year"]+"")
+                            const eDate = f.properties.hasOwnProperty("End_Date") ? new Date(f.properties["End_Date"]+"") ? new Date(f.properties["End_Date"]+"") : new Date(f.properties["End_Year"]+"")
                             const currDate = new Date(userInputDate)
                             return sDate < currDate && eDate >= currDate
                         })
