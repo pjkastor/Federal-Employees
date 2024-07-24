@@ -276,38 +276,54 @@ async function addTaxMetadata(){
 }
 
 async function adjustNewberryData(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(county => {
-        if(county.properties.STATE_TERR === "Louisiana"){
-            // Keep parishes, not counties.
-            // We may need to consider extinct parishes of Orleans Territory as well.
-            if(county.properties.CNTY_TYPE === "County"){
-                county.properties.START_DATE_ORIG = county.properties.START_DATE
-                county.properties.END_DATE_ORIG = county.properties.END_DATE
-                county.properties.START_DATE = "1111-11-11"
-                county.properties.END_DATE = "1111-11-11"
-            }
-        }
-        else if(county.properties.STATE_TERR === "Orleans Territory"){
-            // Keep parishes, not counties.
-            // We may need to consider extinct parishes of Orleans Territory as well.
-            if(county.properties.CNTY_TYPE === "County"){
-                county.properties.START_DATE_ORIG = county.properties.START_DATE
-                county.properties.END_DATE_ORIG = county.properties.END_DATE
-                county.properties.START_DATE = "1111-11-11"
-                county.properties.END_DATE = "1111-11-11"
-            }
-        }
-        else if(county.properties.STATE_TERR === "South Carolina"){
+        // if(county.properties.STATE_TERR === "Louisiana"){
+        //     // Keep parishes, not counties.
+        //     // We may need to consider extinct parishes of Orleans Territory as well.
+        //     if(county.properties.CNTY_TYPE === "County"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+        // else if(county.properties.STATE_TERR === "Orleans Territory"){
+        //     // Keep parishes, not counties.
+        //     // We may need to consider extinct parishes of Orleans Territory as well.
+        //     if(county.properties.CNTY_TYPE === "County"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+        // else if(county.properties.STATE_TERR === "South Carolina"){
+        //     // Keep counties, not districts or parishes
+        //     if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+
+        if(county.properties.STATE_TERR === "South Carolina"){
             // Keep counties, not districts or parishes
             if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
+                county.properties.START_DATE = county.properties.START_DATE_ORIG
+                county.properties.END_DATE = county.properties.END_DATE_ORIG
+                delete county.properties.START_DATE_ORIG
+                delete county.properties.END_DATE_ORIG
+            }
+            else{
+                // These are type 'County'
                 county.properties.START_DATE_ORIG = county.properties.START_DATE
                 county.properties.END_DATE_ORIG = county.properties.END_DATE
                 county.properties.START_DATE = "1111-11-11"
                 county.properties.END_DATE = "1111-11-11"
             }
         }
-
     })
     console.log(countiesFeatureCollection)
     return countiesFeatureCollection

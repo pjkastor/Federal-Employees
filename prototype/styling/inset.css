@@ -86,9 +86,9 @@ p {
 #leafletInstanceContainer{
   height: 100%;
   width: 100%;
-  background-image: url(../images/Logo.png);
+  background-image: url(../images/LogoNoText.png);
   background-size: 45em;
-  background-position: center 6em;
+  background-position: center 11em;
   background-repeat: no-repeat;
   background-attachment: local;
   border: 2px solid black;

@@ -28,14 +28,13 @@
                             <input id="instructions" type="button" class="button primary" value="how to use" onclick="openHowTo()" />
                         </div> 
                         <div class="inline year-dec" title="Move backward one year"> 
-                            <span class="inline small-icon"><<</span>
-                            <img src="./images/tardis.ico" class="inline small-icon"/> 
+                            <span class="icon-fix">hack</span>
+                            <img src="./images/map-icons/Fleur.de.lis.left.png" class="inline small-icon"/> 
                         </div> 
                         <h5 id="slider-value" class="inline">1829</h5> 
                         <div class="inline year-inc" title="Move forward one year">
                             <span class="icon-fix">hack</span>
-                            <img src="./images/tardis.ico" class="inline small-icon"/> 
-                            <span class="inline small-icon">>></span>
+                            <img src="./images/map-icons/Fleur.de.lis.right.png" class="inline small-icon"/> 
                         </div>
                         <div id="resetContainer" class="">
                             <input id="resetView" type="button" class="button primary" value="see all locations" />
@@ -129,6 +128,53 @@
             function openHowTo(event){
                 howToContainer.classList.remove("is-hidden")
             }
+
+            async function adjustNewberryData(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(county => {
+        // if(county.properties.STATE_TERR === "Louisiana"){
+        //     // Keep parishes, not counties.
+        //     // We may need to consider extinct parishes of Orleans Territory as well.
+        //     if(county.properties.CNTY_TYPE === "County"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+        // else if(county.properties.STATE_TERR === "Orleans Territory"){
+        //     // Keep parishes, not counties.
+        //     // We may need to consider extinct parishes of Orleans Territory as well.
+        //     if(county.properties.CNTY_TYPE === "County"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+        // else if(county.properties.STATE_TERR === "South Carolina"){
+        //     // Keep counties, not districts or parishes
+        //     if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
+        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
+        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
+        //         county.properties.START_DATE = "1111-11-11"
+        //         county.properties.END_DATE = "1111-11-11"
+        //     }
+        // }
+
+        if(county.properties.STATE_TERR === "South Carolina"){
+            // Keep counties, not districts or parishes
+            if(county.properties.CNTY_TYPE === "District"){
+                county.properties.START_DATE = county.properties.START_DATE_ORIG
+                county.properties.END_DATE = county.properties.END_DATE_ORIG
+                delete county.properties.START_DATE_ORIG
+                delete county.properties.END_DATE_ORIG
+            }
+        }
+    })
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
         </script>
     </body>
 </html>

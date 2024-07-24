@@ -131,52 +131,84 @@ VIEWER.init = async function() {
     let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
+    let al_1819_district = await fetch("./data/judicial_districts/AL_1819.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let al_1824_district = await fetch("./data/judicial_districts/AL_1824.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let ct_district = await fetch("./data/judicial_districts/CT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_district = await fetch("./data/judicial_districts/DC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let de_district = await fetch("./data/judicial_districts/DE_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let ga_district = await fetch("./data/judicial_districts/GA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let il_district = await fetch("./data/judicial_districts/IL_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let in_district = await fetch("./data/judicial_districts/IN_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let ky_district = await fetch("./data/judicial_districts/KY_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1804_district = await fetch("./data/judicial_districts/LA_1804.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1812_district = await fetch("./data/judicial_districts/LA_1812.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1823_district = await fetch("./data/judicial_districts/LA_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let ma_district = await fetch("./data/judicial_districts/MA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let md_district = await fetch("./data/judicial_districts/MD_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let me_district = await fetch("./data/judicial_districts/ME_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nc_district = await fetch("./data/judicial_districts/NC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nc_district_1801 = await fetch("./data/judicial_districts/NC_District_1801.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let mi_district = await fetch("./data/judicial_districts/MI_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let mo_district = await fetch("./data/judicial_districts/MO_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ms_district = await fetch("./data/judicial_districts/MS_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_1789_district = await fetch("./data/judicial_districts/NC_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_1800_district = await fetch("./data/judicial_districts/NC_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let nh_district = await fetch("./data/judicial_districts/NH_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let nj_district = await fetch("./data/judicial_districts/NJ_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nj_district_1801 = await fetch("./data/judicial_districts/NJ_District_1801.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ny_district = await fetch("./data/judicial_districts/NY_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_district = await fetch("./data/judicial_districts/PA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_Districts.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823_Districts.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1789_district = await fetch("./data/judicial_districts/NY_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1814_district = await fetch("./data/judicial_districts/NY_1814.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1823_district = await fetch("./data/judicial_districts/NY_1818.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let oh_district = await fetch("./data/judicial_districts/OH_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1789_district = await fetch("./data/judicial_districts/PA_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let ri_district = await fetch("./data/judicial_districts/RI_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let sc_district = await fetch("./data/judicial_districts/SC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let tn_district = await fetch("./data/judicial_districts/TN_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let va_district = await fetch("./data/judicial_districts/VA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sc_1789_district = await fetch("./data/judicial_districts/SC_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sc_1823_district = await fetch("./data/judicial_districts/SC_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let tn_1797_district = await fetch("./data/judicial_districts/TN_1797.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let tn_1802_district = await fetch("./data/judicial_districts/TN_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1789_district = await fetch("./data/judicial_districts/VA_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1819_district = await fetch("./data/judicial_districts/VA_1819.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1824_district = await fetch("./data/judicial_districts/VA_1824.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let vt_district = await fetch("./data/judicial_districts/VT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let judicial_districts = 
         {
             "__name":"judicial_districts", 
             "@type": "FeatureCollection",
             "features": [
+                ...al_1819_district,
+                ...al_1824_district,
                 ...ct_district,
+                ...dc_district,
                 ...de_district,
                 ...ga_district,
+                ...il_district,
+                ...in_district,
                 ...ky_district,
+                ...la_1804_district,
+                ...la_1812_district,
+                ...la_1823_district,
                 ...ma_district,
                 ...md_district,
                 ...me_district,
-                ...nc_district,
-                ...nc_district_1801,
+                ...mi_district,
+                ...mo_district,
+                ...ms_district,
+                ...nc_1789_district,
+                ...nc_1800_district,
                 ...nh_district,
                 ...nj_district,
-                ...nj_district_1801,
-                ...ny_district,
-                ...pa_district,
+                ...ny_1789_district,
+                ...ny_1814_district,
+                ...ny_1823_district,
                 ...pa_1818_district, 
                 ...pa_1823_district,
                 ...ri_district,
-                ...sc_district,
-                ...tn_district,
-                ...va_district,
+                ...sc_1789_district,
+                ...sc_1823_district,
+                ...tn_1797_district,
+                ...tn_1802_district,
+                ...va_1789_district,
+                ...va_1819_district,
+                ...va_1824_district,
                 ...vt_district
             ]
         }
@@ -568,7 +600,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 switch(type){
                     case "Maritime Station":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Maritime.png',
+                            iconUrl: './images/map-icons/Maritime.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -576,7 +608,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Lighthouse.png',
+                            iconUrl: './images/map-icons/Lighthouse.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -584,7 +616,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Overseas Locality":
                        icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
+                            iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
                             iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -592,7 +624,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Location.png',
+                            iconUrl: './images/map-icons/Location.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -600,17 +632,19 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Building":
                             icon = L.icon({
-                                iconUrl: './images/map-icons/TEST.Building.png',
+                                iconUrl: './images/map-icons/Building.png',
                                 iconSize: [24, 24], // size of the icon
                                 iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                                 popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                             })
                     break
                     case "State":
-                        //TODO
-                    break
-                    case "Native American Locality":
-                        //TODO
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/State.png',
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
                     break
                     default:
                 }
@@ -694,7 +728,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 switch(type){
                     case "Maritime Station":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Maritime.png',
+                            iconUrl: './images/map-icons/Maritime.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -702,7 +736,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Lighthouse":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Lighthouse.png',
+                            iconUrl: './images/map-icons/Lighthouse.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -710,7 +744,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break
                     case "Overseas Locality":
                        icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.LocationOutsideUS.png',
+                            iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
                             iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -718,25 +752,27 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                     break 
                     case "U.S. Locality":
                         icon = L.icon({
-                            iconUrl: './images/map-icons/TEST.Location.png',
+                            iconUrl: './images/map-icons/Location.png',
                             iconSize: [30, 30], // size of the icon
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
                     case "Building":
-                            icon = L.icon({
-                                iconUrl: './images/map-icons/TEST.Building.png',
-                                iconSize: [24, 24], // size of the icon
-                                iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
-                                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-                            })
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Building.png',
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
                     break
                     case "State":
-                        //TODO
-                    break
-                    case "Native American Locality":
-                        //TODO
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/State.png',
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
                     break
                     default:
                 }
