@@ -60,7 +60,6 @@
                             <li><span style="color:#008080;">Maritime Station</span></li>
                             <li><span style="color:pink;">State</span></li>
                             <li><span style="color:#7A55A6;">Non U.S. Location</span></li>
-                            <!-- <li><span style="color:orange;">Overseas Location</span></li> -->
                         </ul>
                     </div>
                 </div>
@@ -113,9 +112,8 @@
                         <li class="legendIcon"><span>Lighthouse</span>: <i class="l-icon"></i></li>
                         <li class="legendIcon"><span>Building</span>: <i class="b-icon"></i></li>
                         <li class="legendIcon"><span>Maritime Station</span>: <i class="m-icon"></i></li>
-                        <li class="legendIcon"><span>State</span>: TODO</li>
-                        <li class="legendIcon"><span>Native American Location</span>: TODO</li>
-                        <!-- <li class="legendIcon"><span>Overseas Location</span>: <i class="o-icon"></i></li> -->
+                        <li class="legendIcon"><span>State</span>: <i class="s-icon"></i></li>
+                        <li class="legendIcon"><span>Non U.S. Location</span>: <i class="n-icon"></i></li>
                     </ul>
                 </div>
             </div>
@@ -128,53 +126,6 @@
             function openHowTo(event){
                 howToContainer.classList.remove("is-hidden")
             }
-
-            async function adjustNewberryData(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.forEach(county => {
-        // if(county.properties.STATE_TERR === "Louisiana"){
-        //     // Keep parishes, not counties.
-        //     // We may need to consider extinct parishes of Orleans Territory as well.
-        //     if(county.properties.CNTY_TYPE === "County"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-        // else if(county.properties.STATE_TERR === "Orleans Territory"){
-        //     // Keep parishes, not counties.
-        //     // We may need to consider extinct parishes of Orleans Territory as well.
-        //     if(county.properties.CNTY_TYPE === "County"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-        // else if(county.properties.STATE_TERR === "South Carolina"){
-        //     // Keep counties, not districts or parishes
-        //     if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-
-        if(county.properties.STATE_TERR === "South Carolina"){
-            // Keep counties, not districts or parishes
-            if(county.properties.CNTY_TYPE === "District"){
-                county.properties.START_DATE = county.properties.START_DATE_ORIG
-                county.properties.END_DATE = county.properties.END_DATE_ORIG
-                delete county.properties.START_DATE_ORIG
-                delete county.properties.END_DATE_ORIG
-            }
-        }
-    })
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}
         </script>
     </body>
 </html>
