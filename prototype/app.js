@@ -456,7 +456,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         else {
             geoMarkers = VIEWER.geoJsonByLayers
             if(document.getElementById("timeSlider")){
-                document.getElementById("timeSlider").value = "1832"
+                document.getElementById("timeSlider").value = "1829"
             }
             if(document.getElementById("slider-value")){
                 document.getElementById("slider-value").innerHTML = document.location.href.includes("inset.html") ? "N/A" : "Year: N/A"
@@ -1107,7 +1107,7 @@ document.getElementById("resetView").addEventListener("click", function(e) {
 // Reset to the default view...maybe just page reset?
 document.querySelector(".year-inc").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
-    if(!currentYear || currentYear === 1832) return
+    if(!currentYear || currentYear === 1829) return
     currentYear++
     document.getElementById("slider-value").innerText = currentYear
     VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
