@@ -199,6 +199,7 @@ VIEWER.init = async function() {
                 ...ny_1789_district,
                 ...ny_1814_district,
                 ...ny_1823_district,
+                ...pa_1789_district,
                 ...pa_1818_district, 
                 ...pa_1823_district,
                 ...ri_district,
