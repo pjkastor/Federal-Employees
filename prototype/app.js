@@ -618,7 +618,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
-                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            iconAnchor: [12, 11], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
@@ -746,7 +746,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
-                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            iconAnchor: [12, 11], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
