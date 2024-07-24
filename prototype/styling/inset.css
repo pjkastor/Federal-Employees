@@ -87,7 +87,7 @@ p {
   height: 100%;
   width: 100%;
   background-image: url(../images/LogoNoText.png);
-  background-size: 45em;
+  background-size: auto 65%;
   background-position: center 11em;
   background-repeat: no-repeat;
   background-attachment: local;
