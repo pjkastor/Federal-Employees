@@ -360,18 +360,18 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
             })
 
-        VIEWER.baseLayers.osm =
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19
-            })
+        // VIEWER.baseLayers.osm =
+        //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         maxZoom: 19
+        //     })
 
-        VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            maxZoom: 10
-        })
+        // VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 10
+        // })
 
-        VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 8
-        })
+        // VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
+        //     maxZoom: 8
+        // })
 
         VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 8
@@ -383,9 +383,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
         VIEWER.baseMaps = {
             "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer,
-            "OpenStreetMap": VIEWER.baseLayers.osm,
-            "Open Topomap": VIEWER.baseLayers.topomap,
-            "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
+            // "OpenStreetMap": VIEWER.baseLayers.osm,
+            // "Open Topomap": VIEWER.baseLayers.topomap,
+            // "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
             "ESRI World Physical": VIEWER.baseLayers.Esri_WorldPhysical,
             "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
         }
