@@ -128,7 +128,7 @@ VIEWER.isJSON = function(obj) {
  * @return {undefined}
  */
 VIEWER.init = async function() {
-    let locationData = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} })
+    let locationData = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let al_1819_district = await fetch("./data/judicial_districts/AL_1819.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
@@ -618,7 +618,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
-                    case "Overseas Locality":
+                    case "Non-U.S. Location":
                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
@@ -626,7 +626,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
-                    case "U.S. Locality":
+                    case "U.S. Location":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Location.png',
                             iconSize: [30, 30], // size of the icon
@@ -693,11 +693,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 let fill =
                     (type === "Maritime Station") ? "#008080" :
                     (type === "Lighthouse") ? "yellow" :
-                    (type === "Overseas Locality") ? "orange" : 
-                    (type === "U.S. Locality") ? "blue" : 
+                    (type === "Non-U.S. Location") ? "orange" : 
+                    (type === "U.S. Location") ? "blue" : 
                     (type === "State") ? "pink" :
-                    (type === "Building") ? "lightgrey" :
-                    (type === "Native American Locality") ? "brown" : "red"
+                    (type === "Building") ? "lightgrey" : "red"
                 if(feature.properties?.US === "No") fill = "#7A55A6"
                 return L.circleMarker(latlng, {
                     radius: 6,
@@ -746,7 +745,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break
-                    case "Overseas Locality":
+                    case "Non-U.S. Location":
                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
@@ -754,7 +753,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
                     break 
-                    case "U.S. Locality":
+                    case "U.S. Location":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Location.png',
                             iconSize: [30, 30], // size of the icon
