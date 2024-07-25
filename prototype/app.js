@@ -693,11 +693,11 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                 let fill =
                     (type === "Maritime Station") ? "#008080" :
                     (type === "Lighthouse") ? "yellow" :
-                    (type === "Non-U.S. Location") ? "orange" : 
+                    (type === "Non-U.S. Location") ? "#7A55A6" : 
                     (type === "U.S. Location") ? "blue" : 
                     (type === "State") ? "pink" :
                     (type === "Building") ? "lightgrey" : "red"
-                if(feature.properties?.US === "No") fill = "#7A55A6"
+                //if(feature.properties?.US === "No") fill = "#7A55A6"
                 return L.circleMarker(latlng, {
                     radius: 6,
                     fillColor: fill,
