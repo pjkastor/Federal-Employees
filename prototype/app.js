@@ -242,7 +242,8 @@ VIEWER.init = async function() {
     
     let seventh_circuit_1807 = await fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
-    let dc_circuit = await fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_circuit_1800 = await fetch("./data/judicial_circuits/DC_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_circuit_1802 = await fetch("./data/judicial_circuits/DC_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
 
     let judicial_circuits = 
         {
@@ -277,11 +278,12 @@ VIEWER.init = async function() {
 
                 ...seventh_circuit_1807,
 
-                ...dc_circuit
+                ...dc_circuit_1800,
+                ...dc_circuit_1802
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
-    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => { return {} })
+    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
