@@ -366,6 +366,7 @@ path {
 .slide {
   display: flex;
   cursor: default;
+  margin-top: 8px;
 }
 
 .washU-inline {
@@ -589,3 +590,24 @@ path {
     margin: -1em 1em;
 }
 
+input[type="range"] {
+    -webkit-appearance: none;
+    background-color: white;
+    height: 11px;
+    padding: 0;
+    cursor: pointer;
+    margin-top: 8px;
+}
+ 
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    top: -1px;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0075ff), color-stop(50%,#0075ff), color-stop(51%,#0075ff), color-stop(100%,#0075ff));
+}
