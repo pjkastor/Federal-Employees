@@ -29,12 +29,12 @@
                         </div> 
                         <div class="inline year-dec" title="Move backward one year"> 
                             <span class="icon-fix">hack</span>
-                            <img src="./images/map-icons/Fleur.de.lis.left.png" class="inline small-icon"/> 
+                            <img src="./images/map-icons/Fleur.de.lis.left.white.png" class="inline small-icon"/> 
                         </div> 
                         <h5 id="slider-value" class="inline">1829</h5> 
                         <div class="inline year-inc" title="Move forward one year">
                             <span class="icon-fix">hack</span>
-                            <img src="./images/map-icons/Fleur.de.lis.right.png" class="inline small-icon"/> 
+                            <img src="./images/map-icons/Fleur.de.lis.right.white.png" class="inline small-icon"/> 
                         </div>
                         <div id="resetContainer" class="">
                             <input id="resetView" type="button" class="button primary" value="see all locations" />
@@ -69,82 +69,49 @@
                     <input id="closeHowTo" class="button primary" value="close" onclick="closeHowTo(event)" />
                     <h2>How to use this map</h2>
                     <p>This map visualizes the locations where federal employees did their work. It is built on a series of layers, which you can choose by selecting <span class="layersIcon"></span> in the top right of the map.  Each layer is independent of the others, so you can see multiple layers at once or just a single layer.  This does mean that if you want to only one layer, you will need to turn off any other layers.</p>
-                    <p>You can zoom in or out by using [INSERT ICON] in the bottom right corner or scrolling on your mouse.</p> 
+                    <p>You can zoom in or out by using <span class="zoomIcon"></span> in the bottom right corner or scrolling on your mouse.</p> 
                     <p>You can also move through time.  The number at the top center of the map shows the specific year.  The map will launch by showing the location of federal offices in 1829.  You can select other years either by dragging the circle in the middle of the scrollbar near the top of the map or by clicking the arrows to either side of the current year.  You can also select “Show all locations” to every location from 1789-1829.</p>
                     <p>You can click on individual locations, court jurisdictions, or tax collection districts to see additional information, including links to the people who worked in those places.</p>
                     <p>You can adjust the following layers:</p>
-                    <ul><li>Locations</li>
+                    <ul>
+                        <li><a href="#Locations">Locations</a></li>
                         <li><a href="#Districts">Judicial Districts</a></li>
                         <li><a href="#Circuits">Judicial Circuits</a></li>
                         <li><a href="#Postmasters">Postmasters heatmap</a></li>
                         <li><a href="#TaxDistricts">1798 and 1814 Tax Districts</a></li>
                         <li><a href="#States">States and Territories</a></li>
-                        <li><a href="#Basemaps">Basemaps</a></li></ul>
-<p id="Locations"><h3>Locations</h3></p>
-<p>This layer shows individual places (cities and towns, buildings, and maritime locations).  How this material appears will change as you zoom in and out.  
-When you first connect to the map, you will be at the greatest distance, and locations are clustered together into groups represented by circles with a number indicating how many locations are in that circle. [INSERT cluster.png]
-As you zoom in, clusters will change to individual locations, represented by colored dots indicating the type of location.[INSERT locations.png]
-At maximum zoom, the dots will change to icons, each representing the type of location.[INSERT icons.png]</p>
-
-<p id="Districts"><h3>Federal Judicial Districts</h3></p>
-    <p>The United States was organized into a series of district courts that served as the foundation of the federal judicial system.  Their jurisdiction was limited, and their cases consisted primarily of issues in maritime law.</p>
-
-<p>Established in 1789, each state constituted a judicial district, so their boundaries were the same.  The only exceptions were Maine (a region within Massachusetts) and Kentucky (a region within Virginia), each of which were separate judicial districts.  Congress eventually divided some states unto multiple judicial districts.  Most federal territories did not have federal district courts.  As a result, the district court map looks similar but not identical to a map of the states and territories of the United States.</p>
-
-<p id="Circuits"><h3>Federal Judicial Circuits</h3></p>
-<p>Circuit courts had their own legal jurisdiction and also heard cases appealed from the district courts.</p>
-
-<p>Each circuit consisted of several states, and the composition changed over time in response to population shifts, the creation of new states, and efforts to reorganize the federal judiciary.  Each circuit court consisted of two justices from the Supreme Court and a district court judge.  Circuit courts did not have their own designated judges, except for the period from 1801-1802 when the U.S. experimented with appointing circuit court judges.  As a result, this layer shows the various circuits, but does not link to lists of individual judges.</p>
-
-<p id="Postmasters"><h3>Postmasters Heatmap</p></h3>
-<p></p>This layer represents the distribution of U.S. postmasters.  While post offices did have designated locations, many of those locations were town, businesses, or other places that no longer exist.  As a result, post offices are mapped by the counties in which they were located.</p>
-
-<p>Each county has a different color to reflect the number of postmasters in that county in a given year.  You can click on any county to see additional information as well as a link to the people who worked there.</p>
-
-<p id="TaxDistricts"><h3>1798 and 1814 Tax Districts</h3></p>
-<p>In 1798 and in 1814, the federal government a series of direct taxes.  These taxes emerged from military costs: an undeclared naval war with France in 1798 that included the mobilization of both the army and the navy; and the War of 1812.  In both cases, Congress divided the individual states into individual tax collection districts and appointed officials with the unenviable task of collecting those taxes.</p>
-
-<p id="States"><h3>State and Territorial Boundaries</h3></p>
-This layer shows the primary internal organization within the United States, with boundaries changing year to year.  It’s important to note that these boundaries reflect the territorial claims of the United States.  It includes land that other governments had not ceded and continued to control, including both native American societies and European empires.</p>
-
-<p id="Basemaps"><h3>Basemaps</h3></p>
-<p></p>Every layer of data sits atop a basemap that shows the global landscape.  Each basemap has its own benefits.  This map includes three basemaps, each of which has different information and color contrasts.  These basemaps have the additional benefit of containing very little of the information from current society that fills most digital maps (highways and roads, cities and towns, state and national boundaries).  This project describes an era before many of those places took their current form, or before changes the landscape existed.</p>
-
-                        This map visualizes the locations where federal employees did their work.  It is built on a series of layers, which you can choose by selecting 
-                    </p>
-                    <p>"Locations" Layers</p>
-                    <ul>
-                        <li>
-                            Clustered locations.  When you first connect to the map, you will be at the greatest distance, and locations are clustered together into groups represented by circles with a number indicating how many locations are in that circle.  If you click on any of the circles, 
-                            you will see a spiral with one point for each location within that cluster.
-                        </li>
-                        <li>
-                            Individual locations.  As you 
-                        </li>
-                        <li>
-                            Jurisdictional boundaries (federal judicial districts and judicial circuits and well as tax collection districts).
-                        </li>
-                        <li>
-                            Counties (these operate as the basis for showing the location of postmasters, and counties are color weighted by the number of postmaster records for each county).
-                        </li>
-                        <li>
-                            Various basemaps (both topographical maps of the natural landscape and detailed maps showing human-built features on the landscape).  Current global maps contain numerous features (states, highways, cities, etc.) that did not exist in the early American republic, but they are able to reach a closer level of magnification than topographical maps.
-                        </li>
+                        <li><a href="#Basemaps">Basemaps</a></li>
                     </ul>
-                    
-                    <p>
-                        Map locations take two forms:
-                    </p>
-                    
-                    <ul>
-                        <li>
-                            Most are specific locations, ranging from individual cities and towns to specific buildings, depending on the specificity of the original source data.
-                        </li>
-                        <li>
-                            Some public officials were not located in an individual city or town, but rather were assigned to multiple locations or to an entire state.
-                        </li>
-                    </ul>
-                    
+                    <p id="Locations"><h3>Locations</h3></p>
+                    <p>This layer shows individual places (cities and towns, buildings, and maritime locations).  How this material appears will change as you zoom in and out.  
+                    When you first connect to the map, you will be at the greatest distance, and locations are clustered together into groups represented by circles with a number indicating how many locations are in that circle. <span class="clusterIcon"></span>
+                    As you zoom in, clusters will change to individual locations, represented by colored dots indicating the type of location. <span class="locationsIcon"></span>
+                    At maximum zoom, the dots will change to icons, each representing the type of location.<span class="iconsIcon"></span></p>
+
+                    <p id="Districts"><h3>Federal Judicial Districts</h3></p>
+                    <p>The United States was organized into a series of district courts that served as the foundation of the federal judicial system.  Their jurisdiction was limited, and their cases consisted primarily of issues in maritime law.</p>
+
+                    <p>Established in 1789, each state constituted a judicial district, so their boundaries were the same.  The only exceptions were Maine (a region within Massachusetts) and Kentucky (a region within Virginia), each of which were separate judicial districts.  Congress eventually divided some states unto multiple judicial districts.  Most federal territories did not have federal district courts.  As a result, the district court map looks similar but not identical to a map of the states and territories of the United States.</p>
+
+                    <p id="Circuits"><h3>Federal Judicial Circuits</h3></p>
+                    <p>Circuit courts had their own legal jurisdiction and also heard cases appealed from the district courts.</p>
+
+                    <p>Each circuit consisted of several states, and the composition changed over time in response to population shifts, the creation of new states, and efforts to reorganize the federal judiciary.  Each circuit court consisted of two justices from the Supreme Court and a district court judge.  Circuit courts did not have their own designated judges, except for the period from 1801-1802 when the U.S. experimented with appointing circuit court judges.  As a result, this layer shows the various circuits, but does not link to lists of individual judges.</p>
+
+                    <p id="Postmasters"><h3>Postmasters Heatmap</p></h3>
+                    <p>This layer represents the distribution of U.S. postmasters.  While post offices did have designated locations, many of those locations were town, businesses, or other places that no longer exist.  As a result, post offices are mapped by the counties in which they were located.</p>
+
+                    <p>Each county has a different color to reflect the number of postmasters in that county in a given year.  You can click on any county to see additional information as well as a link to the people who worked there.</p>
+
+                    <p id="TaxDistricts"><h3>1798 and 1814 Tax Districts</h3></p>
+                    <p>In 1798 and in 1814, the federal government a series of direct taxes.  These taxes emerged from military costs: an undeclared naval war with France in 1798 that included the mobilization of both the army and the navy; and the War of 1812.  In both cases, Congress divided the individual states into individual tax collection districts and appointed officials with the unenviable task of collecting those taxes.</p>
+
+                    <p id="States"><h3>State and Territorial Boundaries</h3></p>
+                    <p>This layer shows the primary internal organization within the United States, with boundaries changing year to year.  It’s important to note that these boundaries reflect the territorial claims of the United States.  It includes land that other governments had not ceded and continued to control, including both native American societies and European empires.</p>
+
+                    <p id="Basemaps"><h3>Basemaps</h3></p>
+                    <p>Every layer of data sits atop a basemap that shows the global landscape.  Each basemap has its own benefits.  This map includes three basemaps, each of which has different information and color contrasts.  These basemaps have the additional benefit of containing very little of the information from current society that fills most digital maps (highways and roads, cities and towns, state and national boundaries).  This project describes an era before many of those places took their current form, or before changes the landscape existed.</p>
+
                     <p> 
                         The map defaults to showing every location from 1789-1829, and you can always restore this default by selecting “SEE ALL LOCATIONS” to the right of the time slider.
                     </p>

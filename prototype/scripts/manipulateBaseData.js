@@ -309,7 +309,7 @@ async function adjustNewberryData(){
         // }
 
         if(county.properties.STATE_TERR === "South Carolina"){
-            // Keep counties, not districts or parishes
+            // Keep
             if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
                 county.properties.START_DATE = county.properties.START_DATE_ORIG
                 county.properties.END_DATE = county.properties.END_DATE_ORIG
@@ -317,7 +317,7 @@ async function adjustNewberryData(){
                 delete county.properties.END_DATE_ORIG
             }
             else{
-                // These are type 'County'
+                // Hide
                 county.properties.START_DATE_ORIG = county.properties.START_DATE
                 county.properties.END_DATE_ORIG = county.properties.END_DATE
                 county.properties.START_DATE = "1111-11-11"

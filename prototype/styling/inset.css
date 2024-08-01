@@ -301,7 +301,62 @@ path {
 }
 
 .layersIcon{
-  background-image: url(../images/layers.png);
+    background-image: url(../images/layers.png);
+    background-position: 2px;
+    width: 44px;
+    height: 44px;
+    position: relative;
+    display: inline-block;
+    top: 18px;
+    margin: 0px 5px;
+}
+
+.zoomIcon{
+  background-image: url(../images/zoom.png);
+  background-position: 2px;
+  width: 36px;
+  height: 63px;
+  position: relative;
+  display: inline-block;
+  top: 25px;
+  margin: 0px 5px;
+}
+
+.clusterIcon{
+  background-image: url(../images/cluster.png);
+  background-position: 2px;
+  background-size: 4em 4em;
+  background-position: 2px;
+  width: 4em;
+  height: 4em;
+  position: relative;
+  display: inline-block;
+  top: 18px;
+  margin: 0px 5px;
+}
+
+.iconsIcon{
+  background-image: url(../images/icons.png);
+  background-size: 4em 4em;
+  background-position: 2px;
+  width: 4em;
+  height: 4em;
+  position: relative;
+  display: inline-block;
+  top: 18px;
+  margin: 0px 5px;
+}
+
+.locationsIcon{
+  background-image: url(../images/locations.png);
+  background-size: 4em 4em;
+  background-position: 2px;
+  width: 4em;
+  height: 4em;
+  position: relative;
+  display: inline-block;
+  top: 18px;
+  margin: 0px 5px;
 }
 
 .inline {
@@ -502,11 +557,15 @@ path {
 }
 
 #howTo ul{
-  font-size: 11pt;
+  font-size: 13pt;
 }
 
 #howTo p{
   font-size: 14pt;
+}
+
+#howTo a{
+  color: #B85323;
 }
 
 #howTo h2{
@@ -530,13 +589,3 @@ path {
     margin: -1em 1em;
 }
 
-.layersIcon{
-    background-image: url(../images/layers.png);
-    background-position: 2px;
-    width: 44px;
-    height: 44px;
-    position: relative;
-    display: inline-block;
-    top: 18px;
-    margin-left: 10px;
-}

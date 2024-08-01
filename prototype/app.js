@@ -65,7 +65,7 @@ VIEWER.resource = {}
 VIEWER.mymap = null
 
 //Keep track of the date chosen by the user.
-VIEWER.userInputDate = "1829-12-31"
+VIEWER.userInputYear = "1829"
 
 //Starting Zoom level based on interface
 VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
@@ -283,7 +283,13 @@ VIEWER.init = async function() {
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
-    let countyBoundaries = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
+    
+    const loc = document.location.href
+    let countyBoundaries = 
+        loc.includes("districts_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_districts.json").then(resp => resp.json()).catch(err => { return {} })
+        : loc.includes("counties_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_counties.json").then(resp => resp.json()).catch(err => { return {} })
+        : await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
+    
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
@@ -345,14 +351,14 @@ VIEWER.init = async function() {
     // console.warn("The following locations do not have coordinates.  They will not appear on the map.")
     // console.log(locations_without_coordinates)
 
-    VIEWER.initializeLeaflet(VIEWER.startCoords, "1829-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "1829")
 }
 
 /**
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
  * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
-VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
+VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
     let selectedControls = null
     if (VIEWER.mymap === null) {
 
@@ -408,8 +414,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
 
     setTimeout(function(){
         let geoMarkers = {}
-        if (parseInt(userInputDate) > 0) {
-            VIEWER.userInputDate = userInputDate
+        if (parseInt(userInputYear) > 0) {
+            VIEWER.userInputYear = userInputYear
             // The user has provided a date and we are redrawing the layers using the loaded base day filtered by the date.
             for (const entry in VIEWER.geoJsonByLayers) {
                 switch (entry) {
@@ -420,8 +426,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
                             const sDate = new Date(f.properties["Earliest Date"])
                             const eDate = new Date(f.properties["Latest Date"])
-                            const currDate = new Date(userInputDate)
-                            return sDate <= currDate && eDate >= currDate
+                            const currEnd = new Date(userInputYear+"-12-31")
+                            const currStart = new Date(userInputYear+"-01-01")
+                            return sDate <= currStart && eDate >= currEnd
                         })
                         break
                     case "states":
@@ -431,8 +438,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
                             const sDate = new Date(f.properties["START_DATE"])
                             const eDate = new Date(f.properties["END_DATE"])
-                            const currDate = new Date(userInputDate)
-                            return sDate < currDate && eDate >= currDate
+                            const currEnd = new Date(userInputYear+"-12-31")
+                            const currStart = new Date(userInputYear+"-01-01")
+                            return sDate <= currStart && eDate >= currEnd
                         })
                         break
                     case "judicial_districts":
@@ -446,8 +454,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
                             // These are all just years but that should be OK
                             const sDate = f.properties.hasOwnProperty("Start_Date") ? new Date(f.properties["Start_Date"]+"") : new Date(f.properties["Start_Year"]+"")
                             const eDate = f.properties.hasOwnProperty("End_Date") ? new Date(f.properties["End_Date"]+"") : new Date(f.properties["End_Year"]+"")
-                            const currDate = new Date(userInputDate)
-                            return sDate < currDate && eDate >= currDate
+                            const currEnd = new Date(userInputYear+"-12-31")
+                            const currStart = new Date(userInputYear+"-01-01")
+                            return sDate <= currStart && eDate >= currEnd
                         })
                         break
                     default:
@@ -875,7 +884,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputDate = null) {
         }
 
         // Can only show State and County boundaries if a year is selected.  Hide these options until then.
-        if (parseInt(userInputDate) === 0) {
+        if (parseInt(userInputYear) === 0) {
             VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 if(
@@ -1010,16 +1019,16 @@ VIEWER.formatPopup = function(feature, layer) {
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
         const mostrecent = years_in_order.pop()
         let titleForChosenYear = datemap[mostrecent]
-        if (parseInt(VIEWER.userInputDate) > 0) {
+        if (parseInt(VIEWER.userInputYear) > 0) {
             titleForChosenYear = null
             for (let i = 0; i < years_in_order.length; i++) {
                 const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
                 const the_year = years_in_order[i]
-                if (the_year === parseInt(VIEWER.userInputDate)) {
+                if (the_year === parseInt(VIEWER.userInputYear)) {
                     titleForChosenYear = feature.properties.STATE_TITLE[the_year]
                     break
                 }
-                if (the_year > parseInt(VIEWER.userInputDate)) {
+                if (the_year > parseInt(VIEWER.userInputYear)) {
                     titleForChosenYear = feature.properties.STATE_TITLE[prev_year]
                     break
                 }
@@ -1096,7 +1105,7 @@ document.getElementById("timeSlider").addEventListener("input", function(e) {
 // Change the date slider
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
-    var sliderYear = e.target.value + "-12-31"
+    var sliderYear = e.target.value
     VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear)
 })
 
@@ -1111,7 +1120,7 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
     if(!currentYear || currentYear === 1829) return
     currentYear++
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear)
 })
 
 // Reset to the default view...maybe just page reset?
@@ -1120,11 +1129,11 @@ document.querySelector(".year-dec").addEventListener("click", function(e) {
     if(!currentYear || currentYear === 1789) return
     currentYear--
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, `${currentYear}-12-31`)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear)
 })
 
 VIEWER.reset = function(event) {
-    VIEWER.initializeLeaflet(VIEWER.startCoords, "0-12-31")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, "0")
 }
 
 VIEWER.determineEmployeeCount = function(feature) {
@@ -1133,17 +1142,17 @@ VIEWER.determineEmployeeCount = function(feature) {
     const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
     const mostrecent = years_in_order.pop()
     let countForChosenYear = datemap[mostrecent]
-    if (parseInt(VIEWER.userInputDate) > 0) {
+    if (parseInt(VIEWER.userInputYear) > 0) {
         // Ask about this.  If the latest year recorded is 1829 and the chosen year is 1831, should I show 1829's numbers?
         //countForChosenYear = 0
         for (let i = 0; i < years_in_order.length; i++) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
             const the_year = years_in_order[i]
-            if (the_year === parseInt(VIEWER.userInputDate)) {
+            if (the_year === parseInt(VIEWER.userInputYear)) {
                 countForChosenYear = feature.properties.employeeCount[the_year]
                 break
             }
-            if (the_year > parseInt(VIEWER.userInputDate)) {
+            if (the_year > parseInt(VIEWER.userInputYear)) {
                 countForChosenYear = feature.properties.employeeCount[prev_year]
                 break
             }
