@@ -131,44 +131,44 @@ VIEWER.init = async function() {
     let locationData = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1798 = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} })
     let tax_1814 = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} })
-    let al_1819_district = await fetch("./data/judicial_districts/AL_1819.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let al_1824_district = await fetch("./data/judicial_districts/AL_1824.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ct_district = await fetch("./data/judicial_districts/CT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let dc_district = await fetch("./data/judicial_districts/DC_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let de_district = await fetch("./data/judicial_districts/DE_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ga_district = await fetch("./data/judicial_districts/GA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let il_district = await fetch("./data/judicial_districts/IL_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let in_district = await fetch("./data/judicial_districts/IN_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ky_district = await fetch("./data/judicial_districts/KY_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let la_1804_district = await fetch("./data/judicial_districts/LA_1804.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let la_1812_district = await fetch("./data/judicial_districts/LA_1812.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let la_1823_district = await fetch("./data/judicial_districts/LA_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ma_district = await fetch("./data/judicial_districts/MA_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let md_district = await fetch("./data/judicial_districts/MD_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let me_district = await fetch("./data/judicial_districts/ME_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let mi_district = await fetch("./data/judicial_districts/MI_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let mo_district = await fetch("./data/judicial_districts/MO_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ms_district = await fetch("./data/judicial_districts/MS_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nc_1789_district = await fetch("./data/judicial_districts/NC_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nc_1800_district = await fetch("./data/judicial_districts/NC_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nh_district = await fetch("./data/judicial_districts/NH_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let nj_district = await fetch("./data/judicial_districts/NJ_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ny_1789_district = await fetch("./data/judicial_districts/NY_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ny_1814_district = await fetch("./data/judicial_districts/NY_1814.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ny_1823_district = await fetch("./data/judicial_districts/NY_1818.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let oh_district = await fetch("./data/judicial_districts/OH_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_1789_district = await fetch("./data/judicial_districts/PA_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let ri_district = await fetch("./data/judicial_districts/RI_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let sc_1789_district = await fetch("./data/judicial_districts/SC_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let sc_1823_district = await fetch("./data/judicial_districts/SC_1823.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let tn_1797_district = await fetch("./data/judicial_districts/TN_1797.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let tn_1802_district = await fetch("./data/judicial_districts/TN_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let va_1789_district = await fetch("./data/judicial_districts/VA_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let va_1819_district = await fetch("./data/judicial_districts/VA_1819.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let va_1824_district = await fetch("./data/judicial_districts/VA_1824.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let vt_district = await fetch("./data/judicial_districts/VT_District.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let al_1819_district = await fetch("./data/judicial_districts/AL_1819_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let al_1824_district = await fetch("./data/judicial_districts/AL_1824_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ct_district = await fetch("./data/judicial_districts/CT_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let dc_district = await fetch("./data/judicial_districts/DC_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let de_district = await fetch("./data/judicial_districts/DE_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ga_district = await fetch("./data/judicial_districts/GA_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let il_district = await fetch("./data/judicial_districts/IL_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let in_district = await fetch("./data/judicial_districts/IN_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ky_district = await fetch("./data/judicial_districts/KY_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1804_district = await fetch("./data/judicial_districts/LA_1804_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1812_district = await fetch("./data/judicial_districts/LA_1812_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let la_1823_district = await fetch("./data/judicial_districts/LA_1823_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ma_district = await fetch("./data/judicial_districts/MA_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let md_district = await fetch("./data/judicial_districts/MD_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let me_district = await fetch("./data/judicial_districts/ME_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let mi_district = await fetch("./data/judicial_districts/MI_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let mo_district = await fetch("./data/judicial_districts/MO_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ms_district = await fetch("./data/judicial_districts/MS_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_1789_district = await fetch("./data/judicial_districts/NC_1789_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nc_1800_district = await fetch("./data/judicial_districts/NC_1800_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nh_district = await fetch("./data/judicial_districts/NH_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let nj_district = await fetch("./data/judicial_districts/NJ_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1789_district = await fetch("./data/judicial_districts/NY_1789_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1814_district = await fetch("./data/judicial_districts/NY_1814_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ny_1823_district = await fetch("./data/judicial_districts/NY_1818_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let oh_district = await fetch("./data/judicial_districts/OH_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1789_district = await fetch("./data/judicial_districts/PA_1789_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1818_district = await fetch("./data/judicial_districts/PA_1818_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let pa_1823_district = await fetch("./data/judicial_districts/PA_1823_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let ri_district = await fetch("./data/judicial_districts/RI_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let sc_1789_district = await fetch("./data/judicial_districts/SC_1789_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    //let sc_1823_district = await fetch("./data/judicial_districts/SC_1823_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let tn_1797_district = await fetch("./data/judicial_districts/TN_1797_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let tn_1802_district = await fetch("./data/judicial_districts/TN_1802_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1789_district = await fetch("./data/judicial_districts/VA_1789_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1819_district = await fetch("./data/judicial_districts/VA_1819_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let va_1824_district = await fetch("./data/judicial_districts/VA_1824_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+    let vt_district = await fetch("./data/judicial_districts/VT_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let judicial_districts = 
         {
             "__name":"judicial_districts", 
@@ -204,7 +204,6 @@ VIEWER.init = async function() {
                 ...pa_1823_district,
                 ...ri_district,
                 ...sc_1789_district,
-                ...sc_1823_district,
                 ...tn_1797_district,
                 ...tn_1802_district,
                 ...va_1789_district,
@@ -225,8 +224,6 @@ VIEWER.init = async function() {
     let second_circuit_1800 = await fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let second_circuit_1802 = await fetch("./data/judicial_circuits/Second_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
-    let third_circuit_1789n = await fetch("./data/judicial_circuits/Third_Circuit_1789_n.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let third_circuit_1789a = await fetch("./data/judicial_circuits/Third_Circuit_1789a.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let third_circuit_1790 = await fetch("./data/judicial_circuits/Third_Circuit_1790.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let third_circuit_1800 = await fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     let third_circuit_1802 = await fetch("./data/judicial_circuits/Third_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
@@ -243,7 +240,6 @@ VIEWER.init = async function() {
     let seventh_circuit_1807 = await fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     
     let dc_circuit_1800 = await fetch("./data/judicial_circuits/DC_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
-    let dc_circuit_1802 = await fetch("./data/judicial_circuits/DC_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
 
     let judicial_circuits = 
         {
@@ -261,8 +257,6 @@ VIEWER.init = async function() {
                 ...second_circuit_1800,
                 ...second_circuit_1802,
 
-                ...third_circuit_1789n,
-                ...third_circuit_1789a,
                 ...third_circuit_1790,
                 ...third_circuit_1800,
                 ...third_circuit_1802,
@@ -278,8 +272,7 @@ VIEWER.init = async function() {
 
                 ...seventh_circuit_1807,
 
-                ...dc_circuit_1800,
-                ...dc_circuit_1802
+                ...dc_circuit_1800
             ]
         }
     let stateBoundaries = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} })
@@ -420,43 +413,31 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             for (const entry in VIEWER.geoJsonByLayers) {
                 switch (entry) {
                     case "locations":
-                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
-                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            // If it does not have a date, should we keep it on the map?  Yes for now.
-                            if (!f.properties.hasOwnProperty("Earliest Date") && f.properties.hasOwnProperty("Latest Date")) return true
-                            const sDate = new Date(f.properties["Earliest Date"])
-                            const eDate = new Date(f.properties["Latest Date"])
-                            const currEnd = new Date(userInputYear+"-12-31")
-                            const currStart = new Date(userInputYear+"-01-01")
-                            return sDate <= currStart && eDate >= currEnd
-                        })
-                        break
-                    case "states":
-                    case "counties":
-                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
-                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            if (!f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")) return true
-                            const sDate = new Date(f.properties["START_DATE"])
-                            const eDate = new Date(f.properties["END_DATE"])
-                            const currEnd = new Date(userInputYear+"-12-31")
-                            const currStart = new Date(userInputYear+"-01-01")
-                            return sDate <= currStart && eDate >= currEnd
-                        })
-                        break
                     case "judicial_districts":
                     case "judicial_circuits":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            if (
-                                !(f.properties.hasOwnProperty("Start_Date") && f.properties.hasOwnProperty("End_Date")) ||
-                                !(f.properties.hasOwnProperty("Start_Year") && f.properties.hasOwnProperty("End_Year"))
-                                ) return true
-                            // These are all just years but that should be OK
-                            const sDate = f.properties.hasOwnProperty("Start_Date") ? new Date(f.properties["Start_Date"]+"") : new Date(f.properties["Start_Year"]+"")
-                            const eDate = f.properties.hasOwnProperty("End_Date") ? new Date(f.properties["End_Date"]+"") : new Date(f.properties["End_Year"]+"")
-                            const currEnd = new Date(userInputYear+"-12-31")
-                            const currStart = new Date(userInputYear+"-01-01")
-                            return sDate <= currStart && eDate >= currEnd
+                            if (f.properties.hasOwnProperty("Start_Date") && f.properties.hasOwnProperty("End_Date")){
+                                // These are all just years but that should be OK
+                                const sDate = new Date(f.properties["Start_Date"])
+                                const eDate = new Date(f.properties["End_Date"])
+                                const currEnd = new Date(userInputYear+"-12-31")
+                                const currStart = new Date(userInputYear+"-01-01")
+                                return sDate <= currStart && eDate >= currEnd    
+                            }
+                        })
+                    break
+                    case "states":
+                    case "counties":
+                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
+                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
+                                const sDate = new Date(f.properties["START_DATE"])
+                                const eDate = new Date(f.properties["END_DATE"])
+                                const currEnd = new Date(userInputYear+"-12-31")
+                                const currStart = new Date(userInputYear+"-01-01")
+                                return sDate <= currStart && eDate >= currEnd    
+                            }
                         })
                         break
                     default:
@@ -484,7 +465,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup2
+            onEachFeature: VIEWER.formatPopupForNewberryData
         })
 
         VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
@@ -497,7 +478,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup2
+            onEachFeature: VIEWER.formatPopupForNewberryData
         })
 
         VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
@@ -532,7 +513,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                 }
                 return style_obj
             },
-            onEachFeature: VIEWER.formatPopup2
+            onEachFeature: VIEWER.formatPopupForNewberryData
         })
 
         VIEWER.geoJsonLayers.judicial_districts = L.geoJSON(geoMarkers.judicial_districts, {
@@ -545,12 +526,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         VIEWER.geoJsonLayers.judicial_circuits = L.geoJSON(geoMarkers.judicial_circuits, {
             style: function(feature) {
-                const name = feature.properties["Circuit"] ?? ""
+                const name = feature.properties["Geocoding_Location"] ?? ""
                 const fill =
                     (name.includes("First")) ? "brown" :
                     (name.includes("Second")) ? "green" :
@@ -566,7 +547,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         VIEWER.geoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
@@ -579,7 +560,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         VIEWER.geoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
@@ -592,7 +573,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: name.replaceAll(" ", "_")
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         VIEWER.geoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
@@ -600,7 +581,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                 const name = feature.properties._name ?? ""
                 
                 // Make the Capital a 'star' Icon
-                if (feature.properties.STATE_ABBREV === "Capital") {
+                if (feature.properties.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [24, 24], // size of the icon
@@ -678,7 +659,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     })    
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
         
         /**
@@ -690,7 +671,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties._name ?? ""
 
-                if (feature.properties.STATE_ABBREV === "Capital") {
+                if (feature.properties.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [16, 16], // size of the icon
@@ -719,7 +700,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     className: "clusterPoint"
                 })    
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         VIEWER.cluster_icons = L.geoJSON(geoMarkers.locations, {
@@ -727,7 +708,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                 const name = feature.properties._name ?? ""
                 
                 // Make the Capital a 'star' Icon
-                if (feature.properties.STATE_ABBREV === "Capital") {
+                if (feature.properties.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [24, 24], // size of the icon
@@ -805,7 +786,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     })    
                 }
             },
-            onEachFeature: VIEWER.formatPopup
+            onEachFeature: VIEWER.formatPopupForKastorData
         })
 
         // This layer is special because it is a LayerGroup via markerClusterGroup.  The L.GeoJSON aboves makes an individual Layer per feature and does not group them.
@@ -937,7 +918,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
  * Define what information from each Feature belongs in the popup
  * that appears.  We want to show labels, summaries and thumbnails.
  */
-VIEWER.formatPopup2 = function(feature, layer) {
+VIEWER.formatPopupForNewberryData = function(feature, layer) {
     let popupContent = "<div class='featurePopUp'>"
     let modName = null
     let n = null
@@ -971,24 +952,12 @@ VIEWER.formatPopup2 = function(feature, layer) {
         if (feature.properties["TERR_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["TERR_TYPE"]}</div>`
         }
-        if (feature.properties["Earliest Date"]) {
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
-        } else if (feature.properties["START_DATE"]) {
+        if (feature.properties["START_DATE"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
-        }
-        if (feature.properties["Latest Date"]) {
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["Latest Date"])}</div>`
-        } else if (feature.properties["END_DATE"]) {
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
-        }
-        if (feature.properties["Earliest Date"]) {
-            layer.options.startDate = feature.properties["Earliest Date"]
-        } else if (feature.properties["START_DATE"]) {
             layer.options.startDate = feature.properties["START_DATE"]
         }
-        if (feature.properties["Latest Date"]) {
-            layer.options.endDate = feature.properties["Latest Date"]
-        } else if (feature.properties["END_DATE"]) {
+        if (feature.properties["END_DATE"]) {
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
             layer.options.endDate = feature.properties["END_DATE"]
         }
         if(feature.properties.employeeCount){
@@ -996,11 +965,11 @@ VIEWER.formatPopup2 = function(feature, layer) {
             layer.options.employeeCount = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
         }
-        if(feature.properties["employeesLink"]){
+        if(feature.properties["Employees_Link"]){
             // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
-                <a href="${feature.properties["employeesLink"]}" target="_blank" class="button secondary employeesLink">see who worked here</a>
+                <a href="${feature.properties["Employees_Link"]}" target="_blank" class="button secondary Employees_Link">see who worked here</a>
             </div>`
         }
         layer.bindPopup(popupContent)
@@ -1011,9 +980,9 @@ VIEWER.formatPopup2 = function(feature, layer) {
  * Define what information from each Feature belongs in the popup
  * that appears.  We want to show labels, summaries and thumbnails.
  */
-VIEWER.formatPopup = function(feature, layer) {
+VIEWER.formatPopupForKastorData = function(feature, layer) {
     function determineStateTitle(feature) {
-        const datemap = feature?.properties?.STATE_TITLE
+        const datemap = feature?.properties?.State_Full
         if (!datemap) return null
         if (typeof datemap === "string") return datemap
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
@@ -1025,11 +994,11 @@ VIEWER.formatPopup = function(feature, layer) {
                 const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
                 const the_year = years_in_order[i]
                 if (the_year === parseInt(VIEWER.userInputYear)) {
-                    titleForChosenYear = feature.properties.STATE_TITLE[the_year]
+                    titleForChosenYear = feature.properties.State_Full[the_year]
                     break
                 }
                 if (the_year > parseInt(VIEWER.userInputYear)) {
-                    titleForChosenYear = feature.properties.STATE_TITLE[prev_year]
+                    titleForChosenYear = feature.properties.State_Full[prev_year]
                     break
                 }
             }
@@ -1041,8 +1010,8 @@ VIEWER.formatPopup = function(feature, layer) {
     let langs = []
     let stringToLangMap = { "none": [] }
     if (feature.properties) {
-        if (feature.properties["Geocoding Location"]) {
-            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding Location"]} </div>`
+        if (feature.properties["Geocoding_Location"]) {
+            popupContent += `<div class="featureInfo"><label>Name:</label> ${feature.properties["Geocoding_Location"]} </div>`
         }
         if (feature.properties["District"]) {
             popupContent += `<div class="featureInfo"><label>District:</label> ${feature.properties["District"]} </div>`
@@ -1056,7 +1025,7 @@ VIEWER.formatPopup = function(feature, layer) {
         if (feature.properties["Country"]) {
             popupContent += `<div class="featureInfo"><label>Country:</label> ${feature.properties["Country"]}</div>`
         }
-        if (feature.properties["STATE_TITLE"]) {
+        if (feature.properties["State_Full"]) {
             const stateTitle = determineStateTitle(feature)
             if (stateTitle) {
                 popupContent += `<div class="featureInfo"><label>State Title:</label> ${stateTitle} </div> `
@@ -1065,31 +1034,17 @@ VIEWER.formatPopup = function(feature, layer) {
         if (feature.properties["Type"]) {
             popupContent += `<div class="featureInfo"><label>Type:</label> ${feature.properties["Type"].replace("Locality", "Location")}</div>`
         }
-        if (feature.properties["Earliest Date"]) {
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Earliest Date"])}</div>`
-        } else if (feature.properties["START_DATE"]) {
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
+        if (feature.properties["Start_Date"]) {
+            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Start_Date"])}</div>`
+        } 
+        if (feature.properties["End_Date"]) {
+            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["End_Date"])}</div>`
         }
-        if (feature.properties["Latest Date"]) {
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["Latest Date"])}</div>`
-        } else if (feature.properties["END_DATE"]) {
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
-        }
-        if (feature.properties["Earliest Date"]) {
-            layer.options.startDate = feature.properties["Earliest Date"]
-        } else if (feature.properties["START_DATE"]) {
-            layer.options.startDate = feature.properties["START_DATE"]
-        }
-        if (feature.properties["Latest Date"]) {
-            layer.options.endDate = feature.properties["Latest Date"]
-        } else if (feature.properties["END_DATE"]) {
-            layer.options.endDate = feature.properties["END_DATE"]
-        }
-        if(feature.properties["employeesLink"]){
+        if(feature.properties["Employees_Link"]){
             // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
-                <a href="${feature.properties["employeesLink"]}" target="_blank" class="button secondary employeesLink">see who worked here</a>
+                <a href="${feature.properties["Employees_Link"]}" target="_blank" class="button secondary Employees_Link">see who worked here</a>
             </div>`
         }
         

@@ -5,7 +5,7 @@ const hello = "hello world"
  */ 
 async function mapStateTitleChangesOntoLocations(){
 
-    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
     let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
 
     // Runtime could be improved but already runs in less than a couple seconds.
