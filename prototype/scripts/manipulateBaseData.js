@@ -95,7 +95,7 @@ async function addEmployeeCountsToCounties(){
         delete count["Column5"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
             if(c.properties.ID === countyID) {
-                c.properties.employeeCount = count
+                c.properties.EMPLOYEE_COUNT = count
                 alterations ++
             }
             return c
@@ -156,7 +156,7 @@ async function convertCountiesToXML(){
         delete f.properties
         delete f.geometry
         delete f.type
-        delete props.employeeCount
+        delete props.EMPLOYEE_COUNT
         f = Object.assign(f, props)
         flatObjs.push(f)
     })
@@ -184,8 +184,8 @@ async function hideNH(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(county => {
         if(county.properties.STATE_TERR === "New Hampshire"){
-            county.properties.employeeCountNH = county.properties.employeeCount
-            delete county.properties.employeeCount
+            county.properties.employeeCountNH = county.properties.EMPLOYEE_COUNT
+            delete county.properties.EMPLOYEE_COUNT
         }
     })
     console.log(countiesFeatureCollection)
