@@ -362,6 +362,8 @@ VIEWER.init = async function() {
     let peopleData = []
     let geoJsonByLayers = {}
 
+    // The code below is unused.  However, you can use it to apply class names to the shapes if desired.
+/*
     judicial_districts.features = judicial_districts.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = "judicial_disctrict"
@@ -404,7 +406,7 @@ VIEWER.init = async function() {
         f.geometry.coordinates[1] = tempX
         return f
     })
-
+*/
     VIEWER.geoJsonByLayers.judicial_districts = judicial_districts
     VIEWER.geoJsonByLayers.judicial_circuits = judicial_circuits
 
@@ -613,7 +615,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     (name.includes("Fourth")) ? "purple" :
                     (name.includes("Fifth")) ? "blue" :
                     (name.includes("Sixth")) ? "gray" : 
-                    (name.includes("DC")) ? "red" : "#FFFDD0"
+                    (name.includes("DC")) ? "red" :
+                    (name.includes("Seventh")) ? "#FFFDD0" : "yellow"
                 return {
                     color: fill,
                     fillColor: fill,
