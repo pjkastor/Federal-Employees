@@ -1037,9 +1037,9 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
             layer.options.endDate = feature.properties["END_DATE"]
         }
-        if(feature.properties["EMPLOYEE_COUNT"]){
+        if(feature.properties["Employees_Count"]){
             const count = VIEWER.determineEmployeeCount(feature)
-            layer.options["EMPLOYEE_COUNT"] = count
+            layer.options["Employees_Count"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
         }
         if(feature.properties["Employees_Link"]){
@@ -1167,7 +1167,7 @@ VIEWER.reset = function(event) {
 }
 
 VIEWER.determineEmployeeCount = function(feature) {
-    const datemap = feature?.properties?.EMPLOYEE_COUNT
+    const datemap = feature?.properties?.Employees_Count
     if (!datemap) return -1
     const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
     const mostrecent = years_in_order.pop()
@@ -1179,11 +1179,11 @@ VIEWER.determineEmployeeCount = function(feature) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
             const the_year = years_in_order[i]
             if (the_year === parseInt(VIEWER.userInputYear)) {
-                countForChosenYear = feature.properties.EMPLOYEE_COUNT[the_year]
+                countForChosenYear = feature.properties.Employees_Count[the_year]
                 break
             }
             if (the_year > parseInt(VIEWER.userInputYear)) {
-                countForChosenYear = feature.properties.EMPLOYEE_COUNT[prev_year]
+                countForChosenYear = feature.properties.Employees_Count[prev_year]
                 break
             }
         }

@@ -95,7 +95,7 @@ async function addEmployeeCountsToCounties(){
         delete count["Column5"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
             if(c.properties.ID === countyID) {
-                c.properties.EMPLOYEE_COUNT = count
+                c.properties.Employees_Count = count
                 alterations ++
             }
             return c
@@ -156,7 +156,7 @@ async function convertCountiesToXML(){
         delete f.properties
         delete f.geometry
         delete f.type
-        delete props.EMPLOYEE_COUNT
+        delete props.Employees_Count
         f = Object.assign(f, props)
         flatObjs.push(f)
     })
@@ -180,12 +180,23 @@ async function convertCountiesToXML(){
     }
 }
 
-async function hideNH(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+async function showNH(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(county => {
         if(county.properties.STATE_TERR === "New Hampshire"){
-            county.properties.employeeCountNH = county.properties.EMPLOYEE_COUNT
-            delete county.properties.EMPLOYEE_COUNT
+            delete county.properties.employeeCountNH
+        }
+    })
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
+async function hideNH(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(county => {
+        if(county.properties.STATE_TERR === "New Hampshire"){
+            county.properties.employeeCountNH = county.properties.Employees_Count
+            delete county.properties.Employees_Count
         }
     })
     console.log(countiesFeatureCollection)
@@ -309,15 +320,16 @@ async function adjustNewberryData(){
         // }
 
         if(county.properties.STATE_TERR === "South Carolina"){
-            // Keep
+            
             if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
+                // Revert hidden type(s)
                 county.properties.START_DATE = county.properties.START_DATE_ORIG
                 county.properties.END_DATE = county.properties.END_DATE_ORIG
                 delete county.properties.START_DATE_ORIG
                 delete county.properties.END_DATE_ORIG
             }
             else{
-                // Hide
+                // Hide currently shown type(s)
                 county.properties.START_DATE_ORIG = county.properties.START_DATE
                 county.properties.END_DATE_ORIG = county.properties.END_DATE
                 county.properties.START_DATE = "1111-11-11"

@@ -137,6 +137,17 @@
             function openHowTo(event){
                 howToContainer.classList.remove("is-hidden")
             }
+            async function hideNH(){
+                let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
+                countiesFeatureCollection.features.forEach(county => {
+                    if(county.properties.STATE_TERR === "New Hampshire"){
+                        county.properties.employeeCountNH = county.properties.Employees_Count
+                        delete county.properties.Employees_Count
+                    }
+                })
+                console.log(countiesFeatureCollection)
+                return countiesFeatureCollection
+            }
         </script>
     </body>
 </html>
