@@ -362,7 +362,7 @@ VIEWER.init = async function() {
     let peopleData = []
     let geoJsonByLayers = {}
 
-    // The code below is unused.  However, you can use it to apply class names to the shapes if desired.
+// The code below is unused.  However, you can use it to apply class names to the shapes if desired.
 /*
     judicial_districts.features = judicial_districts.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
@@ -1037,13 +1037,12 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
             layer.options.endDate = feature.properties["END_DATE"]
         }
-        if(feature.properties.EMPLOYEE_COUNT){
+        if(feature.properties["EMPLOYEE_COUNT"]){
             const count = VIEWER.determineEmployeeCount(feature)
-            layer.options.EMPLOYEE_COUNT = count
+            layer.options["EMPLOYEE_COUNT"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
         }
         if(feature.properties["Employees_Link"]){
-            // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
                 <a href="${feature.properties["Employees_Link"]}" target="_blank" class="button secondary Employees_Link">see who worked here</a>
@@ -1118,7 +1117,6 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["End_Date"])}</div>`
         }
         if(feature.properties["Employees_Link"]){
-            // TODO this button should load the page for employees that worked at this location, target _blank
             popupContent += `
             <div class="featureInfo is-center">
                 <a href="${feature.properties["Employees_Link"]}" target="_blank" class="button secondary Employees_Link">see who worked here</a>
