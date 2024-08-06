@@ -495,10 +495,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             if (f.properties.hasOwnProperty("Start_Date") && f.properties.hasOwnProperty("End_Date")){
                                 // These are all just years but that should be OK
-                                const sDate = new Date(parseInt(f.properties["Start_Date"]))
-                                const eDate = new Date(parseInt(f.properties["End_Date"]))
-                                const currEnd = new Date(userInputYear)
-                                const currStart = new Date(userInputYear)
+                                const sDate = new Date(parseInt(f.properties["Start_Date"])+"")
+                                const eDate = new Date(parseInt(f.properties["End_Date"])+"")
+                                const currEnd = new Date(userInputYear+"")
+                                const currStart = new Date(userInputYear+"")
                                 return sDate <= currStart && eDate >= currEnd    
                             }
                         })
@@ -508,10 +508,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
-                                const sDate = new Date(parseInt(f.properties["START_DATE"]))
-                                const eDate = new Date(parseInt(f.properties["END_DATE"]))
-                                const currEnd = new Date(userInputYear)
-                                const currStart = new Date(userInputYear)
+                                const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
+                                const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
+                                const currEnd = new Date(userInputYear+"")
+                                const currStart = new Date(userInputYear+"")
                                 return sDate <= currStart && eDate >= currEnd    
                             }
                         })

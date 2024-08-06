@@ -184,6 +184,7 @@ async function showNH(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(county => {
         if(county.properties.STATE_TERR === "New Hampshire"){
+            county.properties.Employees_Count = county.properties.employeeCountNH
             delete county.properties.employeeCountNH
         }
     })
@@ -321,14 +322,14 @@ async function adjustNewberryData(){
 
         if(county.properties.STATE_TERR === "South Carolina"){
             
-            if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
+            if(county.properties.CNTY_TYPE === "District"){
                 // Revert hidden type(s)
                 county.properties.START_DATE = county.properties.START_DATE_ORIG
                 county.properties.END_DATE = county.properties.END_DATE_ORIG
                 delete county.properties.START_DATE_ORIG
                 delete county.properties.END_DATE_ORIG
             }
-            else{
+            else if (county.properties.CNTY_TYPE === "County"){
                 // Hide currently shown type(s)
                 county.properties.START_DATE_ORIG = county.properties.START_DATE
                 county.properties.END_DATE_ORIG = county.properties.END_DATE
