@@ -609,17 +609,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
         VIEWER.geoJsonLayers.judicial_circuits = L.geoJSON(geoMarkers.judicial_circuits, {
             style: function(feature) {
                 const name = feature.properties["Geocoding_Location"] ?? ""
-                const fill =
-                    (name.includes("First")) ? "brown" :
-                    (name.includes("Second")) ? "green" :
-                    (name.includes("Third")) ? "orange" :
-                    (name.includes("Fourth")) ? "purple" :
-                    (name.includes("Fifth")) ? "blue" :
-                    (name.includes("Sixth")) ? "gray" : 
-                    (name.includes("DC")) ? "red" :
-                    (name.includes("Seventh")) ? "#FFFDD0" : "yellow"
+                
                 return {
-                    color: fill,
+                    color: "white",
                     fillColor: "#990000",
                     fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
