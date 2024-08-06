@@ -620,7 +620,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     (name.includes("Seventh")) ? "#FFFDD0" : "yellow"
                 return {
                     color: fill,
-                    fillColor: fill,
+                    fillColor: "#990000",
                     fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
