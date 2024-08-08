@@ -636,7 +636,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                 return {
                     color: "white",
                     fillColor: "ffcc66",
-                    fillOpacity: 0.00,
+                    fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
             },
