@@ -37,7 +37,7 @@ async function convertAllLocationsToFeatureCollection(){
  */ 
 async function mapStateTitleChangesOntoLocations(){
 
-    let locations = await fetch("./data/AllLocations_new_new.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
     let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
 
     // Runtime could be improved but already runs in less than a couple seconds.
@@ -47,7 +47,7 @@ async function mapStateTitleChangesOntoLocations(){
                 if(typeof loc_obj.properties["State_Full"] === "string"){
                     loc_obj.properties["State_Full"] = {}
                 }
-                loc_obj.properties["State_F"][state_obj["YEAR"]] = state_obj["STATE_TITLE"]
+                loc_obj.properties["State_Full"][state_obj["YEAR"]] = state_obj["STATE_TITLE"]
             }
         }
     }
@@ -56,8 +56,6 @@ async function mapStateTitleChangesOntoLocations(){
     console.log(locations)
     return locations
 }
-
-
 
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
