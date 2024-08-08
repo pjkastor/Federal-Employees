@@ -1,60 +1,10 @@
 const hello = "hello world"
-/**
- * Run this after converting the AllLocations spreadsheet to JSON.
- * It will make the state titles a date map.
- */ 
-async function mapStateTitleChangesOntoLocations(){
-
-    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
-    let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
-
-    // Runtime could be improved but already runs in less than a couple seconds.
-    for(let state_obj of title_changes){
-        for(let loc_obj of locations.features){
-            if(state_obj["STATE_ABBREV"] === loc_obj.properties["STATE_ABBREV"]){
-                if(typeof loc_obj.properties["STATE_TITLE"] === "string"){
-                    loc_obj.properties["STATE_TITLE"] = {}
-                }
-                loc_obj.properties["STATE_TITLE"][state_obj["YEAR"]] = state_obj["STATE_TITLE"]
-            }
-        }
-    }
-
-    // Could save the file, but you can also just copy it out of console yourself.
-    console.log(locations)
-    return locations
-}
-
-/**
- * Run this after converting the AllLocations spreadsheet to JSON.
- * It will make the state titles a date map.
- */ 
-async function mapEmployeeLinksOntoLocations(){
-    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
-    let links = await fetch("./data/location_employee_links.json").then(resp => resp.json()).catch(err => {return []})
-
-    // Runtime could be improved but already runs in less than a couple seconds.
-    for(let link_obj of links){
-        for(let loc_obj of locations.features){
-            if(loc_obj["Geocode Number"] && loc_obj["Geocode Number"] === link_obj.properties["Geocode Number"]){
-                if(loc_obj?.employeesLink){
-                    console.log(`Curious thing...${loc_obj["Geocode Number"]}`)
-                }
-                else{
-                    loc_obj.employeesLink = link_obj.properties["Geocode Number"]    
-                }
-            }
-        }
-    }
-    console.log(locations)
-    return locations
-}
 
 /**
  * Do this after converting the AllLocations spreadsheet.
  */ 
 async function convertAllLocationsToFeatureCollection(){
-    let locations = await fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations_new_new.json").then(resp => resp.json()).catch(err => {return []})
     let fc = {
           "type": "FeatureCollection",
           "name": "AllLocations",
@@ -73,13 +23,41 @@ async function convertAllLocationsToFeatureCollection(){
             "properties":loc_obj,
             "geometry": { 
                 "type": "Point", 
-                "coordinates": [lat,lon] 
+                "coordinates": [lon,lat] 
             }
         }
         fc.features.push(feature)
     }
     console.log(fc)
 }
+
+/**
+ * Run this after converting the AllLocations spreadsheet to JSON.
+ * It will make the state titles a date map.
+ */ 
+async function mapStateTitleChangesOntoLocations(){
+
+    let locations = await fetch("./data/AllLocations_new_new.json").then(resp => resp.json()).catch(err => {return []})
+    let title_changes = await fetch("./data/state_title_changes.json").then(resp => resp.json()).catch(err => {return []})
+
+    // Runtime could be improved but already runs in less than a couple seconds.
+    for(let state_obj of title_changes){
+        for(let loc_obj of locations.features){
+            if(state_obj["STATE_ABBREV"] === loc_obj.properties["State_Abbreviated"]){
+                if(typeof loc_obj.properties["State_Full"] === "string"){
+                    loc_obj.properties["State_Full"] = {}
+                }
+                loc_obj.properties["State_F"][state_obj["YEAR"]] = state_obj["STATE_TITLE"]
+            }
+        }
+    }
+
+    // Could save the file, but you can also just copy it out of console yourself.
+    console.log(locations)
+    return locations
+}
+
+
 
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
@@ -100,19 +78,6 @@ async function addEmployeeCountsToCounties(){
             }
             return c
         })
-    }
-    console.log(`ALTERATIONS: ${alterations}`)
-    console.log("FEATURE COLLECTION")
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}
-
-async function fixBadCountyID(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    for(f of countiesFeatureCollection.features){
-        const countyID = f.properties["ID"]
-        const fixed = countyID.replace("s_", "_")
-        f.properties["ID"] = fixed        
     }
     console.log(`ALTERATIONS: ${alterations}`)
     console.log("FEATURE COLLECTION")
@@ -246,45 +211,6 @@ async function addTaxMetadata(){
     console.log(tax_1798_geo)
 
     return true
-}
-
-async function adjustSCData(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
-    let countiesToShowAndUpdateCounts = await fetch("./data/SC_Employees.json").then(resp => resp.json()).catch(err => {return []})
-    let countiesToHide = await fetch("./data/sc_removals.json").then(resp => resp.json()).catch(err => {return []})
-    let countAdjustments = 0
-    let hideAdjustments = 0
-    //update the counts
-    for(const count of countiesToShowAndUpdateCounts){
-        const countyID = count["Newberry County"]
-        delete count["Newberry County"]
-        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
-            if(c.properties.ID === countyID) {
-                c.properties.Employees_Count = count
-                countAdjustments++
-            }
-            return c
-        })
-    }
-
-    for(const adjust of countiesToHide){
-        const countyID = adjust.ID
-        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
-            if(c.properties.ID === countyID) {
-                c.properties.START_DATE_ORIG = c.properties.START_DATE
-                c.properties.END_DATE_ORIG = c.properties.END_DATE
-                c.properties.START_DATE = "1111-11-11"
-                c.properties.END_DATE = "1111-11-11"
-                hideAdjustments++
-            }
-            return c
-        })
-    }
-
-    console.log("COUNTS: "+countAdjustments)
-    console.log("HIDES:"+hideAdjustments)
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
 }
 
 async function adjustNewberryData(){

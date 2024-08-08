@@ -198,7 +198,7 @@ VIEWER.init = async function() {
         dc_circuit
     ] 
     = await Promise.all([
-        fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} }),
@@ -1052,8 +1052,11 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
         if (!datemap) return null
         if (typeof datemap === "string") return datemap
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
-        const mostrecent = years_in_order.pop()
+        const mostrecent = years_in_order[years_in_order.length - 1]
         let titleForChosenYear = datemap[mostrecent]
+        if(feature.properties.Geocoding_Location === "Lexington"){
+            console.log("fun")
+        }
         if (parseInt(VIEWER.userInputYear) > 0) {
             titleForChosenYear = null
             for (let i = 0; i < years_in_order.length; i++) {
