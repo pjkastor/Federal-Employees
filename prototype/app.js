@@ -621,9 +621,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             style: function(feature) {
                 const name = feature.properties._name ?? ""
                 return {
-                    color: "blue",
-                    fillColor: "blue",
-                    fillOpacity: 0.00,
+                    color: "white",
+                    fillColor: "ff9933",
+                    fillOpacity: 1.00,
                     className: name.replaceAll(" ", "_")
                 }
             },
@@ -634,8 +634,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             style: function(feature) {
                 const name = feature.properties._name ?? ""
                 return {
-                    color: "purple",
-                    fillColor: "purple",
+                    color: "white",
+                    fillColor: "ffcc66",
                     fillOpacity: 0.00,
                     className: name.replaceAll(" ", "_")
                 }
