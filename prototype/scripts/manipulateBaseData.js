@@ -57,6 +57,45 @@ async function mapStateTitleChangesOntoLocations(){
     return locations
 }
 
+async function adjustSCData(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/SC_Employees.json").then(resp => resp.json()).catch(err => {return []})
+    let removals = await fetch("./data/sc_removals.json").then(resp => resp.json()).catch(err => {return []})
+    let alterations_counts = 0
+    let alterations_removals = 0
+
+    for(const count of counts){
+        const countyID = count["Newberry County"]
+        delete count["Newberry County"]
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c.properties.ID === countyID) {
+                c.properties.Employees_Count = count
+                alterations_counts++
+            }
+            return c
+        })
+    }
+
+    for(const obj of removals){
+        const countyID = obj.ID
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c.properties.ID === countyID) {
+                c.properties.START_DATE_ORIG = c.properties.START_DATE
+                c.properties.END_DATE_ORIG = c.properties.END_DATE
+                c.properties.START_DATE = "1111-11-11"
+                c.properties.END_DATE = "1111-11-11"
+                alterations_removals++
+            }
+            return c
+        })
+    }
+    console.log(`COUNTS: ${alterations_counts}`)
+    console.log(`REMOVALS: ${alterations_removals}`)
+    console.log("FEATURE COLLECTION")
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
     let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})

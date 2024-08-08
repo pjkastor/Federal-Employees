@@ -1,414 +1,311 @@
 [
     {
-        "NAME": "ABBEVILLE",
-        "ID": "scs_abbeville"
+        "ID": "sc_abbeville"
     },
     {
-        "NAME": "All Saints P.",
-        "ID": "scs_allsaintsparish"
+        "ID": "sc_allsaintsparish"
     },
     {
-        "NAME": "ANDERSON",
-        "ID": "scs_anderson"
+        "ID": "sc_anderson"
     },
     {
-        "NAME": "BARTHOLOMEW (ext)",
-        "ID": "scs_bartholomew"
+        "ID": "sc_bartholomew"
     },
     {
-        "NAME": "BERKELEY (2nd, ext)",
-        "ID": "scs_berkeley02"
+        "ID": "sc_berkeley02"
     },
     {
-        "NAME": "BERKELEY (orig)",
-        "ID": "scs_berkeley01"
+        "ID": "sc_berkeley01"
     },
     {
-        "NAME": "CHARLESTON (orig)",
-        "ID": "scs_charleston01"
+        "ID": "sc_charleston01"
     },
     {
-        "NAME": "CHESTER",
-        "ID": "scs_chester"
+        "ID": "sc_chester"
     },
     {
-        "NAME": "CHESTERFIELD",
-        "ID": "scs_chesterfield"
+        "ID": "sc_chesterfield"
     },
     {
-        "NAME": "Christ Church P.",
-        "ID": "scs_christchurchparish"
+        "ID": "sc_christchurchparish"
     },
     {
-        "NAME": "CLAREMONT (ext)",
-        "ID": "scs_claremont"
+        "ID": "sc_claremont"
     },
     {
-        "NAME": "CLARENDON",
-        "ID": "scs_clarendon"
+        "ID": "sc_clarendon"
     },
     {
-        "NAME": "COLLETON (2nd, ext)",
-        "ID": "scs_colleton02"
+        "ID": "sc_colleton02"
     },
     {
-        "NAME": "COLLETON (orig)",
-        "ID": "scs_colleton01"
+        "ID": "sc_colleton01"
     },
     {
-        "NAME": "CRAVEN (ext)",
-        "ID": "scs_craven"
+        "ID": "sc_craven"
     },
     {
-        "NAME": "DARLINGTON",
-        "ID": "scs_darlington"
+        "ID": "sc_darlington"
     },
     {
-        "NAME": "EDGEFIELD",
-        "ID": "scs_edgefield"
+        "ID": "sc_edgefield"
     },
     {
-        "NAME": "FAIRFIELD",
-        "ID": "scs_fairfield"
+        "ID": "sc_fairfield"
     },
     {
-        "NAME": "GRANVILLE (2nd, ext)",
-        "ID": "scs_granville02"
+        "ID": "sc_granville02"
     },
     {
-        "NAME": "GRANVILLE (orig)",
-        "ID": "scs_granville01"
+        "ID": "sc_granville01"
     },
     {
-        "NAME": "GREENVILLE",
-        "ID": "scs_greenville"
+        "ID": "sc_greenville"
     },
     {
-        "NAME": "HILTON (ext)",
-        "ID": "scs_hilton"
+        "ID": "sc_hilton"
     },
     {
-        "NAME": "KERSHAW",
-        "ID": "scs_kershaw"
+        "ID": "sc_kershaw"
     },
     {
-        "NAME": "KINGSTON (ext)",
-        "ID": "scs_kingston"
+        "ID": "sc_kingston"
     },
     {
-        "NAME": "LANCASTER",
-        "ID": "scs_lancaster"
+        "ID": "sc_lancaster"
     },
     {
-        "NAME": "LAURENS",
-        "ID": "scs_laurens"
+        "ID": "sc_laurens"
     },
     {
-        "NAME": "LEWISBURGH (ext)",
-        "ID": "scs_lewisburgh"
+        "ID": "sc_lewisburgh"
     },
     {
-        "NAME": "LEXINGTON",
-        "ID": "scs_lexington"
+        "ID": "sc_lexington"
     },
     {
-        "NAME": "LIBERTY (ext)",
-        "ID": "scs_liberty"
+        "ID": "sc_liberty"
     },
     {
-        "NAME": "LINCOLN (ext)",
-        "ID": "scs_lincoln"
+        "ID": "sc_lincoln"
     },
     {
-        "NAME": "MARION (orig)",
-        "ID": "scs_marion01"
+        "ID": "sc_marion01"
     },
     {
-        "NAME": "MARLBORO",
-        "ID": "scs_marlboro"
+        "ID": "sc_marlboro"
     },
     {
-        "NAME": "NCA 1",
-        "ID": "scs_nca1"
+        "ID": "sc_nca1"
     },
     {
-        "NAME": "NCA 2",
-        "ID": "scs_nca2"
+        "ID": "sc_nca2"
     },
     {
-        "NAME": "NCA 3",
-        "ID": "scs_nca3"
+        "ID": "sc_nca3"
     },
     {
-        "NAME": "NCA 4",
-        "ID": "scs_nca4"
+        "ID": "sc_nca4"
     },
     {
-        "NAME": "NCA 5",
-        "ID": "scs_nca5"
+        "ID": "sc_nca5"
     },
     {
-        "NAME": "NDA",
-        "ID": "scs_nda"
+        "ID": "sc_nda"
     },
     {
-        "NAME": "NEWBERRY",
-        "ID": "scs_newberry"
+        "ID": "sc_newberry"
     },
     {
-        "NAME": "NPA",
-        "ID": "scs_npa"
+        "ID": "sc_npa"
     },
     {
-        "NAME": "ORANGE (ext)",
-        "ID": "scs_orange"
+        "ID": "sc_orange"
     },
     {
-        "NAME": "Orange P.",
-        "ID": "scs_orangeparish"
+        "ID": "sc_orangeparish"
     },
     {
-        "NAME": "Overlap Area",
-        "ID": "scs_overlap"
+        "ID": "sc_overlap"
     },
     {
-        "NAME": "PENDLETON (ext)",
-        "ID": "scs_pendleton"
+        "ID": "sc_pendleton"
     },
     {
-        "NAME": "PICKENS",
-        "ID": "scs_pickens"
+        "ID": "sc_pickens"
     },
     {
-        "NAME": "Prince Frederick P.",
-        "ID": "scs_princefrederickparish"
+        "ID": "sc_princefrederickparish"
     },
     {
-        "NAME": "Prince George-Win P.",
-        "ID": "scs_princegeorgewinyawparish"
+        "ID": "sc_princegeorgewinyawparish"
     },
     {
-        "NAME": "Prince William P.",
-        "ID": "scs_princewilliamparish"
+        "ID": "sc_princewilliamparish"
     },
     {
-        "NAME": "RICHLAND",
-        "ID": "scs_richland"
+        "ID": "sc_richland"
     },
     {
-        "NAME": "SALEM (ext)",
-        "ID": "scs_salem"
+        "ID": "sc_salem"
     },
     {
-        "NAME": "SHREWSBURY (ext)",
-        "ID": "scs_shrewsbury"
+        "ID": "sc_shrewsbury"
     },
     {
-        "NAME": "SPARTANBURG",
-        "ID": "scs_spartanburg"
+        "ID": "sc_spartanburg"
     },
     {
-        "NAME": "St. Andrew P.",
-        "ID": "scs_standrewparish"
+        "ID": "sc_standrewparish"
     },
     {
-        "NAME": "St. Bartholomew P.",
-        "ID": "scs_stbartholomewparish"
+        "ID": "sc_stbartholomewparish"
     },
     {
-        "NAME": "St. David P.",
-        "ID": "scs_stdavidparish"
+        "ID": "sc_stdavidparish"
     },
     {
-        "NAME": "St. George-Dor P.",
-        "ID": "scs_stgeorgedorchesterparish"
+        "ID": "sc_stgeorgedorchesterparish"
     },
     {
-        "NAME": "St. Helena P.",
-        "ID": "scs_sthelenaparish"
+        "ID": "sc_sthelenaparish"
     },
     {
-        "NAME": "St. James-Goose P.",
-        "ID": "scs_stjamesgoosecreekparish"
+        "ID": "sc_stjamesgoosecreekparish"
     },
     {
-        "NAME": "St. James-Santee P.",
-        "ID": "scs_stjamessanteeparish"
+        "ID": "sc_stjamessanteeparish"
     },
     {
-        "NAME": "St. John-Berkeley P.",
-        "ID": "scs_stjohnberkeleyparish"
+        "ID": "sc_stjohnberkeleyparish"
     },
     {
-        "NAME": "St. John-Colleton P.",
-        "ID": "scs_stjohncolletonparish"
+        "ID": "sc_stjohncolletonparish"
     },
     {
-        "NAME": "St. Luke P.",
-        "ID": "scs_stlukeparish"
+        "ID": "sc_stlukeparish"
     },
     {
-        "NAME": "St. Mark P.",
-        "ID": "scs_stmarkparish"
+        "ID": "sc_stmarkparish"
     },
     {
-        "NAME": "St. Matthew P.",
-        "ID": "scs_stmatthewparish"
+        "ID": "sc_stmatthewparish"
     },
     {
-        "NAME": "St. Michael P.",
-        "ID": "scs_stmichaelparish"
+        "ID": "sc_stmichaelparish"
     },
     {
-        "NAME": "St. Paul P.",
-        "ID": "scs_stpaulparish"
+        "ID": "sc_stpaulparish"
     },
     {
-        "NAME": "St. Peter P.",
-        "ID": "scs_stpeterparish"
+        "ID": "sc_stpeterparish"
     },
     {
-        "NAME": "St. Philip P.",
-        "ID": "scs_stphilipparish"
+        "ID": "sc_stphilipparish"
     },
     {
-        "NAME": "St. Stephen P.",
-        "ID": "scs_ststephenparish"
+        "ID": "sc_ststephenparish"
     },
     {
-        "NAME": "St. Thomas-Dennis P.",
-        "ID": "scs_stthomasstdennisparish"
+        "ID": "sc_stthomasstdennisparish"
     },
     {
-        "NAME": "UNION",
-        "ID": "scs_union"
+        "ID": "sc_union"
     },
     {
-        "NAME": "WASHINGTON (ext)",
-        "ID": "scs_washington"
+        "ID": "sc_washington"
     },
     {
-        "NAME": "WILLIAMSBURG (orig)",
-        "ID": "scs_williamsburg01"
+        "ID": "sc_williamsburg01"
     },
     {
-        "NAME": "WINTON (ext)",
-        "ID": "scs_winton"
+        "ID": "sc_winton"
     },
     {
-        "NAME": "WINYAW (ext)",
-        "ID": "scs_winyaw"
+        "ID": "sc_winyaw"
     },
     {
-        "NAME": "YORK",
-        "ID": "scs_york"
+        "ID": "sc_york"
     },
     {
-        "NAME": "ABBEVILLE",
-        "ID": "scs_abbeville"
+        "ID": "sc_abbeville"
     },
     {
-        "NAME": "AIKEN",
-        "ID": "scs_aiken"
+        "ID": "sc_aiken"
     },
     {
-        "NAME": "ALLENDALE",
-        "ID": "scs_allendale"
+        "ID": "sc_allendale"
     },
     {
-        "NAME": "BAMBERG",
-        "ID": "scs_bamberg"
+        "ID": "sc_bamberg"
     },
     {
-        "NAME": "BARNWELL",
-        "ID": "scs_barnwell"
+        "ID": "sc_barnwell"
     },
     {
-        "NAME": "BEAUFORT",
-        "ID": "scs_beaufort"
+        "ID": "sc_beaufort"
     },
     {
-        "NAME": "BERKELEY",
-        "ID": "scs_berkeley"
+        "ID": "sc_berkeley"
     },
     {
-        "NAME": "CALHOUN",
-        "ID": "scs_calhoun"
+        "ID": "sc_calhoun"
     },
     {
-        "NAME": "CHARLESTON",
-        "ID": "scs_charleston"
+        "ID": "sc_charleston"
     },
     {
-        "NAME": "CHEROKEE",
-        "ID": "scs_cherokee"
+        "ID": "sc_cherokee"
     },
     {
-        "NAME": "COLLETON",
-        "ID": "scs_colleton"
+        "ID": "sc_colleton"
     },
     {
-        "NAME": "DILLON",
-        "ID": "scs_dillon"
+        "ID": "sc_dillon"
     },
     {
-        "NAME": "DORCHESTER",
-        "ID": "scs_dorchester"
+        "ID": "sc_dorchester"
     },
     {
-        "NAME": "FLORENCE",
-        "ID": "scs_florence"
+        "ID": "sc_florence"
     },
     {
-        "NAME": "GEORGETOWN",
-        "ID": "scs_georgetown"
+        "ID": "sc_georgetown"
     },
     {
-        "NAME": "GREENWOOD",
-        "ID": "scs_greenwood"
+        "ID": "sc_greenwood"
     },
     {
-        "NAME": "HAMPTON",
-        "ID": "scs_hampton"
+        "ID": "sc_hampton"
     },
     {
-        "NAME": "HORRY",
-        "ID": "scs_horry"
+        "ID": "sc_horry"
     },
     {
-        "NAME": "JASPER",
-        "ID": "scs_jasper"
+        "ID": "sc_jasper"
     },
     {
-        "NAME": "LEE",
-        "ID": "scs_lee"
+        "ID": "sc_lee"
     },
     {
-        "NAME": "MARION",
-        "ID": "scs_marion"
+        "ID": "sc_marion"
     },
     {
-        "NAME": "MCCORMICK",
-        "ID": "scs_mccormick"
+        "ID": "sc_mccormick"
     },
     {
-        "NAME": "OCONEE",
-        "ID": "scs_oconee"
+        "ID": "sc_oconee"
     },
     {
-        "NAME": "ORANGEBURG",
-        "ID": "scs_orangeburg"
+        "ID": "sc_orangeburg"
     },
     {
-        "NAME": "SALUDA",
-        "ID": "scs_saluda"
+        "ID": "sc_saluda"
     },
     {
-        "NAME": "SUMTER",
-        "ID": "scs_sumter"
+        "ID": "sc_sumter"
     },
     {
-        "NAME": "WILLIAMSBURG",
-        "ID": "scs_williamsburg"
+        "ID": "sc_williamsburg"
     }
 ]

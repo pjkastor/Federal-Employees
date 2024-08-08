@@ -1054,9 +1054,6 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
         const mostrecent = years_in_order[years_in_order.length - 1]
         let titleForChosenYear = datemap[mostrecent]
-        if(feature.properties.Geocoding_Location === "Lexington"){
-            console.log("fun")
-        }
         if (parseInt(VIEWER.userInputYear) > 0) {
             titleForChosenYear = null
             for (let i = 0; i < years_in_order.length; i++) {
