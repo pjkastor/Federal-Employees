@@ -179,7 +179,6 @@ VIEWER.init = async function() {
         
         second_circuit_1789,
         second_circuit_1800,
-        second_circuit_1802,
         
         third_circuit_1790,
         third_circuit_1800,
@@ -196,7 +195,7 @@ VIEWER.init = async function() {
         
         seventh_circuit_1807,
         
-        dc_circuit_1800
+        dc_circuit
     ] 
     = await Promise.all([
         fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} }),
@@ -252,7 +251,6 @@ VIEWER.init = async function() {
         
         fetch("./data/judicial_circuits/Second_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_circuits/Second_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Second_Circuit_1802.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         
         fetch("./data/judicial_circuits/Third_Circuit_1790.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_circuits/Third_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
@@ -269,7 +267,7 @@ VIEWER.init = async function() {
         
         fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         
-        fetch("./data/judicial_circuits/DC_Circuit_1800.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+        fetch("./data/judicial_circuits/DC_Circuit.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     ])
 
     let judicial_districts = 
@@ -330,7 +328,6 @@ VIEWER.init = async function() {
 
                 ...second_circuit_1789,
                 ...second_circuit_1800,
-                ...second_circuit_1802,
 
                 ...third_circuit_1790,
                 ...third_circuit_1800,
@@ -347,7 +344,7 @@ VIEWER.init = async function() {
 
                 ...seventh_circuit_1807,
 
-                ...dc_circuit_1800
+                ...dc_circuit
             ]
         }
     const loc = document.location.href
