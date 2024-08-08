@@ -356,7 +356,7 @@ VIEWER.init = async function() {
     let countyBoundaries = 
         loc.includes("districts_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_districts.json").then(resp => resp.json()).catch(err => { return {} })
         : loc.includes("counties_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_counties.json").then(resp => resp.json()).catch(err => { return {} })
-        : await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => { return {} })
+        : await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => { return {} })
     
     let geoJsonData = []
     let peopleFields = []

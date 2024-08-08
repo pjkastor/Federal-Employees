@@ -120,21 +120,6 @@ async function fixBadCountyID(){
     return countiesFeatureCollection
 }
 
-// TODO new funtionality prototyping. I want the counties to know their district
-// countyBoundaries.features = countyBoundaries.features.filter(cnty => cnty?.properties?.STATE_TERR === "Pennsylvania")
-// .map(cntyObj => {
-//     cntyObj.properties.districts = judicialDistricts._data.filter(dist => dist.ID === cntyObj.properties.ID)
-//     cntyObj.properties.circuits = judicialCircuits._data.filter(circuit => circuit?.State === "PA")
-//     return cntyObj
-// })
-
-//  TODO new funtionality prototyping.  I want the states to know their circuit
-// stateBoundaries.features = stateBoundaries.features.filter(state => state?.properties.ABBR_NAME === "PA")
-// .map(stateObj => {
-//     stateObj.properties.circuits = judicialCircuits._data.filter(circuit => circuit?.State === stateObj.properties.ABBR_NAME)
-//     return stateObj
-// })
-
 async function updateCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
     const newbCounties = await fetch("./data/updatedCountyMetadata.json").then(resp => resp.json()).catch(err => {return []})
@@ -178,30 +163,6 @@ async function convertCountiesToXML(){
       console.log(xml)
       return xml
     }
-}
-
-async function showNH(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.forEach(county => {
-        if(county.properties.STATE_TERR === "New Hampshire"){
-            county.properties.Employees_Count = county.properties.employeeCountNH
-            delete county.properties.employeeCountNH
-        }
-    })
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}
-
-async function hideNH(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.forEach(county => {
-        if(county.properties.STATE_TERR === "New Hampshire"){
-            county.properties.employeeCountNH = county.properties.Employees_Count
-            delete county.properties.Employees_Count
-        }
-    })
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
 }
 
 async function addTaxMetadata(){
@@ -287,6 +248,45 @@ async function addTaxMetadata(){
     return true
 }
 
+async function adjustSCData(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesToShowAndUpdateCounts = await fetch("./data/SC_Employees.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesToHide = await fetch("./data/sc_removals.json").then(resp => resp.json()).catch(err => {return []})
+    let countAdjustments = 0
+    let hideAdjustments = 0
+    //update the counts
+    for(const count of countiesToShowAndUpdateCounts){
+        const countyID = count["Newberry County"]
+        delete count["Newberry County"]
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c.properties.ID === countyID) {
+                c.properties.Employees_Count = count
+                countAdjustments++
+            }
+            return c
+        })
+    }
+
+    for(const adjust of countiesToHide){
+        const countyID = adjust.ID
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c.properties.ID === countyID) {
+                c.properties.START_DATE_ORIG = c.properties.START_DATE
+                c.properties.END_DATE_ORIG = c.properties.END_DATE
+                c.properties.START_DATE = "1111-11-11"
+                c.properties.END_DATE = "1111-11-11"
+                hideAdjustments++
+            }
+            return c
+        })
+    }
+
+    console.log("COUNTS: "+countAdjustments)
+    console.log("HIDES:"+hideAdjustments)
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
 async function adjustNewberryData(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(county => {
@@ -321,20 +321,12 @@ async function adjustNewberryData(){
         // }
 
         if(county.properties.STATE_TERR === "South Carolina"){
-            
-            if(county.properties.CNTY_TYPE === "District"){
-                // Revert hidden type(s)
+            if (county.properties.CNTY_TYPE === "Parish"){
+                // Hide currently shown type(s)
                 county.properties.START_DATE = county.properties.START_DATE_ORIG
                 county.properties.END_DATE = county.properties.END_DATE_ORIG
                 delete county.properties.START_DATE_ORIG
                 delete county.properties.END_DATE_ORIG
-            }
-            else if (county.properties.CNTY_TYPE === "County"){
-                // Hide currently shown type(s)
-                county.properties.START_DATE_ORIG = county.properties.START_DATE
-                county.properties.END_DATE_ORIG = county.properties.END_DATE
-                county.properties.START_DATE = "1111-11-11"
-                county.properties.END_DATE = "1111-11-11"
             }
         }
     })
