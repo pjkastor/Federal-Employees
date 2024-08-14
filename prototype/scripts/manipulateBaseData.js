@@ -4,7 +4,7 @@ const hello = "hello world"
  * Do this after converting the AllLocations spreadsheet.
  */ 
 async function convertAllLocationsToFeatureCollection(){
-    let locations = await fetch("./data/AllLocations_new_new.json").then(resp => resp.json()).catch(err => {return []})
+    let locations = await fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => {return []})
     let fc = {
           "type": "FeatureCollection",
           "name": "AllLocations",
@@ -250,49 +250,3 @@ async function addTaxMetadata(){
     return true
 }
 
-async function adjustNewberryData(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.forEach(county => {
-        // if(county.properties.STATE_TERR === "Louisiana"){
-        //     // Keep parishes, not counties.
-        //     // We may need to consider extinct parishes of Orleans Territory as well.
-        //     if(county.properties.CNTY_TYPE === "County"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-        // else if(county.properties.STATE_TERR === "Orleans Territory"){
-        //     // Keep parishes, not counties.
-        //     // We may need to consider extinct parishes of Orleans Territory as well.
-        //     if(county.properties.CNTY_TYPE === "County"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-        // else if(county.properties.STATE_TERR === "South Carolina"){
-        //     // Keep counties, not districts or parishes
-        //     if(county.properties.CNTY_TYPE === "District" || county.properties.CNTY_TYPE === "Parish"){
-        //         county.properties.START_DATE_ORIG = county.properties.START_DATE
-        //         county.properties.END_DATE_ORIG = county.properties.END_DATE
-        //         county.properties.START_DATE = "1111-11-11"
-        //         county.properties.END_DATE = "1111-11-11"
-        //     }
-        // }
-
-        if(county.properties.STATE_TERR === "South Carolina"){
-            if (county.properties.CNTY_TYPE === "Parish"){
-                // Hide currently shown type(s)
-                county.properties.START_DATE = county.properties.START_DATE_ORIG
-                county.properties.END_DATE = county.properties.END_DATE_ORIG
-                delete county.properties.START_DATE_ORIG
-                delete county.properties.END_DATE_ORIG
-            }
-        }
-    })
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}

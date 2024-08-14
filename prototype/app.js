@@ -21,7 +21,7 @@ VIEWER.stateFeatures = null
 
 VIEWER.countyFeatures = null
 
-VIEWER.taxFeatures1798
+VIEWER.taxFeatures1798 = null
 
 VIEWER.taxFeatures1819 = null
 
@@ -198,7 +198,7 @@ VIEWER.init = async function() {
         dc_circuit
     ] 
     = await Promise.all([
-        fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} }),
