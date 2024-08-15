@@ -169,9 +169,9 @@ async function convertCountiesToXML(){
 
 async function addTaxMetadata(){
     let tax_1798_geo = await fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => {return []})
-    let metadata_1798 = await fetch("./data/1798_metadata.json").then(resp => resp.json()).catch(err => {return []})
+    let metadata_1798 = await fetch("./data/1798_tax_metadata.json").then(resp => resp.json()).catch(err => {return []})
     let tax_1814_geo = await fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => {return []})
-    let metadata_1814 = await fetch("./data/1814_metadata.json").then(resp => resp.json()).catch(err => {return []})
+    let metadata_1814 = await fetch("./data/1814_tax_metadata.json").then(resp => resp.json()).catch(err => {return []})
     
     let no_1814_metadata = []
     let no_1814_id = []

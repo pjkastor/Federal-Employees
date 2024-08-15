@@ -198,9 +198,9 @@ VIEWER.init = async function() {
         dc_circuit
     ] 
     = await Promise.all([
-        fetch("./data/AllLocations_new.json").then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1798_Tax_Divisions_Merged_new.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1814_Districts_Merged_new.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} }),
 
         fetch("./data/judicial_districts/AL_1819_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
