@@ -432,6 +432,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
         VIEWER.baseLayers.mapbox_satellite_layer =
             L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ', {
                 maxZoom: 19,
+                minZoom: VIEWER.startZoom,
                 id: 'mapbox.satellite', //mapbox.streets
                 accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
             })
@@ -450,11 +451,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
         // })
 
         VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 8
+            maxZoom: 8,
+            minZoom: VIEWER.startZoom
         })
 
         VIEWER.baseLayers.Esri_Ocean = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 10
+            maxZoom: 10,
+            minZoom: VIEWER.startZoom
         })
 
         VIEWER.baseMaps = {
