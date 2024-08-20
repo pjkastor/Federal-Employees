@@ -1019,7 +1019,7 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         if (feature.properties["CNTY_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
         }
-        if (feature.properties["TERR_TYPE"]) {
+        else if (feature.properties["TERR_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["TERR_TYPE"]}</div>`
         }
         if (feature.properties["START_DATE"]) {
@@ -1034,6 +1034,9 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             const count = VIEWER.determineEmployeeCount(feature)
             layer.options["Employees_Count"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
+        }
+        else{
+            popupContent += `<div class="featureInfo"><label>Employee Count</label> N/A </div>`
         }
         if(feature.properties["Employees_Link"]){
             popupContent += `

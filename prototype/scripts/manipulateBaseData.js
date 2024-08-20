@@ -97,17 +97,11 @@ async function adjustSCData(){
 }
 
 async function addEmployeeCountsToCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
     let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
-        const countyID = count["Newberry County"]
-        delete count["Newberry County"]
-        delete count["Newberry County2"]
-        delete count["State"]
-        delete count["Column3"]
-        delete count["Column4"]
-        delete count["Column5"]
+        const countyID = count["ID"]
         countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
             if(c.properties.ID === countyID) {
                 c.properties.Employees_Count = count
@@ -123,14 +117,15 @@ async function addEmployeeCountsToCounties(){
 }
 
 async function updateCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts.json").then(resp => resp.json()).catch(err => {return []})
-    const newbCounties = await fetch("./data/updatedCountyMetadata.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(f => {
         // Find the corresponding feature in newbCounties and absorb the properties
         let id = f.properties.ID_NUM
-        let metadata = newbCounties.filter(f => f.properties.ID_NUM === id)[0]
-        let combined = Object.assign(f.properties, metadata)
-        f.properties = combined
+        let metadata = newbCounties.filter(s => parseInt(s.ID_NUM) === id)[0]
+        //let combined = Object.assign(f.properties, metadata)
+        metadata.ID_NUM = parseInt(metadata.ID_NUM)
+        f.properties = metadata
     })
     console.log(countiesFeatureCollection)
     return countiesFeatureCollection
