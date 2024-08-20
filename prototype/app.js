@@ -884,8 +884,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             "1814 Tax Districts": VIEWER.geoJsonLayers.taxFeatures1814,
             "Judicial Districts": VIEWER.geoJsonLayers.judicial_districts,
             "Judicial Circuits": VIEWER.geoJsonLayers.judicial_circuits,
-            "State Boundaries": VIEWER.geoJsonLayers.stateFeatures,
-            "County Boundaries": VIEWER.geoJsonLayers.countyFeatures,
+            "States & Territories": VIEWER.geoJsonLayers.stateFeatures,
+            "Counties": VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
             "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayerGroup
@@ -939,9 +939,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 if(
-                    chk.nextElementSibling.innerText.trim() === "County Boundaries"
+                    chk.nextElementSibling.innerText.trim() === "Counties"
                     || chk.nextElementSibling.innerText.trim()  === "Postmasters Heatmap"
-                    || chk.nextElementSibling.innerText.trim()  === "State Boundaries"
+                    || chk.nextElementSibling.innerText.trim()  === "States & Territories"
                 )
                 {
                     if(chk.checked) chk.click()
