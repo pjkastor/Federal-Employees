@@ -241,7 +241,6 @@ VIEWER.init = async function() {
         fetch("./data/judicial_districts/VA_1824_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/VT_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
 
-
         fetch("./data/judicial_circuits/First_Circuit_1789.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_circuits/First_Circuit_1790.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_circuits/First_Circuit_1791.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
@@ -384,11 +383,7 @@ VIEWER.init = async function() {
         f.properties._name = tax_1814._name
         return f
     })
-    countyBoundaries.features = countyBoundaries.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = countyBoundaries._name
-        return f
-    })
+    
     stateBoundaries.features = stateBoundaries.features.map(f => {
         if (!f.hasOwnProperty("properties")) f.properties = {}
         f.properties._name = stateBoundaries._name
@@ -405,6 +400,7 @@ VIEWER.init = async function() {
         return f
     })
 */
+
     VIEWER.geoJsonByLayers.judicial_districts = judicial_districts
     VIEWER.geoJsonByLayers.judicial_circuits = judicial_circuits
 
@@ -508,12 +504,13 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                     case "counties":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            const count = VIEWER.determineEmployeeCount(f)
                             if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
                                 const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
                                 const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
                                 const currEnd = new Date(userInputYear+"")
                                 const currStart = new Date(userInputYear+"")
-                                return sDate <= currStart && eDate >= currEnd    
+                                return sDate <= currStart && eDate >= currEnd && parseInt(count) > 0  
                             }
                         })
                         break
@@ -572,6 +569,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                        d > 10  ? '#FEB24C' :
                        d > 5   ? '#FED976' :
                        d > 0   ? '#FFEDA0' :
+                       //d === -1 ? 'transparent' :
                        "white"
                     return color
                 }
