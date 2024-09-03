@@ -73,6 +73,11 @@ VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
 //Starting coords based on interface
 VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
 
+VIEWER.startBounds = [
+    [-46.195042108660154, -170.33203125],
+    [74.77584300649235, 166.46484375000003]
+]
+
 VIEWER.currentZoomLevel = VIEWER.startZoom
 
 VIEWER.cluster_points = null
@@ -133,6 +138,7 @@ VIEWER.init = async function() {
         tax_1798,
         tax_1814,
         stateBoundaries,
+        countyBoundaries,
         al_1819_district,
         al_1824_district,
         ct_district,
@@ -199,10 +205,10 @@ VIEWER.init = async function() {
     ] 
     = await Promise.all([
         fetch("./data/AllLocations.json").then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1798_Tax_Divisions_Merged_new.json").then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1814_Districts_Merged_new.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1798_Tax_Divisions_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1814_Districts_Merged.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => { return {} }),
-
+        fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1819_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1824_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/CT_district.geojson").then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
@@ -346,60 +352,11 @@ VIEWER.init = async function() {
                 ...dc_circuit
             ]
         }
-    const loc = document.location.href
-    
-    //TODO move this up to the Promise.all when done with the hack.
-    let countyBoundaries = 
-        loc.includes("districts_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_districts.json").then(resp => resp.json()).catch(err => { return {} })
-        : loc.includes("counties_only") ? await fetch("./data/CountyBoundariesWithEmployeeCounts_new_sc_counties.json").then(resp => resp.json()).catch(err => { return {} })
-        : await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => { return {} })
-    
+    const loc = document.location.href    
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
     let geoJsonByLayers = {}
-
-// The code below is unused.  However, you can use it to apply class names to the shapes if desired.
-/*
-    judicial_districts.features = judicial_districts.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = "judicial_disctrict"
-        return f
-    })
-
-    judicial_circuits.features = judicial_circuits.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = "judicial_circuit"
-        return f
-    })
-    
-    tax_1798.features = tax_1798.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = tax_1798._name
-        return f
-    })
-    tax_1814.features = tax_1814.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = tax_1814._name
-        return f
-    })
-    
-    stateBoundaries.features = stateBoundaries.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = stateBoundaries._name
-        return f
-    })
-    locationData.features = locationData.features.map(f => {
-        if (!f.hasOwnProperty("properties")) f.properties = {}
-        f.properties._name = locationData._name
-        // Oh no are these really inverted!?!?!  I may need a new copy of this location data
-        let tempX = f.geometry.coordinates[0]
-        let tempY = f.geometry.coordinates[1]
-        f.geometry.coordinates[0] = tempY
-        f.geometry.coordinates[1] = tempX
-        return f
-    })
-*/
 
     VIEWER.geoJsonByLayers.judicial_districts = judicial_districts
     VIEWER.geoJsonByLayers.judicial_circuits = judicial_circuits
@@ -542,18 +499,18 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             onEachFeature: VIEWER.formatPopupForNewberryData
         })
 
-        VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
-            style: function(feature) {
-                const name = feature.properties._name ?? ""
-                return {
-                    color: "white",
-                    fillColor: "#3399ff",
-                    fillOpacity: 1.00,
-                    className: name.replaceAll(" ", "_")
-                }
-            },
-            onEachFeature: VIEWER.formatPopupForNewberryData
-        })
+        // VIEWER.geoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
+        //     style: function(feature) {
+        //         const name = feature.properties._name ?? ""
+        //         return {
+        //             color: "white",
+        //             fillColor: "#3399ff",
+        //             fillOpacity: 1.00,
+        //             className: name.replaceAll(" ", "_")
+        //         }
+        //     },
+        //     onEachFeature: VIEWER.formatPopupForNewberryData
+        // })
 
         VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
             style: function(feature) {
@@ -883,7 +840,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             "Judicial Districts": VIEWER.geoJsonLayers.judicial_districts,
             "Judicial Circuits": VIEWER.geoJsonLayers.judicial_circuits,
             "States & Territories": VIEWER.geoJsonLayers.stateFeatures,
-            "Counties": VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
             "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayerGroup
@@ -930,11 +886,20 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             })
             VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
             VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
+            VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+            //VIEWER.mymap.fitBounds(VIEWER.startBounds)
+            const zoomNotice = document.createElement("a")
+            zoomNotice.classList.add("zoomNotice")
+            const span = document.createElement("span")
+            span.innerText = "zoom"
+            zoomNotice.appendChild(span)
+            VIEWER.mymap._container.querySelector(".leaflet-control-zoom-in").after(zoomNotice)
         }
 
         // Can only show State and County boundaries if a year is selected.  Hide these options until then.
         if (parseInt(userInputYear) === 0) {
             VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+            //VIEWER.mymap.fitBounds(VIEWER.startBounds)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 if(
                     chk.nextElementSibling.innerText.trim() === "Counties"

@@ -157,10 +157,12 @@ p {
   width: 100%;
 }
 
-.slider-controls h5 {
+.slider-controls h3 {
   margin: 0;
-  padding-top: 0.75em;
+  padding-top: 0.25em;
   cursor: default;
+  position: relative;
+  top: 6px;
 }
 
 .info-scroller{
@@ -206,14 +208,35 @@ p {
     0px 0px 14px 4px white inset;
 }
 
+.leaflet-control-zoom {     
+  position: absolute;
+  top: -9em;
+  right: 0em;
+} 
+
 .leaflet-control-zoom-in {
   color: white !important;
   background-color: #B85323 !important;
+  cursor: pointer !important;
 }
 
 .leaflet-control-zoom-out {
   color: white !important;
   background-color: #B85323 !important;
+  cursor: pointer !important;
+}
+
+.leaflet-control-zoom-out.leaflet-disabled {
+  cursor: not-allowed;
+}
+
+.zoomNotice{
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.zoomNotice span{
+  cursor: default;
 }
 
 #currentCoords {
@@ -378,11 +401,7 @@ path {
   background-repeat: no-repeat; 
 }
 
-.leaflet-control-zoom {     
-  position: absolute;
-  top: -6em;
-  right: 0em;
-} 
+
 
 .leaflet-control-layers{
   top: 6em;
