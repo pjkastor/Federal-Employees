@@ -414,6 +414,7 @@ path {
   position: relative;
   display: inline-block;
   margin-left: 2em;
+  top: 4px;
 }
 
 #instructionsContainer{
@@ -421,6 +422,7 @@ path {
   position: relative;
   display: inline-block;
   margin-right: 2em;
+  top: 4px;
 }
 
 #kastorMap {
