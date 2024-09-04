@@ -1134,8 +1134,6 @@ VIEWER.determineEmployeeCount = function(feature) {
     const mostrecent = years_in_order.pop()
     let countForChosenYear = datemap[mostrecent]
     if (parseInt(VIEWER.userInputYear) > 0) {
-        // Ask about this.  If the latest year recorded is 1829 and the chosen year is 1831, should I show 1829's numbers?
-        //countForChosenYear = 0
         for (let i = 0; i < years_in_order.length; i++) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
             const the_year = years_in_order[i]
