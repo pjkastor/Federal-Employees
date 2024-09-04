@@ -466,10 +466,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
-                                const sDate = new Date(parseInt(f.properties["START_DATE"]))
-                                const eDate = new Date(parseInt(f.properties["END_DATE"]))
-                                const currEnd = new Date(userInputYear+"")
-                                const currStart = new Date(userInputYear+"")
+                                const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
+                                const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
+                                const currEnd = new Date(userInputYear)
+                                const currStart = new Date(userInputYear)
                                 return sDate <= currStart && eDate >= currEnd
                             }
                         })
@@ -495,8 +495,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         else {
             geoMarkers = VIEWER.geoJsonByLayers
             if(document.getElementById("timeSlider")){
-                // Note this means if the user tries to set the year to 1829 that no change is detected.
-                // We could use 0 instead, which may make more sense.
                 document.getElementById("timeSlider").value = "1829"
             }
             if(document.getElementById("slider-value")){
