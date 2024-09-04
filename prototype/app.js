@@ -68,10 +68,10 @@ VIEWER.mymap = null
 VIEWER.userInputYear = "1829"
 
 //Starting Zoom level based on interface
-VIEWER.startZoom = document.location.href.includes("inset.html") ? 2 : 2
+VIEWER.startZoom = 2
 
 //Starting coords based on interface
-VIEWER.startCoords = document.location.href.includes("inset.html") ? [21, 30] : [12, 12]
+VIEWER.startCoords = [21, 30] 
 
 VIEWER.startBounds = [
     [-46.195042108660154, -170.33203125],
@@ -378,7 +378,7 @@ VIEWER.init = async function() {
  * Inititalize a Leaflet Web Map with a standard base map. Give it GeoJSON to draw.
  * In this case, the GeoJSON are all Features takeb from Feature Collections.
  */
-VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
+VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
     let selectedControls = null
     if (VIEWER.mymap === null) {
 
@@ -451,8 +451,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                                 // These are all just years but that should be OK
                                 const sDate = new Date(parseInt(f.properties["Start_Date"])+"")
                                 const eDate = new Date(parseInt(f.properties["End_Date"])+"")
-                                const currEnd = new Date(userInputYear+"")
-                                const currStart = new Date(userInputYear+"")
+                                const currEnd = new Date(userInputYear)
+                                const currStart = new Date(userInputYear)
                                 return sDate <= currStart && eDate >= currEnd    
                             }
                         })
@@ -465,8 +465,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                             if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
                                 const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
                                 const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
-                                const currEnd = new Date(userInputYear+"")
-                                const currStart = new Date(userInputYear+"")
+                                const currEnd = new Date(userInputYear)
+                                const currStart = new Date(userInputYear)
                                 return sDate <= currStart && eDate >= currEnd && parseInt(count) > 0  
                             }
                         })
@@ -479,10 +479,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
         else {
             geoMarkers = VIEWER.geoJsonByLayers
             if(document.getElementById("timeSlider")){
+                // Note this means if the user tries to set the year to 1829 that no change is detected.
+                // We could use 0 instead, which may make more sense.
                 document.getElementById("timeSlider").value = "1829"
             }
             if(document.getElementById("slider-value")){
-                document.getElementById("slider-value").innerHTML = document.location.href.includes("inset.html") ? "N/A" : "Year: N/A"
+                document.getElementById("slider-value").innerText = "N/A" 
             }
         }
 
@@ -525,8 +527,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
                        d > 15  ? '#FD8D3C' :
                        d > 10  ? '#FEB24C' :
                        d > 5   ? '#FED976' :
-                       d > 0   ? '#FFEDA0' :
-                       //d === -1 ? 'transparent' :
+                       d > 0   ? '#FFEDA0' : 
                        "white"
                     return color
                 }
@@ -840,6 +841,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
             "Judicial Districts": VIEWER.geoJsonLayers.judicial_districts,
             "Judicial Circuits": VIEWER.geoJsonLayers.judicial_circuits,
             "States & Territories": VIEWER.geoJsonLayers.stateFeatures,
+            //"Counties" : VIEWER.geoJsonLayers.countyFeatures,
             "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
             "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayerGroup
@@ -897,7 +899,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = null) {
         }
 
         // Can only show State and County boundaries if a year is selected.  Hide these options until then.
-        if (parseInt(userInputYear) === 0) {
+        if (parseInt(userInputYear) <= 0) {
             VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
             //VIEWER.mymap.fitBounds(VIEWER.startBounds)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
@@ -1088,14 +1090,14 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
 
 // // Change the selected date shown to the user.
 document.getElementById("timeSlider").addEventListener("input", function(e) {
-    document.getElementById("slider-value").innerText = document.location.href.includes("inset.html") ? e.target.value : `Year: ${e.target.value}`
+    document.getElementById("slider-value").innerText = e.target.value
 })
 
 // Change the date slider
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
-    var sliderYear = e.target.value
-    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear)
+    let sliderYear = e.target.value
+    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear+"")
 })
 
 // Reset to the default view...maybe just page reset?
@@ -1109,7 +1111,7 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
     if(!currentYear || currentYear === 1829) return
     currentYear++
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
 })
 
 // Reset to the default view...maybe just page reset?
@@ -1118,7 +1120,7 @@ document.querySelector(".year-dec").addEventListener("click", function(e) {
     if(!currentYear || currentYear === 1789) return
     currentYear--
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear)
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
 })
 
 VIEWER.reset = function(event) {
