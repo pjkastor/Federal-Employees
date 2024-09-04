@@ -229,7 +229,7 @@ p {
 }
 
 .leaflet-control-zoom-out.leaflet-disabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 
 .zoomNotice{
@@ -402,8 +402,6 @@ path {
   background-size: 26em;
   background-repeat: no-repeat; 
 }
-
-
 
 .leaflet-control-layers{
   top: 7em;
