@@ -73,9 +73,14 @@ VIEWER.startZoom = 2
 //Starting coords based on interface
 VIEWER.startCoords = [21, 30] 
 
+// VIEWER.startBounds = [
+//     [-46.195042108660154, -170.33203125],
+//     [74.77584300649235, 166.46484375000003]
+// ]
+
 VIEWER.startBounds = [
-    [-46.195042108660154, -170.33203125],
-    [74.77584300649235, 166.46484375000003]
+    [-39.23225314171489, -176.484375],
+    [74.01954331150228, 157.50000000000003]
 ]
 
 VIEWER.currentZoomLevel = VIEWER.startZoom
@@ -458,6 +463,17 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                         })
                     break
                     case "states":
+                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
+                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
+                                const sDate = new Date(parseInt(f.properties["START_DATE"]))
+                                const eDate = new Date(parseInt(f.properties["END_DATE"]))
+                                const currEnd = new Date(userInputYear+"")
+                                const currStart = new Date(userInputYear+"")
+                                return sDate <= currStart && eDate >= currEnd
+                            }
+                        })
+                    break
                     case "counties":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
@@ -470,7 +486,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                                 return sDate <= currStart && eDate >= currEnd && parseInt(count) > 0  
                             }
                         })
-                        break
+                    break
                     default:
                         geoMarkers[entry] = VIEWER.geoJsonByLayers[entry]
                 }
@@ -888,8 +904,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             })
             VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
             VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
-            VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
-            //VIEWER.mymap.fitBounds(VIEWER.startBounds)
+            //VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+            VIEWER.mymap.fitBounds(VIEWER.startBounds)
             const zoomNotice = document.createElement("a")
             zoomNotice.classList.add("zoomNotice")
             const span = document.createElement("span")
@@ -900,8 +916,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         // Can only show State and County boundaries if a year is selected.  Hide these options until then.
         if (parseInt(userInputYear) <= 0) {
-            VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
-            //VIEWER.mymap.fitBounds(VIEWER.startBounds)
+            //VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
+            VIEWER.mymap.fitBounds(VIEWER.startBounds)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 if(
                     chk.nextElementSibling.innerText.trim() === "Counties"
