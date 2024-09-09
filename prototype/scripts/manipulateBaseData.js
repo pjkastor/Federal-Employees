@@ -97,7 +97,7 @@ async function adjustSCData(){
 }
 
 async function addEmployeeCountsToCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
     let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
@@ -117,7 +117,7 @@ async function addEmployeeCountsToCounties(){
 }
 
 async function updateCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundariesWithEmployeeCounts_new_adjusted.json").then(resp => resp.json()).catch(err => {return []})
+    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
     const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
     countiesFeatureCollection.features.forEach(f => {
         // Find the corresponding feature in newbCounties and absorb the properties
