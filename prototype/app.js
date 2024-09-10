@@ -495,7 +495,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         else {
             geoMarkers = VIEWER.geoJsonByLayers
             if(document.getElementById("timeSlider")){
-                document.getElementById("timeSlider").value = "1829"
+                document.getElementById("timeSlider").value = "0"
             }
             if(document.getElementById("slider-value")){
                 document.getElementById("slider-value").innerText = "N/A" 
