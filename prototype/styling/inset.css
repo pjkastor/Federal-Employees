@@ -212,7 +212,7 @@ p {
 
 .leaflet-control-zoom {     
   position: absolute;
-  top: -9em;
+  top: -10em;
   right: 0em;
 } 
 
@@ -323,8 +323,8 @@ path {
 
 .leaflet-control-layers-toggle {
   background-image: url(../images/layers.png);
-  width: 44px;
-  height: 44px;
+  width: 55px !important;
+  height: 55px !important;
 }
 
 .layersIcon{
@@ -339,9 +339,15 @@ path {
 }
 
 .leaflet-retina .leaflet-control-layers-toggle{
-  width: 44px;
-  height: 44px;
+  width: 55px !important;
+  height: 55px !important;
   background-image: url(../images/layers.png);
+}
+
+.leaflet-touch .leaflet-bar a {
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 35px !important;
 }
 
 .zoomIcon{
