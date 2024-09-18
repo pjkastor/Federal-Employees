@@ -155,7 +155,7 @@ p {
   color: white;
   background-color: #173E3A;
   z-index: 401;
-  min-height: 8vh;
+  height: 90px;
   width: 100%;
 }
 
@@ -321,10 +321,15 @@ path {
     font-size: 10pt;
 }
 
+.leaflet-control-layers{
+  top: 85px;
+}
+
 .leaflet-control-layers-toggle {
   background-image: url(../images/layers.png);
   width: 55px !important;
   height: 55px !important;
+  background-size: 55px;
 }
 
 .layersIcon{
@@ -415,10 +420,6 @@ path {
   background-position: center;
   background-size: 26em;
   background-repeat: no-repeat; 
-}
-
-.leaflet-control-layers{
-  top: 7em;
 }
 
 #resetContainer{

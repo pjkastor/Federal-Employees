@@ -96,36 +96,50 @@ async function adjustSCData(){
     return countiesFeatureCollection
 }
 
-async function addEmployeeCountsToCounties(){
-    let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
-    let alterations = 0
-    for(count of counts){
-        const countyID = count["ID"]
-        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
-            if(c.properties.ID === countyID) {
-                c.properties.Employees_Count = count
-                alterations ++
+            async function updateCounties(){
+                let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
+                const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
+                countiesFeatureCollection.features.forEach(f => {
+                    // Find the corresponding feature in newbCounties and absorb the properties
+                    let id = f.properties.ID_NUM
+                    let metadata = newbCounties.filter(s => parseInt(s.ID_NUM) === id)[0]
+                    metadata.ID_NUM = parseInt(metadata.ID_NUM)
+                    f.properties = metadata
+                })
+                console.log(countiesFeatureCollection)
+                return countiesFeatureCollection
             }
-            return c
-        })
-    }
-    console.log(`ALTERATIONS: ${alterations}`)
-    console.log("FEATURE COLLECTION")
-    console.log(countiesFeatureCollection)
-    return countiesFeatureCollection
-}
 
-async function updateCounties(){
+            async function addEmployeeCountsToCounties(){
+                let countiesFeatureCollection = await fetch("./data/CountyBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
+                let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
+                let alterations = 0
+                for(count of counts){
+                    const countyID = count["Newberry County"]
+                    countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+                        if(c.properties.ID === countyID) {
+                            delete count["Column3"]
+                            delete count["Column4"]
+                            delete count["Column5"]
+                            delete count["Newberry County"]
+                            delete count["Newberry Count2"]
+                            delete count["State"]
+                            c.properties.Employees_Count = count
+                            alterations ++
+                        }
+                        return c
+                    })
+                }
+                console.log(`ALTERATIONS: ${alterations}`)
+                console.log("FEATURE COLLECTION")
+                console.log(countiesFeatureCollection)
+                return countiesFeatureCollection
+            }
+
+async function getLouisiana(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.forEach(f => {
-        // Find the corresponding feature in newbCounties and absorb the properties
-        let id = f.properties.ID_NUM
-        let metadata = newbCounties.filter(s => parseInt(s.ID_NUM) === id)[0]
-        //let combined = Object.assign(f.properties, metadata)
-        metadata.ID_NUM = parseInt(metadata.ID_NUM)
-        f.properties = metadata
+    countiesFeatureCollection.features.filter(f => {
+        return f.properties.STATE_TERR === "Orleans Territory" || f.properties.STATE_TERR === "Louisiana"
     })
     console.log(countiesFeatureCollection)
     return countiesFeatureCollection
