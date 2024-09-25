@@ -347,6 +347,7 @@ path {
   width: 55px !important;
   height: 55px !important;
   background-image: url(../images/layers.png);
+  background-size: 55px;
 }
 
 .leaflet-touch .leaflet-bar a {
