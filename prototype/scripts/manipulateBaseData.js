@@ -96,53 +96,68 @@ async function adjustSCData(){
     return countiesFeatureCollection
 }
 
-            async function updateCounties(){
-                let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-                const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
-                countiesFeatureCollection.features.forEach(f => {
-                    // Find the corresponding feature in newbCounties and absorb the properties
-                    let id = f.properties.ID_NUM
-                    let metadata = newbCounties.filter(s => parseInt(s.ID_NUM) === id)[0]
-                    metadata.ID_NUM = parseInt(metadata.ID_NUM)
-                    f.properties = metadata
-                })
-                console.log(countiesFeatureCollection)
-                return countiesFeatureCollection
-            }
-
-            async function addEmployeeCountsToCounties(){
-                let countiesFeatureCollection = await fetch("./data/CountyBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
-                let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
-                let alterations = 0
-                for(count of counts){
-                    const countyID = count["Newberry County"]
-                    countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
-                        if(c.properties.ID === countyID) {
-                            delete count["Column3"]
-                            delete count["Column4"]
-                            delete count["Column5"]
-                            delete count["Newberry County"]
-                            delete count["Newberry Count2"]
-                            delete count["State"]
-                            c.properties.Employees_Count = count
-                            alterations ++
-                        }
-                        return c
-                    })
-                }
-                console.log(`ALTERATIONS: ${alterations}`)
-                console.log("FEATURE COLLECTION")
-                console.log(countiesFeatureCollection)
-                return countiesFeatureCollection
-            }
-
-async function getLouisiana(){
+async function updateCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    countiesFeatureCollection.features.filter(f => {
-        return f.properties.STATE_TERR === "Orleans Territory" || f.properties.STATE_TERR === "Louisiana"
+    const newbCounties = await fetch("./data/county_metadata.json").then(resp => resp.json()).catch(err => {return []})
+    countiesFeatureCollection.features.forEach(f => {
+        // Find the corresponding feature in newbCounties and absorb the properties
+        let id = f.properties.ID_NUM
+        let metadata = newbCounties.filter(s => parseInt(s.ID_NUM) === id)[0]
+        metadata.ID_NUM = parseInt(metadata.ID_NUM)
+        f.properties = metadata
     })
     console.log(countiesFeatureCollection)
     return countiesFeatureCollection
+}
+
+async function addEmployeeCountsToCounties(){
+    let countiesFeatureCollection = await fetch("./data/CountyBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
+    let alterations = 0
+    for(count of counts){
+        const countyID = count["Newberry County"]
+        countiesFeatureCollection.features = countiesFeatureCollection.features.map(c => {
+            if(c.properties.ID === countyID) {
+                delete count["Column3"]
+                delete count["Column4"]
+                delete count["Column5"]
+                delete count["Newberry County"]
+                delete count["Newberry Count2"]
+                delete count["State"]
+                c.properties.Employees_Count = count
+                alterations ++
+            }
+            return c
+        })
+    }
+    console.log(`ALTERATIONS: ${alterations}`)
+    console.log("FEATURE COLLECTION")
+    console.log(countiesFeatureCollection)
+    return countiesFeatureCollection
+}
+
+async function addEmployeeCountsToStates(){
+    let statesFeatureCollection = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return []})
+    let counts = await fetch("./data/StateEmployees.json").then(resp => resp.json()).catch(err => {return []})
+    let alterations = 0
+    for(count of counts){
+        const stateID = count["Newberry State"]
+        statesFeatureCollection.features = statesFeatureCollection.features.map(c => {
+            if(c.properties.ID === stateID) {
+                delete count["Newberry State"]
+                delete count["Start_Date"]
+                delete count["End_Date"]
+                delete count["State Name"]
+                c.properties.Employees_Count = count
+                alterations ++
+            }
+            return c
+        })
+    }
+    console.log(`ALTERATIONS: ${alterations}`)
+    console.log("FEATURE COLLECTION")
+    console.log(statesFeatureCollection)
+    return statesFeatureCollection
 }
 
 async function convertCountiesToXML(){
@@ -162,7 +177,7 @@ async function convertCountiesToXML(){
       let xml = '<newberry-counties>'
       for(let obj of jsonarr){
         xml += "<county>"
-        for (var prop in obj) {
+        for (const prop in obj) {
             let val = obj[prop] ? obj[prop] : "no_value"
             xml += `<${prop}> ${obj[prop]} </${prop}>`
         }
@@ -200,7 +215,7 @@ async function addTaxMetadata(){
         if(metadata.length > 1){
             console.log(`Curious 1814 thing for ${id}`)
             console.log(metadata)
-            if(dup_probs_1814.indexOf(id) === -1) dup_probs_1814.push(id)
+            if(!dup_probs_1814.includes(id)) dup_probs_1814.push(id)
             return
         }
         if(metadata.length === 0) {
@@ -221,7 +236,7 @@ async function addTaxMetadata(){
         if(metadata.length > 1){
             console.log(`Curious 1798 thing for ${id}`)
             console.log(metadata)
-            if(dup_probs_1798.indexOf(id) === -1) dup_probs_1798.push(id)
+            if(!dup_probs_1798.includes(id)) dup_probs_1798.push(id)
             return
         }
         if(metadata.length === 0) {
@@ -258,4 +273,3 @@ async function addTaxMetadata(){
 
     return true
 }
-

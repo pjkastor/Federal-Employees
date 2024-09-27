@@ -143,7 +143,6 @@ VIEWER.init = async function() {
         tax_1798,
         tax_1814,
         stateBoundaries,
-        countyBoundaries,
         al_1819_district,
         al_1824_district,
         ct_district,
@@ -212,8 +211,7 @@ VIEWER.init = async function() {
         fetch("./data/AllLocations.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1798_Tax_Divisions_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1814_Districts_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/StateBoundaries.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/CountyBoundaries.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/StateBoundaries_new.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1819_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1824_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/CT_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
@@ -367,7 +365,7 @@ VIEWER.init = async function() {
     VIEWER.geoJsonByLayers.judicial_circuits = judicial_circuits
 
     VIEWER.geoJsonByLayers.locations = locationData
-    VIEWER.geoJsonByLayers.counties = countyBoundaries
+    //VIEWER.geoJsonByLayers.counties = countyBoundaries
     VIEWER.geoJsonByLayers.states = stateBoundaries
     VIEWER.geoJsonByLayers.tax_1798 = tax_1798
     VIEWER.geoJsonByLayers.tax_1814 = tax_1814
@@ -528,40 +526,40 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         //     onEachFeature: VIEWER.formatPopupForNewberryData
         // })
 
-        VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
-            style: function(feature) {
-                const count = VIEWER.determineEmployeeCount(feature)
-                function getColor(d) {
-                    d = parseInt(d)
-                    const color = 
-                       d > 35  ? '#800026' :
-                       d > 30  ? '#BD0026' :
-                       d > 25  ? '#E31A1C' :
-                       d > 20  ? '#FC4E2A' :
-                       d > 15  ? '#FD8D3C' :
-                       d > 10  ? '#FEB24C' :
-                       d > 5   ? '#FED976' :
-                       d > 0   ? '#FFEDA0' : 
-                       "white"
-                    return color
-                }
+        // VIEWER.geoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
+        //     style: function(feature) {
+        //         const count = VIEWER.determineEmployeeCount(feature)
+        //         function getColor(d) {
+        //             d = parseInt(d)
+        //             const color = 
+        //                d > 35  ? '#800026' :
+        //                d > 30  ? '#BD0026' :
+        //                d > 25  ? '#E31A1C' :
+        //                d > 20  ? '#FC4E2A' :
+        //                d > 15  ? '#FD8D3C' :
+        //                d > 10  ? '#FEB24C' :
+        //                d > 5   ? '#FED976' :
+        //                d > 0   ? '#FFEDA0' : 
+        //                "white"
+        //             return color
+        //         }
 
-                const name = feature.properties._name ?? ""
-                const fcolor = getColor(count)
-                const style_obj = 
-                {
-                    fillColor: fcolor,
-                    weight: 2,
-                    opacity: 1,
-                    color: 'white',
-                    dashArray: '3',
-                    fillOpacity: 0.7,
-                    className: name.replaceAll(" ", "_")
-                }
-                return style_obj
-            },
-            onEachFeature: VIEWER.formatPopupForNewberryData
-        })
+        //         const name = feature.properties._name ?? ""
+        //         const fcolor = getColor(count)
+        //         const style_obj = 
+        //         {
+        //             fillColor: fcolor,
+        //             weight: 2,
+        //             opacity: 1,
+        //             color: 'white',
+        //             dashArray: '3',
+        //             fillOpacity: 0.7,
+        //             className: name.replaceAll(" ", "_")
+        //         }
+        //         return style_obj
+        //     },
+        //     onEachFeature: VIEWER.formatPopupForNewberryData
+        // })
 
         VIEWER.geoJsonLayers.judicial_districts = L.geoJSON(geoMarkers.judicial_districts, {
             style: function(feature) {
@@ -856,7 +854,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             "Judicial Circuits": VIEWER.geoJsonLayers.judicial_circuits,
             "States & Territories": VIEWER.geoJsonLayers.stateFeatures,
             //"Counties" : VIEWER.geoJsonLayers.countyFeatures,
-            "Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
+            //"Postmasters Heatmap": VIEWER.geoJsonLayers.postmastersFeatures,
             "Individual Locations": VIEWER.geoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayerGroup
         }
