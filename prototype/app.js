@@ -463,12 +463,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     case "states":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.geoJsonByLayers[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
+                            const count = VIEWER.determineEmployeeCount(f)
                             if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
                                 const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
                                 const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
                                 const currEnd = new Date(userInputYear)
                                 const currStart = new Date(userInputYear)
                                 return sDate <= currStart && eDate >= currEnd
+                                // We will want to make sure the states with a count of 'N/A' hide.  0 should show.
+                                //return sDate <= currStart && eDate >= currEnd && parseInt(count) > -1
                             }
                         })
                     break

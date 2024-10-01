@@ -43,8 +43,32 @@
                     <div class="slide"> 
                         <h4 class="inline">1789</h4>
                         <input id="timeSlider" class="inline" type="range"  min="1789" max="1829" value="1829" step="1">
+                        <!-- <input id="timeSlider" class="inline" type="range"  min="1789" max="1829" value="1829" step="1" list="markYears">
+                        <datalist id="markYears">
+                          <option value="1789"></option>
+                          <option value="1794"></option>
+                          <option value="1799"></option>
+                          <option value="1804"></option>
+                          <option value="1809"></option>
+                          <option value="1814"></option>
+                          <option value="1819"></option>
+                          <option value="1824"></option>
+                          <option value="1829"></option>
+                        </datalist> -->
+                        <!-- <datalist id="markYears">
+                          <option value="1789" label="1789"></option>
+                          <option value="1794" label="1794"></option>
+                          <option value="1799" label="1799"></option>
+                          <option value="1804" label="1804"></option>
+                          <option value="1809" label="1809"></option>
+                          <option value="1814" label="1814"></option>
+                          <option value="1819" label="1819"></option>
+                          <option value="1824" label="1824"></option>
+                          <option value="1829" label="1829"></option>
+                        </datalist> -->
                         <h4 class="inline">1829</h4>
                     </div>
+                    <small>Use the slider to select a year</small>
                 </div>
                 <div id="leafletInstanceContainer">
                     <div id="loadingMessage" style="text-align: center;">
@@ -52,7 +76,7 @@
                     </div> 
                     <div id="kastorMapLegend" class="is-hidden">
                         <h5>Legend</h5>
-                        <!-- <h7>Location Colors</h7> -->
+                        <h7 onclick="openHowTo()">About</h7>
                         <ul>
                             <li><span style="color:blue;">Location</span></li>
                             <li><span style="color:yellow;">Lighthouse</span></li>

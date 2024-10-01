@@ -71,16 +71,28 @@ https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
   --grid-gutter: 2rem;
   --font-size: 1.2rem;
   --font-color: #707070;
-  --font-family-sans: "SSP Regular";
+  --font-family-sans: "LB Regular";
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, h7, h8 {
   font-family: "LB Regular";
 }
 
 p {
-  font-family: "SSP Regular";
+  font-family: "LB Regular";
   font-size: 16pt;
+}
+
+ul {
+  font-family: "LB Regular";
+}
+
+ol {
+  font-family: "LB Regular";
+}
+
+li {
+  font-family: "LB Regular";
 }
 
 #leafletInstanceContainer{
@@ -135,6 +147,7 @@ p {
   border: 2px solid #B85323;
   font-size: 11pt;
   line-height: 12pt;
+  font-family: 'LB Regular';
 }
 
 .button.secondary {
@@ -155,8 +168,17 @@ p {
   color: white;
   background-color: #173E3A;
   z-index: 401;
-  height: 90px;
+  height: 95px;
   width: 100%;
+}
+
+.slider-container small {
+  position: relative;
+  top: -15px;
+  display: block;
+  text-align: center;
+  font-size:  10pt;
+  right: 28px;
 }
 
 .slider-controls h2 {
@@ -233,7 +255,7 @@ p {
 }
 
 .zoomNotice{
-  font-family: monospace;
+  font-family: "LB Regular";
   font-weight: bold;
 }
 
@@ -264,7 +286,6 @@ p {
 
 .featureInfo {
     margin: 4px 0px;
-/*    font-family: monospace;*/
     font-size: 8pt;
     border-bottom: 1px solid black;
     padding: 4px 0px;
@@ -456,16 +477,22 @@ path {
   padding: 1em;
   z-index: 401;
   color: black;
+  font-family: 'LB Regular';
 }
 
 #kastorMapLegend h5{
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0;
 }
 
 #kastorMapLegend h7{
+  text-align: center;
   font-weight: bold;
   text-decoration: underline;
+  display: block;
+  color:  black;
+  cursor:  pointer;
 }
 
 #kastorMapLegend ul{
@@ -647,4 +674,16 @@ input[type="range"]::-webkit-slider-thumb {
     -moz-border-radius: 40px;
     border-radius: 40px;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0075ff), color-stop(50%,#0075ff), color-stop(51%,#0075ff), color-stop(100%,#0075ff));
+}
+
+datalist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  writing-mode: vertical-lr;
+}
+
+
+datalist option {
+  padding: 0;
 }
