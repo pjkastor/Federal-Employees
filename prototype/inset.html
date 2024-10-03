@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="./marker-clustering/MarkerCluster.Default.css" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <script src="./marker-clustering/leaflet.markercluster-src.js"></script>
-        <script src="./app.js" type="module"></script>
+        <script src="./inset.js" type="module"></script>
         <link rel="stylesheet" href="./styling/inset.css" />
     </head>
     <body>
@@ -43,32 +43,9 @@
                     <div class="slide"> 
                         <h4 class="inline">1789</h4>
                         <input id="timeSlider" class="inline" type="range"  min="1789" max="1829" value="1829" step="1">
-                        <!-- <input id="timeSlider" class="inline" type="range"  min="1789" max="1829" value="1829" step="1" list="markYears">
-                        <datalist id="markYears">
-                          <option value="1789"></option>
-                          <option value="1794"></option>
-                          <option value="1799"></option>
-                          <option value="1804"></option>
-                          <option value="1809"></option>
-                          <option value="1814"></option>
-                          <option value="1819"></option>
-                          <option value="1824"></option>
-                          <option value="1829"></option>
-                        </datalist> -->
-                        <!-- <datalist id="markYears">
-                          <option value="1789" label="1789"></option>
-                          <option value="1794" label="1794"></option>
-                          <option value="1799" label="1799"></option>
-                          <option value="1804" label="1804"></option>
-                          <option value="1809" label="1809"></option>
-                          <option value="1814" label="1814"></option>
-                          <option value="1819" label="1819"></option>
-                          <option value="1824" label="1824"></option>
-                          <option value="1829" label="1829"></option>
-                        </datalist> -->
                         <h4 class="inline">1829</h4>
                     </div>
-                    <small>Use the slider to select a year</small>
+                    <small>choose a year using the slider above</small>
                 </div>
                 <div id="leafletInstanceContainer">
                     <div id="loadingMessage" style="text-align: center;">
@@ -152,15 +129,46 @@
                     </ul>
                 </div>
             </div>
+            <div id="greetingContainer" class="is-hidden">
+                <div id="greeting">
+                    <input id="closeGreeting" class="button primary" value="close" onclick="closeGreeting(event)" />
+                    <h2>Welcome to the Map</h2>
+                    <ul>
+                        <li> Select "Layers" in the top right to see the different forms of information you can explore. </li>
+                        <li> Use "Zoom" in the bottom right to shrink or enlarge the viewing area. Keyboard <code>+</code> or <code>-</code> and mousewheels work as well. </li>
+                        <li> Use the white scrollbar above to view locations for a specific year.  The chosen year appears at the top center of the window. </li>
+                        <li> Select "See All Locations" at the top of the map window to see every location at once from all timeframes. </li>
+                    </ul>
+                    <p>Select "How To Use" at the top of the map window for additional details.</p>
+                    <label>
+                        <input type="checkbox" onchange="changeGreetingSetting(event)"/>
+                        *Do not show this message again
+                    </label>
+                </div>
+            </div>
         </div>
         <script>
+
+            function changeGreetingSetting(event){
+                const checkbox = event.target;
+                if(checkbox.checked) sessionStorage.setItem("kastor-map-greeting-message", "checked")
+                else sessionStorage.set("kastor-map-greeting-message", "")
+                return
+            }
+
+            function closeGreeting(event){
+                greetingContainer.classList.add("is-hidden")
+            }
+
             function closeHowTo(event){
                 howToContainer.classList.add("is-hidden")
             }
 
             function openHowTo(event){
+                greetingContainer.classList.add("is-hidden")
                 howToContainer.classList.remove("is-hidden")
             }
+
         </script>
     </body>
 </html>

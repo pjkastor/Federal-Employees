@@ -95,6 +95,10 @@ li {
   font-family: "LB Regular";
 }
 
+label{
+  font-family: "LB Regular";
+}
+
 #leafletInstanceContainer{
   height: 100%;
   width: 100%;
@@ -652,6 +656,64 @@ path {
     position: absolute;
     right: 0em;
     margin: -1em 1em;
+}
+
+#greeting{
+    position: relative;
+    margin: 0 auto;
+    color: black;
+    padding:  1em;
+}
+
+#greeting ul{
+  font-size: 13pt;
+  font-weight:  bold;
+}
+
+#greeting p{
+  font-size: 13pt;
+  text-align:  center;
+  font-weight:  bold;
+}
+
+#greeting a{
+  color: #B85323;
+}
+
+#greeting h2{
+  color: white;
+  text-align:  center;
+  text-decoration: underline;
+}
+
+#greeting label{
+  display:  block;
+  text-align:  right;
+  font-style: italic;
+  font-weight: bold;
+}
+
+#greeting input[type="checkbox"]{
+  cursor:  pointer;
+}
+
+#greetingContainer{
+    position: absolute;
+    z-index: 500;
+    background-color: #2A6EFF;
+    display: block;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 80%;
+    top: 195px;
+}
+
+#closeGreeting{
+    width: 5em;
+    position: absolute;
+    right: 0em;
+    margin: 0em 1em;
 }
 
 input[type="range"] {
