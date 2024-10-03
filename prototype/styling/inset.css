@@ -707,6 +707,7 @@ path {
     margin: 0 auto;
     width:  fit-content;
     max-width: 80%;
+    max-height:  290px;
     top: 195px;
 }
 
