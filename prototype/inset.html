@@ -152,7 +152,7 @@
             function changeGreetingSetting(event){
                 const checkbox = event.target;
                 if(checkbox.checked) sessionStorage.setItem("kastor-map-greeting-message", "checked")
-                else sessionStorage.set("kastor-map-greeting-message", "")
+                else sessionStorage.setItem("kastor-map-greeting-message", "")
                 return
             }
 
