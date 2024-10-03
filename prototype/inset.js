@@ -5,6 +5,8 @@
 
 let VIEWER = {}
 
+VIEWER.once = true
+
 VIEWER.rawGeoJSONData = {}
 
 VIEWER.leafletFormattedGeoJsonLayers = {}
@@ -94,7 +96,8 @@ document.addEventListener("KastorLeafletInitialized", event => {
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     kastorMapLegend.classList.remove("is-hidden")
     leafletInstanceContainer.classList.add("has-loaded")
-    VIEWER.showGreeting()
+    if(VIEWER.once) VIEWER.showGreeting()
+    VIEWER.once = false
 })
 
 VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel){
