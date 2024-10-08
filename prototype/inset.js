@@ -465,9 +465,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                                 const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
                                 const currEnd = new Date(userInputYear)
                                 const currStart = new Date(userInputYear)
-                                return sDate <= currStart && eDate >= currEnd
+                                //return sDate <= currStart && eDate >= currEnd
                                 // We will want to make sure the states with a count of 'N/A' hide.  0 should show.
-                                //return sDate <= currStart && eDate >= currEnd && parseInt(count) > -1
+                                return sDate <= currStart && eDate >= currEnd && parseInt(count) > -1
                             }
                         })
                     break
@@ -1036,9 +1036,11 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             layer.options.endDate = feature.properties["END_DATE"]
         }
         if(feature.properties["Employees_Count"]){
-            const count = VIEWER.determineEmployeeCount(feature)
+            let count = VIEWER.determineEmployeeCount(feature)
+            // values of undefined, "", or "N/A" will all show "N/A" unless we choose otherwise.
+            if(!parseInt(count) || count === -1) count = "N/A"
             layer.options["Employees_Count"] = count
-            popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count}</div>`
+            popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count} </div>`
         }
         else{
             popupContent += `<div class="featureInfo"><label>Employee Count</label> N/A </div>`
