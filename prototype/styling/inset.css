@@ -702,7 +702,7 @@ path {
     position: absolute;
     z-index: 500;
     background-color: #2A6EFF;
-    display: block;
+    display: flex;
     left: 0;
     right: 0;
     margin: 0 auto;
