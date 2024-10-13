@@ -504,6 +504,42 @@ path {
   font-weight: bold;
 }
 
+
+
+#heatmapLegend{
+  position: absolute;
+  font-size: 10pt;
+  background-color: darkgrey;
+  width: fit-content;
+  box-shadow: 8px 0px 22px gray;
+  top: 97px;
+  left: 1em;
+  padding: 1em;
+  z-index: 401;
+  color: black;
+  font-family: 'LB Regular';
+}
+
+#heatmapLegend h5{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+#heatmapLegend h7{
+  text-align: center;
+  font-weight: bold;
+  text-decoration: underline;
+  display: block;
+  color:  black;
+  cursor:  pointer;
+}
+
+#heatmapLegend ul{
+  margin-left: -1em;
+  font-weight: bold;
+}
+
 .legendIcon{
   min-height: 38px;
 }

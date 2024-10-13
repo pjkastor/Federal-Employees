@@ -976,6 +976,11 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         
         VIEWER.mymap.addEventListener("overlayadd", function(event) {
             VIEWER.locationsClusterLayerGroup.bringToFront()
+            if(event.name === "Postmaster Heatmap") heatmapLegend.classList.remove("is-hidden")
+        })
+
+        VIEWER.mymap.addEventListener("overlayremove", function(event) {
+            if(event.name === "Postmaster Heatmap") heatmapLegend.classList.add("is-hidden")
         })
 
         VIEWER.mymap.addEventListener("zoomend", function (event) {
