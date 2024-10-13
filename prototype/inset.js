@@ -96,7 +96,10 @@ document.addEventListener("KastorLeafletInitialized", event => {
     leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     kastorMapLegend.classList.remove("is-hidden")
-    heatmapLegend.classList.remove("is-hidden")
+     VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+        if(chk.nextElementSibling.innerText.trim()  === "Postmaster Heatmap" && chk.checked)
+            heatmapLegend.classList.remove("is-hidden")
+    })
     leafletInstanceContainer.classList.add("has-loaded")
     if(VIEWER.once) VIEWER.showGreeting()
     VIEWER.once = false
