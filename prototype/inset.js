@@ -980,7 +980,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         }
         
         VIEWER.mymap.addEventListener("overlayadd", function(event) {
-            VIEWER.locationsClusterLayerGroup.bringToFront()
+            VIEWER.locationsClusterLayerGroup._featureGroup.bringToFront()
             if(event.name === "Postmaster Heatmap") heatmapLegend.classList.remove("is-hidden")
         })
 
