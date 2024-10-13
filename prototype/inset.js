@@ -96,6 +96,7 @@ document.addEventListener("KastorLeafletInitialized", event => {
     leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     kastorMapLegend.classList.remove("is-hidden")
+    heatmapLegend.classList.remove("is-hidden")
     leafletInstanceContainer.classList.add("has-loaded")
     if(VIEWER.once) VIEWER.showGreeting()
     VIEWER.once = false
@@ -433,6 +434,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
         loadingMessage.classList.remove("is-hidden")
         kastorMapLegend.classList.add("is-hidden")
+        heatmapLegend.classList.add("is-hidden")
     }
 
     setTimeout(function(){
