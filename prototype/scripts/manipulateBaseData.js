@@ -110,6 +110,21 @@ async function updateCounties(){
     return countiesFeatureCollection
 }
 
+async function updateStates(){
+    let statesFeatureCollection = await fetch("./data/StateBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
+    const newbStates = await fetch("./data/state_metadata.json").then(resp => resp.json()).catch(err => {return []})
+    statesFeatureCollection.features.forEach(f => {
+        // Find the corresponding feature in newbCounties and absorb the properties
+        let id = parseInt(f.properties.ID_NUM)
+        let metadata = newbStates.filter(s => parseInt(s.ID_NUM) === id)[0]
+        metadata.ID_NUM = parseInt(metadata.ID_NUM)
+        const count = f.properties.Employees_Count
+        f.properties = metadata
+    })
+    console.log(statesFeatureCollection)
+    return statesFeatureCollection
+}
+
 async function addEmployeeCountsToCounties(){
     let countiesFeatureCollection = await fetch("./data/CountyBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
     let counts = await fetch("./data/CountyEmployees.json").then(resp => resp.json()).catch(err => {return []})
@@ -141,13 +156,9 @@ async function addEmployeeCountsToStates(){
     let counts = await fetch("./data/StateEmployees.json").then(resp => resp.json()).catch(err => {return []})
     let alterations = 0
     for(count of counts){
-        const stateID = count["Newberry State"]
+        const stateID = count.ID
         statesFeatureCollection.features = statesFeatureCollection.features.map(c => {
             if(c.properties.ID === stateID) {
-                delete count["Newberry State"]
-                delete count["Start_Date"]
-                delete count["End_Date"]
-                delete count["State Name"]
                 c.properties.Employees_Count = count
                 alterations ++
             }
