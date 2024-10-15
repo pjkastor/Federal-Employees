@@ -1,6 +1,7 @@
 /* 
  * @author Bryan Haberberger
- * https://github.com/thehabes 
+ * https://github.com/thehabes
+ * https://habesoftware.rocks
  */
 // cfg1789.wustl.edu
 
@@ -62,10 +63,10 @@ VIEWER.mymap = null
 //Keep track of the date chosen by the user.
 VIEWER.userInputYear = "1829"
 
-//Starting Zoom level based on interface
+//Starting Zoom
 VIEWER.startZoom = 2
 
-//Starting coords based on interface
+//Starting Coords
 VIEWER.startCoords = [21, 30] 
 
 // VIEWER.startBounds = [
@@ -73,6 +74,7 @@ VIEWER.startCoords = [21, 30]
 //     [74.77584300649235, 166.46484375000003]
 // ]
 
+// Starting Viewport Boundary
 VIEWER.startBounds = [
     [-39.23225314171489, -176.484375],
     [74.01954331150228, 157.50000000000003]
@@ -356,7 +358,6 @@ VIEWER.init = async function() {
                 ...dc_circuit
             ]
         }
-    const loc = document.location.href    
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
@@ -473,7 +474,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                                 const currStart = new Date(userInputYear)
                                 //return sDate <= currStart && eDate >= currEnd
                                 // We will want to make sure the states with a count of 'N/A' hide.  0 should show.
-                                return sDate <= currStart && eDate >= currEnd && parseInt(count) > -1
+                                if(!parseInt(count) || parseInt(count) <= -1){
+                                    console.log("N/A")
+                                }
+                                return sDate <= currStart && eDate >= currEnd && parseInt(count) && parseInt(count) > -1
                             }
                         })
                     break
@@ -1049,9 +1053,12 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         if(feature.properties["Employees_Count"]){
             let count = VIEWER.determineEmployeeCount(feature)
             // values of undefined, "", or "N/A" will all show "N/A" unless we choose otherwise.
-            if(!parseInt(count) || count === -1) count = "N/A"
+            if(!parseInt(count) || parseInt(count) === -1) count = "N/A"
             layer.options["Employees_Count"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count} </div>`
+            if(count === "N/A"){
+                console.log("N/A")
+            }
         }
         else{
             popupContent += `<div class="featureInfo"><label>Employee Count</label> N/A </div>`
