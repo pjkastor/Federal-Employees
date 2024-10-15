@@ -522,8 +522,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 function getColor(d) {
                     d = parseInt(d)
                     const color = 
-                       d > 1500  ? '#800026' :
-                       d > 800  ? '#BD0026' :
+                       d > 800  ? '#800026' :
+                       d > 600  ? '#BD0026' :
                        d > 400  ? '#E31A1C' :
                        d > 200  ? '#FC4E2A' :
                        d > 100  ? '#FD8D3C' :
