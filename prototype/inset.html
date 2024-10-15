@@ -181,28 +181,6 @@
                 howToContainer.classList.remove("is-hidden")
             }
 
-            async function addEmployeeCountsToStates(){
-    let statesFeatureCollection = await fetch("./data/StateBoundaries.json").then(resp => resp.json()).catch(err => {return []})
-    let counts = await fetch("./data/StateEmployees.json").then(resp => resp.json()).catch(err => {return []})
-    let alterations = 0
-    for(count of counts){
-        const stateID = count.ID
-        statesFeatureCollection.features = statesFeatureCollection.features.map(c => {
-            if(c.properties.ID === stateID) {
-                delete count.ID
-                delete count.Start_Date
-                delete count.End_Date
-                c.properties.Employees_Count = count
-                alterations ++
-            }
-            return c
-        })
-    }
-    console.log(`ALTERATIONS: ${alterations}`)
-    console.log("FEATURE COLLECTION")
-    console.log(statesFeatureCollection)
-    return statesFeatureCollection
-}
         </script>
     </body>
 </html>

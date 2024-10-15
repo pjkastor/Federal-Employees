@@ -118,7 +118,8 @@ async function updateStates(){
         let id = parseInt(f.properties.ID_NUM)
         let metadata = newbStates.filter(s => parseInt(s.ID_NUM) === id)[0]
         metadata.ID_NUM = parseInt(metadata.ID_NUM)
-        const count = f.properties.Employees_Count
+        const count = f.properties?.Employees_Count
+        if(count) metadata.Employees_Count = count
         f.properties = metadata
     })
     console.log(statesFeatureCollection)
@@ -160,6 +161,8 @@ async function addEmployeeCountsToStates(){
         statesFeatureCollection.features = statesFeatureCollection.features.map(c => {
             if(c.properties.ID === stateID) {
                 delete count.ID
+                delete count.Start_Date
+                delete count.End_Date
                 c.properties.Employees_Count = count
                 alterations ++
             }

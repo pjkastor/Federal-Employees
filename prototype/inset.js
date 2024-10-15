@@ -543,7 +543,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     opacity: 1,
                     color: 'white',
                     dashArray: '3',
-                    fillOpacity: 0.7,
+                    fillOpacity: 1,
                     className: name.replaceAll(" ", "_")
                 }
                 return style_obj
