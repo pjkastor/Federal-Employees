@@ -94,9 +94,10 @@ li {
   font-family: "LB Regular";
 }
 
-label{
+label {
   font-family: "LB Regular";
 }
+
 
 #leafletInstanceContainer{
   height: 100%;
@@ -129,6 +130,7 @@ label{
   font-size: 14pt;
   position: relative;
   z-index: 10;
+  font-family: "LB Regular";
 }
 
 #infoContainer {
@@ -150,7 +152,7 @@ label{
   border: 2px solid #B85323;
   font-size: 11pt;
   line-height: 12pt;
-  font-family: 'LB Regular';
+/*   font-family: 'LB Regular'; */
 }
 
 .button.secondary {
@@ -258,7 +260,7 @@ label{
 }
 
 .zoomNotice{
-  font-family: "LB Regular";
+/*   font-family: "LB Regular"; */
   font-weight: bold;
 }
 
@@ -481,7 +483,7 @@ path {
   padding: 1em;
   z-index: 401;
   color: black;
-  font-family: 'LB Regular';
+/*   font-family: 'LB Regular'; */
 }
 
 #kastorMapLegend h5{
@@ -517,7 +519,7 @@ path {
   padding: 1em;
   z-index: 401;
   color: black;
-  font-family: 'LB Regular';
+/*   font-family: 'LB Regular'; */
 }
 
 #heatmapLegend h5{

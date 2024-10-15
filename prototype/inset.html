@@ -181,22 +181,6 @@
                 howToContainer.classList.remove("is-hidden")
             }
 
-            async function updateStates(){
-    let statesFeatureCollection = await fetch("./data/StateBoundaries_new.json").then(resp => resp.json()).catch(err => {return []})
-    const newbStates = await fetch("./data/state_metadata.json").then(resp => resp.json()).catch(err => {return []})
-    statesFeatureCollection.features.forEach(f => {
-        // Find the corresponding feature in newbCounties and absorb the properties
-        let id = parseInt(f.properties.ID_NUM)
-        let metadata = newbStates.filter(s => parseInt(s.ID_NUM) === id)[0]
-        metadata.ID_NUM = parseInt(metadata.ID_NUM)
-        const count = f.properties?.Employees_Count
-        if(count) metadata.Employees_Count = count
-        f.properties = metadata
-    })
-    console.log(statesFeatureCollection)
-    return statesFeatureCollection
-}
-
         </script>
     </body>
 </html>
