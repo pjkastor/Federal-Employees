@@ -1042,13 +1042,13 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         else if (feature.properties["TERR_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["TERR_TYPE"]}</div>`
         }
-        if (feature.properties["START_DATE"]) {
-            popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["START_DATE"])}</div>`
-            layer.options.startDate = feature.properties["START_DATE"]
+        if (feature.properties["RECORDS_START"]) {
+            popupContent += `<div class="featureInfo"><label>Employees Start In:</label> ${parseInt(feature.properties["RECORDS_START"])}</div>`
+            layer.options.startDate = feature.properties["RECORDS_START"]
         }
-        if (feature.properties["END_DATE"]) {
-            popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["END_DATE"])}</div>`
-            layer.options.endDate = feature.properties["END_DATE"]
+        if (feature.properties["RECORDS_END"]) {
+            popupContent += `<div class="featureInfo"><label>Employees End In:</label> ${parseInt(feature.properties["RECORDS_END"])}</div>`
+            layer.options.endDate = feature.properties["RECORDS_END"]
         }
         if(feature.properties["Employees_Count"]){
             let count = VIEWER.determineEmployeeCount(feature)
