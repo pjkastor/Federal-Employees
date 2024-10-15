@@ -1020,7 +1020,7 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         if(feature.properties["Employees_Link"]){
             popupContent += `
             <div class="featureInfo is-center">
-                <a href="${feature.properties["Employees_Link"]}" target="_parent" class="button secondary Employees_Link">see who worked here</a>
+                <a href="${feature.properties["Employees_Link"]}" target="_top" class="button secondary Employees_Link">see who worked here</a>
             </div>`
         }
         layer.bindPopup(popupContent)
@@ -1094,7 +1094,7 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
         if(feature.properties["Employees_Link"]){
             popupContent += `
             <div class="featureInfo is-center">
-                <a href="${feature.properties["Employees_Link"]}" target="_parent" class="button secondary Employees_Link">see who worked here</a>
+                <a href="${feature.properties["Employees_Link"]}" target="_top" class="button secondary Employees_Link">see who worked here</a>
             </div>`
         }
         
