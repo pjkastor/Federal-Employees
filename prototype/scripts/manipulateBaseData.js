@@ -159,6 +159,7 @@ async function addEmployeeCountsToStates(){
         const stateID = count.ID
         statesFeatureCollection.features = statesFeatureCollection.features.map(c => {
             if(c.properties.ID === stateID) {
+                delete count.ID
                 c.properties.Employees_Count = count
                 alterations ++
             }
