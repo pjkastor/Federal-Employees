@@ -42,7 +42,7 @@ VIEWER.userInputYear = "1829"
 VIEWER.startZoom = 2
 
 //Starting Coords
-VIEWER.startCoords = [21, 30] 
+VIEWER.startCoords = [21, 30]
 
 // Starting Viewport Boundary
 VIEWER.startBounds = [
@@ -65,35 +65,34 @@ document.addEventListener("KastorLeafletInitialized", event => {
     loadingMessage.innerHTML = `Arranging Map Data...<br>`
     datelessView.classList.remove("is-hidden")
     const infoContainer = document.getElementById("infoContainer")
-    if(infoContainer) infoContainer.classList.remove("is-hidden")
+    if (infoContainer) infoContainer.classList.remove("is-hidden")
     document.querySelector(".slider-container").classList.remove("is-hidden")
     leafletInstanceContainer.style.backgroundImage = "none"
     leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
     leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     kastorMapLegend.classList.remove("is-hidden")
-     VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-        if(chk.nextElementSibling.innerText.trim()  === "Postmaster Heatmap" && chk.checked)
+    VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
+        if (chk.nextElementSibling.innerText.trim() === "Postmaster Heatmap" && chk.checked)
             heatmapLegend.classList.remove("is-hidden")
     })
     leafletInstanceContainer.classList.add("has-loaded")
-    if(VIEWER.once) VIEWER.showGreeting()
+    if (VIEWER.once) VIEWER.showGreeting()
     VIEWER.once = false
 })
 
 /**
  * Change out the points for the icons at a specific zoom level.
  */
-VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel){
-    if(!VIEWER.mymap) return
-    if(!oldlevel || !newlevel) return
+VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel) {
+    if (!VIEWER.mymap) return
+    if (!oldlevel || !newlevel) return
     const maxZoom = VIEWER.mymap.getMaxZoom()
     const zoomInScenario = (newlevel > oldlevel)
     VIEWER.locationsClusterLayerGroup.clearLayers()
-    if(newlevel >= 8){
+    if (newlevel >= 8) {
         // Hide the cluster points and show the cluster icons
         VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_icons)
-    }
-    else{
+    } else {
         // Show the cluster points and hide the cluster icons
         VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_points)
     }
@@ -153,175 +152,172 @@ VIEWER.init = async function() {
         first_circuit_1800,
         first_circuit_1802,
         first_circuit_1807,
-        
+
         second_circuit_1789,
         second_circuit_1800,
-        
+
         third_circuit_1790,
         third_circuit_1800,
         third_circuit_1802,
-        
+
         fourth_circuit_1800,
         fourth_circuit_1802,
-        
+
         fifth_circuit_1800,
         fifth_circuit_1802,
-        
+
         sixth_circuit_1800,
         sixth_circuit_1802,
-        
-        seventh_circuit_1807,
-        
-        dc_circuit
-    ] 
-    = await Promise.all([
-        fetch("./data/AllLocations.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1798_Tax_Divisions_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/1814_Districts_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/StateBoundaries.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/judicial_districts/AL_1819_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/AL_1824_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/CT_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/DC_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/DE_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/GA_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/IL_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/IN_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/KY_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/LA_1804_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/LA_1812_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/LA_1823_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/MA_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/MD_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/ME_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/MI_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/MO_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/MS_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NC_1789_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NC_1800_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NH_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NJ_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NY_1789_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NY_1814_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/NY_1818_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/OH_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/PA_1789_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/PA_1818_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/PA_1823_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/RI_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/SC_1789_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/TN_1797_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/TN_1802_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/VA_1789_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/VA_1819_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/VA_1824_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_districts/VT_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
 
-        fetch("./data/judicial_circuits/First_Circuit_1789.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/First_Circuit_1790.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/First_Circuit_1791.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/First_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/First_Circuit_1802.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/First_Circuit_1807.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Second_Circuit_1789.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Second_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Third_Circuit_1790.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Third_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Third_Circuit_1802.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Fourth_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Fourth_Circuit_1802.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Fifth_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Fifth_Circuit_1802.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Sixth_Circuit_1800.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        fetch("./data/judicial_circuits/Sixth_Circuit_1802.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
-        
-        fetch("./data/judicial_circuits/DC_Circuit.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
+        seventh_circuit_1807,
+
+        dc_circuit
+    ] = await Promise.all([
+        fetch("./data/AllLocations.json", { "cache": "default" }).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1798_Tax_Divisions_Merged.json", { "cache": "default" }).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/1814_Districts_Merged.json", { "cache": "default" }).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/StateBoundaries.json", { "cache": "default" }).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/judicial_districts/AL_1819_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/AL_1824_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/CT_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/DC_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/DE_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/GA_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/IL_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/IN_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/KY_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/LA_1804_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/LA_1812_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/LA_1823_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/MA_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/MD_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/ME_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/MI_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/MO_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/MS_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NC_1789_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NC_1800_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NH_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NJ_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NY_1789_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NY_1814_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/NY_1818_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/OH_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/PA_1789_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/PA_1818_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/PA_1823_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/RI_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/SC_1789_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/TN_1797_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/TN_1802_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/VA_1789_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/VA_1819_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/VA_1824_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_districts/VT_district.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/First_Circuit_1789.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/First_Circuit_1790.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/First_Circuit_1791.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/First_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/First_Circuit_1802.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/First_Circuit_1807.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Second_Circuit_1789.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Second_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Third_Circuit_1790.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Third_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Third_Circuit_1802.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Fourth_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Fourth_Circuit_1802.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Fifth_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Fifth_Circuit_1802.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Sixth_Circuit_1800.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+        fetch("./data/judicial_circuits/Sixth_Circuit_1802.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/Seventh_Circuit_1807.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
+
+        fetch("./data/judicial_circuits/DC_Circuit.geojson", { "cache": "default" }).then(resp => resp.json()).then(j => j.features).catch(err => { return {} })
     ])
 
-    let judicial_districts = 
-        {
-            "__name":"judicial_districts", 
-            "@type": "FeatureCollection",
-            "features": [
-                ...al_1819_district,
-                ...al_1824_district,
-                ...ct_district,
-                ...dc_district,
-                ...de_district,
-                ...ga_district,
-                ...il_district,
-                ...in_district,
-                ...ky_district,
-                ...la_1804_district,
-                ...la_1812_district,
-                ...la_1823_district,
-                ...ma_district,
-                ...md_district,
-                ...me_district,
-                ...mi_district,
-                ...mo_district,
-                ...ms_district,
-                ...nc_1789_district,
-                ...nc_1800_district,
-                ...nh_district,
-                ...nj_district,
-                ...ny_1789_district,
-                ...ny_1814_district,
-                ...ny_1823_district,
-                ...pa_1789_district,
-                ...pa_1818_district,
-                ...oh_district, 
-                ...pa_1823_district,
-                ...ri_district,
-                ...sc_1789_district,
-                ...tn_1797_district,
-                ...tn_1802_district,
-                ...va_1789_district,
-                ...va_1819_district,
-                ...va_1824_district,
-                ...vt_district
-            ]
-        }
-    let judicial_circuits = 
-        {
-            "__name":"judicial_circuits", 
-            "@type": "FeatureCollection",
-            "features": [
-                ...first_circuit_1789,
-                ...first_circuit_1790,
-                ...first_circuit_1791,
-                ...first_circuit_1800,
-                ...first_circuit_1802,
-                ...first_circuit_1807,
+    let judicial_districts = {
+        "__name": "judicial_districts",
+        "@type": "FeatureCollection",
+        "features": [
+            ...al_1819_district,
+            ...al_1824_district,
+            ...ct_district,
+            ...dc_district,
+            ...de_district,
+            ...ga_district,
+            ...il_district,
+            ...in_district,
+            ...ky_district,
+            ...la_1804_district,
+            ...la_1812_district,
+            ...la_1823_district,
+            ...ma_district,
+            ...md_district,
+            ...me_district,
+            ...mi_district,
+            ...mo_district,
+            ...ms_district,
+            ...nc_1789_district,
+            ...nc_1800_district,
+            ...nh_district,
+            ...nj_district,
+            ...ny_1789_district,
+            ...ny_1814_district,
+            ...ny_1823_district,
+            ...pa_1789_district,
+            ...pa_1818_district,
+            ...oh_district,
+            ...pa_1823_district,
+            ...ri_district,
+            ...sc_1789_district,
+            ...tn_1797_district,
+            ...tn_1802_district,
+            ...va_1789_district,
+            ...va_1819_district,
+            ...va_1824_district,
+            ...vt_district
+        ]
+    }
+    let judicial_circuits = {
+        "__name": "judicial_circuits",
+        "@type": "FeatureCollection",
+        "features": [
+            ...first_circuit_1789,
+            ...first_circuit_1790,
+            ...first_circuit_1791,
+            ...first_circuit_1800,
+            ...first_circuit_1802,
+            ...first_circuit_1807,
 
-                ...second_circuit_1789,
-                ...second_circuit_1800,
+            ...second_circuit_1789,
+            ...second_circuit_1800,
 
-                ...third_circuit_1790,
-                ...third_circuit_1800,
-                ...third_circuit_1802,
+            ...third_circuit_1790,
+            ...third_circuit_1800,
+            ...third_circuit_1802,
 
-                ...fourth_circuit_1800,
-                ...fourth_circuit_1802,
+            ...fourth_circuit_1800,
+            ...fourth_circuit_1802,
 
-                ...fifth_circuit_1800,
-                ...fifth_circuit_1802,
+            ...fifth_circuit_1800,
+            ...fifth_circuit_1802,
 
-                ...sixth_circuit_1800,
-                ...sixth_circuit_1802,
+            ...sixth_circuit_1800,
+            ...sixth_circuit_1802,
 
-                ...seventh_circuit_1807,
+            ...seventh_circuit_1807,
 
-                ...dc_circuit
-            ]
-        }
+            ...dc_circuit
+        ]
+    }
     let geoJsonData = []
     let peopleFields = []
     let peopleData = []
@@ -373,13 +369,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             "ESRI World Physical": VIEWER.baseLayers.Esri_WorldPhysical,
             "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
         }
-    }
-    else{
+    } else {
         // Prepare for 'loading' modal and pagination
         leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.add("is-hidden")
         leafletInstanceContainer.querySelector(".leaflet-control-container").classList.add("is-hidden")
         const infoContainer = document.getElementById("infoContainer")
-        if(infoContainer) infoContainer.classList.add("is-hidden")
+        if (infoContainer) infoContainer.classList.add("is-hidden")
         document.querySelector(".slider-container").classList.add("is-hidden")
         datelessView.classList.add("is-hidden")
         leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
@@ -388,7 +383,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         heatmapLegend.classList.add("is-hidden")
     }
 
-    setTimeout(function(){
+    setTimeout(function() {
         let geoMarkers = {}
         if (parseInt(userInputYear) > 0) {
             VIEWER.userInputYear = userInputYear
@@ -400,66 +395,61 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     case "judicial_circuits":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.rawGeoJSONData[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            if (f.properties?.hasOwnProperty("Start_Date") && f.properties?.hasOwnProperty("End_Date")){
+                            if (f.properties?.hasOwnProperty("Start_Date") && f.properties?.hasOwnProperty("End_Date")) {
                                 // These are all just years but that should be OK
-                                const sDate = new Date(parseInt(f.properties["Start_Date"])+"")
-                                const eDate = new Date(parseInt(f.properties["End_Date"])+"")
+                                const sDate = new Date(parseInt(f.properties["Start_Date"]) + "")
+                                const eDate = new Date(parseInt(f.properties["End_Date"]) + "")
                                 const currEnd = new Date(userInputYear)
                                 const currStart = new Date(userInputYear)
-                                return sDate <= currStart && eDate >= currEnd    
+                                return sDate <= currStart && eDate >= currEnd
                             }
                         })
-                    break
+                        break
                     case "states":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.rawGeoJSONData[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             const count = VIEWER.determineEmployeeCount(f)
-                            if (f.properties?.hasOwnProperty("START_DATE") && f.properties?.hasOwnProperty("END_DATE")){
-                                const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
-                                const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
+                            if (f.properties?.hasOwnProperty("START_DATE") && f.properties?.hasOwnProperty("END_DATE")) {
+                                const sDate = new Date(parseInt(f.properties["START_DATE"]) + "")
+                                const eDate = new Date(parseInt(f.properties["END_DATE"]) + "")
                                 const currEnd = new Date(userInputYear)
                                 const currStart = new Date(userInputYear)
                                 return sDate <= currStart && eDate >= currEnd && parseInt(count) && parseInt(count) > -1
                             }
                         })
-                    break
+                        break
                     default:
                         geoMarkers[entry] = VIEWER.rawGeoJSONData[entry]
                 }
             }
-        } 
-        else {
+        } else {
             geoMarkers = VIEWER.rawGeoJSONData
-            if(document.getElementById("timeSlider")){
-                document.getElementById("timeSlider").value = "0"
-            }
-            if(document.getElementById("slider-value")){
-                document.getElementById("slider-value").innerText = "N/A" 
-            }
+            document.getElementById("timeSlider").value = "0"
+            document.getElementById("slider-value").innerText = "N/A"
         }
 
         VIEWER.leafletFormattedGeoJsonLayers.statePostmastersFeatures = L.geoJSON(geoMarkers.states, {
             style: function(feature) {
                 const count = VIEWER.determineEmployeeCount(feature)
+
                 function getColor(d) {
                     d = parseInt(d)
-                    const color = 
-                       d > 800  ? '#800026' :
-                       d > 600  ? '#BD0026' :
-                       d > 400  ? '#E31A1C' :
-                       d > 200  ? '#FC4E2A' :
-                       d > 100  ? '#FD8D3C' :
-                       d > 50  ? '#FEB24C' :
-                       d > 20   ? '#FED976' :
-                       d > 0   ? '#FFEDA0' : 
-                       "white"
+                    const color =
+                        d > 800 ? '#800026' :
+                        d > 600 ? '#BD0026' :
+                        d > 400 ? '#E31A1C' :
+                        d > 200 ? '#FC4E2A' :
+                        d > 100 ? '#FD8D3C' :
+                        d > 50 ? '#FEB24C' :
+                        d > 20 ? '#FED976' :
+                        d > 0 ? '#FFEDA0' :
+                        "white"
                     return color
                 }
 
                 const name = feature.properties?._name ?? ""
                 const fcolor = getColor(count)
-                const style_obj = 
-                {
+                const style_obj = {
                     fillColor: fcolor,
                     weight: 2,
                     opacity: 1,
@@ -537,7 +527,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         VIEWER.leafletFormattedGeoJsonLayers.judicial_circuits = L.geoJSON(geoMarkers.judicial_circuits, {
             style: function(feature) {
                 const name = feature.properties["Geocoding_Location"] ?? ""
-                
+
                 return {
                     color: "white",
                     fillColor: "#990000",
@@ -577,7 +567,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         VIEWER.leafletFormattedGeoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties?._name ?? ""
-                
+
                 // Make the Capital a 'star' Icon
                 if (feature.properties?.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
@@ -591,7 +581,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
                 const type = feature.properties?.Type
                 let icon = null
-                switch(type){
+                switch (type) {
                     case "Maritime Station":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Maritime.png',
@@ -599,7 +589,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Lighthouse":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Lighthouse.png',
@@ -607,15 +597,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Non-U.S. Location":
-                       icon = L.icon({
+                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
                             iconAnchor: [12, 11], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break 
+                        break
                     case "U.S. Location":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Location.png',
@@ -623,15 +613,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Building":
-                            icon = L.icon({
-                                iconUrl: './images/map-icons/Building.png',
-                                iconSize: [24, 24], // size of the icon
-                                iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
-                                popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-                            })
-                    break
+                        icon = L.icon({
+                            iconUrl: './images/map-icons/Building.png',
+                            iconSize: [24, 24], // size of the icon
+                            iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
+                            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+                        })
+                        break
                     case "State":
                         icon = L.icon({
                             iconUrl: './images/map-icons/State.png',
@@ -639,13 +629,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     default:
                 }
-                if(icon){
+                if (icon) {
                     return L.marker(latlng, { "icon": icon })
-                }
-                else{
+                } else {
                     return L.circleMarker(latlng, {
                         radius: 6,
                         fillColor: "yellow",
@@ -654,12 +643,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                         opacity: 1,
                         fillOpacity: 1,
                         className: name.replaceAll(" ", "_")
-                    })    
+                    })
                 }
             },
             onEachFeature: VIEWER.formatPopupForKastorData
         })
-        
+
         VIEWER.cluster_points = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties?._name ?? ""
@@ -678,8 +667,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 let fill =
                     (type === "Maritime Station") ? "#008080" :
                     (type === "Lighthouse") ? "yellow" :
-                    (type === "Non-U.S. Location") ? "#7A55A6" : 
-                    (type === "U.S. Location") ? "blue" : 
+                    (type === "Non-U.S. Location") ? "#7A55A6" :
+                    (type === "U.S. Location") ? "blue" :
                     (type === "State") ? "pink" :
                     (type === "Building") ? "lightgrey" : "red"
                 return L.circleMarker(latlng, {
@@ -690,7 +679,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     opacity: 1,
                     fillOpacity: 1,
                     className: "clusterPoint"
-                })    
+                })
             },
             onEachFeature: VIEWER.formatPopupForKastorData
         })
@@ -698,7 +687,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         VIEWER.cluster_icons = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
                 const name = feature.properties?._name ?? ""
-                
+
                 // Make the Capital a 'star' Icon
                 if (feature.properties?.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
@@ -712,7 +701,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
                 const type = feature.properties?.Type
                 let icon = null
-                switch(type){
+                switch (type) {
                     case "Maritime Station":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Maritime.png',
@@ -720,7 +709,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Lighthouse":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Lighthouse.png',
@@ -728,15 +717,15 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Non-U.S. Location":
-                       icon = L.icon({
+                        icon = L.icon({
                             iconUrl: './images/map-icons/Non-US.png',
                             iconSize: [24, 24], // size of the icon
                             iconAnchor: [12, 11], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break 
+                        break
                     case "U.S. Location":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Location.png',
@@ -744,7 +733,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [15, 12], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "Building":
                         icon = L.icon({
                             iconUrl: './images/map-icons/Building.png',
@@ -752,7 +741,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     case "State":
                         icon = L.icon({
                             iconUrl: './images/map-icons/State.png',
@@ -760,13 +749,12 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                             iconAnchor: [12, 10], // point of the icon which will correspond to marker's location
                             popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
                         })
-                    break
+                        break
                     default:
                 }
-                if(icon){
+                if (icon) {
                     return L.marker(latlng, { "icon": icon })
-                }
-                else{
+                } else {
                     return L.circleMarker(latlng, {
                         radius: 6,
                         fillColor: "yellow",
@@ -775,7 +763,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                         opacity: 1,
                         fillOpacity: 1,
                         className: "clusterIcon"
-                    })    
+                    })
                 }
             },
             onEachFeature: VIEWER.formatPopupForKastorData
@@ -792,11 +780,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 spiderLegPolylineOptions: { weight: 1.5, color: 'gray', opacity: 0.75 }
             })
         }
-        if(VIEWER.currentZoomLevel >= 8){
+        if (VIEWER.currentZoomLevel >= 8) {
             // Hide the cluster points and show the cluster icons
             VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_icons)
-        }
-        else{
+        } else {
             // Show the cluster points and hide the cluster icons
             VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_points)
         }
@@ -853,7 +840,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 layers: VIEWER.selectedLayers
             })
             VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
-            VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
+            VIEWER.mymap.addControl(L.control.zoom({ position: 'bottomright' }))
             VIEWER.mymap.fitBounds(VIEWER.startBounds)
             const zoomNotice = document.createElement("a")
             zoomNotice.classList.add("zoomNotice")
@@ -867,46 +854,41 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         if (parseInt(userInputYear) <= 0) {
             VIEWER.mymap.fitBounds(VIEWER.startBounds)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
-                if(
-                    chk.nextElementSibling.innerText.trim() === "Counties"
-                    || chk.nextElementSibling.innerText.trim()  === "Postmasters Heatmap"
-                    || chk.nextElementSibling.innerText.trim()  === "Postmaster Heatmap"
-                )
-                {
-                    if(chk.checked) chk.click()
+                if (
+                    chk.nextElementSibling.innerText.trim() === "Counties" ||
+                    chk.nextElementSibling.innerText.trim() === "Postmasters Heatmap" ||
+                    chk.nextElementSibling.innerText.trim() === "Postmaster Heatmap"
+                ) {
+                    if (chk.checked) chk.click()
                     chk.parentElement.classList.add("is-hidden")
-                }
-                else if(
-                    chk.nextElementSibling.innerText.trim() === "Individual Locations" 
-                    || chk.nextElementSibling.innerText.trim() === "1814 Tax Districts" 
-                    || chk.nextElementSibling.innerText.trim() === "1798 Tax Districts"
-                    || chk.nextElementSibling.innerText.trim() === "Judicial Districts" 
-                    || chk.nextElementSibling.innerText.trim() === "Judicial Circuits"
-                )
-                {
-                    if(chk.checked) chk.click()
-                }
-                else if(chk.nextElementSibling.innerText.trim() === "Clustered Locations"){
-                    if(!chk.checked) chk.click()
+                } else if (
+                    chk.nextElementSibling.innerText.trim() === "Individual Locations" ||
+                    chk.nextElementSibling.innerText.trim() === "1814 Tax Districts" ||
+                    chk.nextElementSibling.innerText.trim() === "1798 Tax Districts" ||
+                    chk.nextElementSibling.innerText.trim() === "Judicial Districts" ||
+                    chk.nextElementSibling.innerText.trim() === "Judicial Circuits"
+                ) {
+                    if (chk.checked) chk.click()
+                } else if (chk.nextElementSibling.innerText.trim() === "Clustered Locations") {
+                    if (!chk.checked) chk.click()
                 }
             })
-        }
-        else{
+        } else {
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 chk.parentElement.classList.remove("is-hidden")
             })
         }
-        
+
         VIEWER.mymap.addEventListener("overlayadd", function(event) {
             VIEWER.locationsClusterLayerGroup._featureGroup.bringToFront()
-            if(event.name === "Postmaster Heatmap") heatmapLegend.classList.remove("is-hidden")
+            if (event.name === "Postmaster Heatmap") heatmapLegend.classList.remove("is-hidden")
         })
 
         VIEWER.mymap.addEventListener("overlayremove", function(event) {
-            if(event.name === "Postmaster Heatmap") heatmapLegend.classList.add("is-hidden")
+            if (event.name === "Postmaster Heatmap") heatmapLegend.classList.add("is-hidden")
         })
 
-        VIEWER.mymap.addEventListener("zoomend", function (event) {
+        VIEWER.mymap.addEventListener("zoomend", function(event) {
             const oldlevel = VIEWER.currentZoomLevel
             VIEWER.currentZoomLevel = event.target._zoom
             VIEWER.iconsAtZoomLevel(oldlevel, VIEWER.currentZoomLevel)
@@ -915,7 +897,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         const initialized = new CustomEvent("KastorLeafletInitialized")
         document.dispatchEvent(initialized)
 
-    },150)
+    }, 150)
 }
 
 /**
@@ -939,8 +921,7 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             })
             modName = n.join(" ")
             popupContent += `<div class="featureInfo"><label>Name:</label> ${modName} </div> `
-        }
-        else if (feature.properties["NAME"]) {
+        } else if (feature.properties["NAME"]) {
             n = feature.properties["NAME"].split(" ")
             n = n.map(w => {
                 w = w.toLowerCase()
@@ -952,8 +933,7 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         }
         if (feature.properties["CNTY_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["CNTY_TYPE"]}</div>`
-        }
-        else if (feature.properties["TERR_TYPE"]) {
+        } else if (feature.properties["TERR_TYPE"]) {
             popupContent += `<div class="featureInfo"><label>Territory Type:</label> ${feature.properties["TERR_TYPE"]}</div>`
         }
         if (feature.properties["RECORDS_START"]) {
@@ -964,16 +944,15 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
             popupContent += `<div class="featureInfo"><label>Employees End In:</label> ${parseInt(feature.properties["RECORDS_END"])}</div>`
             layer.options.endDate = feature.properties["RECORDS_END"]
         }
-        if(feature.properties["Employees_Count"]){
+        if (feature.properties["Employees_Count"]) {
             let count = VIEWER.determineEmployeeCount(feature)
-            if(!parseInt(count) || parseInt(count) === -1) count = "N/A"
+            if (!parseInt(count) || parseInt(count) === -1) count = "N/A"
             layer.options["Employees_Count"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count} </div>`
-        }
-        else{
+        } else {
             popupContent += `<div class="featureInfo"><label>Employee Count</label> N/A </div>`
         }
-        if(feature.properties["Employees_Link"]){
+        if (feature.properties["Employees_Link"]) {
             popupContent += `
             <div class="featureInfo is-center">
                 <a href="${feature.properties["Employees_Link"]}" target="_top" class="button secondary Employees_Link">see who worked here</a>
@@ -1043,17 +1022,17 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
         }
         if (feature.properties["Start_Date"]) {
             popupContent += `<div class="featureInfo"><label>Records Start In:</label> ${parseInt(feature.properties["Start_Date"])}</div>`
-        } 
+        }
         if (feature.properties["End_Date"]) {
             popupContent += `<div class="featureInfo"><label>Records End In:</label> ${parseInt(feature.properties["End_Date"])}</div>`
         }
-        if(feature.properties["Employees_Link"]){
+        if (feature.properties["Employees_Link"]) {
             popupContent += `
             <div class="featureInfo is-center">
                 <a href="${feature.properties["Employees_Link"]}" target="_top" class="button secondary Employees_Link">see who worked here</a>
             </div>`
         }
-        
+
         layer.bindPopup(popupContent)
     }
 }
@@ -1071,7 +1050,7 @@ document.getElementById("timeSlider").addEventListener("input", function(e) {
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     let sliderYear = e.target.value
-    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear+"")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear + "")
 })
 
 /**
@@ -1086,10 +1065,10 @@ document.getElementById("datelessView").addEventListener("click", function(e) {
  */
 document.querySelector(".year-inc").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
-    if(!currentYear || currentYear === 1829) return
+    if (!currentYear || currentYear === 1829) return
     currentYear++
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear + "")
 })
 
 /**
@@ -1097,10 +1076,10 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
  */
 document.querySelector(".year-dec").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
-    if(!currentYear || currentYear === 1789) return
+    if (!currentYear || currentYear === 1789) return
     currentYear--
     document.getElementById("slider-value").innerText = currentYear
-    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
+    VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear + "")
 })
 
 /**
@@ -1141,7 +1120,7 @@ VIEWER.determineEmployeeCount = function(feature) {
  */
 VIEWER.showGreeting = function() {
     const check = sessionStorage.getItem("kastor-map-greeting-message")
-    if(check && check === "checked") return
+    if (check && check === "checked") return
     greetingContainer.classList.remove("is-hidden")
 }
 

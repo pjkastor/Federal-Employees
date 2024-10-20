@@ -50,7 +50,14 @@
   --font-family-sans: "LB Regular";
 }
 
-h1, h2, h3, h4, h5, h6, h7, h8 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7,
+h8 {
   font-family: "LB Regular";
 }
 
@@ -76,7 +83,7 @@ label {
 }
 
 
-#leafletInstanceContainer{
+#leafletInstanceContainer {
   height: 100%;
   width: 100%;
   background-image: url(../images/LogoNoText.png);
@@ -88,14 +95,14 @@ label {
   z-index: 0;
 }
 
-#leafletInstanceContainer.has-loaded{
+#leafletInstanceContainer.has-loaded {
   background-size: 150em;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: local;
 }
 
-.leaflet-container{
+.leaflet-container {
   background-color: white;
 }
 
@@ -125,11 +132,12 @@ label {
   font-weight: bold;
 }
 
-#datelessView, #instructions{
+#datelessView,
+#instructions {
   border: 2px solid #B85323;
   font-size: 11pt;
   line-height: 12pt;
-/*   font-family: 'LB Regular'; */
+  /*   font-family: 'LB Regular'; */
 }
 
 .button.secondary {
@@ -140,7 +148,7 @@ label {
   font-weight: bold;
 }
 
-.employeesLink{
+.employeesLink {
   font-size: 90%;
 }
 
@@ -159,7 +167,7 @@ label {
   top: -15px;
   display: block;
   text-align: center;
-  font-size:  10pt;
+  font-size: 10pt;
   right: 28px;
 }
 
@@ -171,16 +179,16 @@ label {
   top: 8px;
 }
 
-.info-scroller{
+.info-scroller {
   max-height: 35em;
   overflow: auto;
 }
 
-.info-scroller ul{
-   list-style-type: none;
+.info-scroller ul {
+  list-style-type: none;
 }
 
-.info-scroller ul h5{
+.info-scroller ul h5 {
   color: #2B8282;
   margin: 0;
 }
@@ -196,7 +204,7 @@ label {
 }
 
 .year-inc:hover {
-  box-shadow: 
+  box-shadow:
     2px 0px 16px 6px white,
     0px 0px 14px 4px white inset;
 
@@ -209,16 +217,16 @@ label {
 }
 
 .year-dec:hover {
-  box-shadow: 
+  box-shadow:
     2px 0px 16px 6px white,
     0px 0px 14px 4px white inset;
 }
 
-.leaflet-control-zoom {     
+.leaflet-control-zoom {
   position: absolute;
   top: -10.5em;
   right: 0em;
-} 
+}
 
 .leaflet-control-zoom-in {
   color: white !important;
@@ -236,56 +244,56 @@ label {
   cursor: not-allowed !important;
 }
 
-.zoomNotice{
-/*   font-family: "LB Regular"; */
+.zoomNotice {
+  /*   font-family: "LB Regular"; */
   font-weight: bold;
 }
 
-.zoomNotice span{
+.zoomNotice span {
   cursor: default;
 }
 
 #currentCoords {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .tag {
-    color: white;
+  color: white;
 }
 
 .grouped {
-    flex-flow: wrap;
+  flex-flow: wrap;
 }
 
 .grouped div {
-    display: inline-flex;
+  display: inline-flex;
 }
 
 .grouped input {
-    height: 1.5em;
-    width: 8em !important;
+  height: 1.5em;
+  width: 8em !important;
 }
 
 .featureInfo {
-    margin: 4px 0px;
-    font-size: 8pt;
-    border-bottom: 1px solid black;
-    padding: 4px 0px;
+  margin: 4px 0px;
+  font-size: 8pt;
+  border-bottom: 1px solid black;
+  padding: 4px 0px;
 }
 
 .featureInfo label {
-    margin-right: 6px;
-    font-family: "Rockwell Regular";
+  margin-right: 6px;
+  font-family: "Rockwell Regular";
 }
 
 .featureInfo img,
 .leaflet-popup-content img {
-    max-height: 270px;
+  max-height: 270px;
 }
 
 input[type="checkbox"] {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
 /*.slider-container {
@@ -297,34 +305,34 @@ input[type="checkbox"] {
 }*/
 
 .is-not-visible {
-    visibility: hidden;
-    opacity: 0;
-    z-index: 0;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 0;
 }
 
 .is-toggled-off {
-    visibility: hidden;
-    opacity: 0;
-    z-index: 0;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 0;
 }
 
 .is-hidden {
-    display: none;
+  display: none;
 }
 
 path {
-    -webkit-transition: visibility 1.5s, opacity 1.5s linear;
-    -moz-transition: visibility 1.5s, opacity 1.5s linear;
-    -o-transition: visibility 1.5s, opacity 1.5s linear;
-    transition: visibility 1.5s, opacity 1.5s linear;
+  -webkit-transition: visibility 1.5s, opacity 1.5s linear;
+  -moz-transition: visibility 1.5s, opacity 1.5s linear;
+  -o-transition: visibility 1.5s, opacity 1.5s linear;
+  transition: visibility 1.5s, opacity 1.5s linear;
 }
 
 .leaflet-control-layers-base span,
 .leaflet-control-layers-overlays span {
-    font-size: 10pt;
+  font-size: 10pt;
 }
 
-.leaflet-control-layers{
+.leaflet-control-layers {
   top: 85px;
 }
 
@@ -335,18 +343,18 @@ path {
   background-size: 55px;
 }
 
-.layersIcon{
-    background-image: url(../images/layers.png);
-    background-position: 2px;
-    width: 44px;
-    height: 44px;
-    position: relative;
-    display: inline-block;
-    top: 18px;
-    margin: 0px 5px;
+.layersIcon {
+  background-image: url(../images/layers.png);
+  background-position: 2px;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  display: inline-block;
+  top: 18px;
+  margin: 0px 5px;
 }
 
-.leaflet-retina .leaflet-control-layers-toggle{
+.leaflet-retina .leaflet-control-layers-toggle {
   width: 55px !important;
   height: 55px !important;
   background-image: url(../images/layers.png);
@@ -354,12 +362,12 @@ path {
 }
 
 .leaflet-touch .leaflet-bar a {
-    width: 38px !important;
-    height: 38px !important;
-    line-height: 38px !important;
+  width: 38px !important;
+  height: 38px !important;
+  line-height: 38px !important;
 }
 
-.zoomIcon{
+.zoomIcon {
   background-image: url(../images/zoom.png);
   background-position: 2px;
   width: 36px;
@@ -370,7 +378,7 @@ path {
   margin: 0px 5px;
 }
 
-.clusterIcon{
+.clusterIcon {
   background-image: url(../images/cluster.png);
   background-position: 2px;
   background-size: 4em 4em;
@@ -383,7 +391,7 @@ path {
   margin: 0px 5px;
 }
 
-.iconsIcon{
+.iconsIcon {
   background-image: url(../images/icons.png);
   background-size: 4em 4em;
   background-position: 2px;
@@ -395,7 +403,7 @@ path {
   margin: 0px 5px;
 }
 
-.locationsIcon{
+.locationsIcon {
   background-image: url(../images/locations.png);
   background-size: 4em 4em;
   background-position: 2px;
@@ -424,10 +432,10 @@ path {
   background-image: url(../images/washU-centered.png);
   background-position: center;
   background-size: 26em;
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
 }
 
-#resetContainer{
+#resetContainer {
   z-index: 1;
   position: relative;
   display: inline-block;
@@ -435,7 +443,7 @@ path {
   top: 4px;
 }
 
-#instructionsContainer{
+#instructionsContainer {
   z-index: 1;
   position: relative;
   display: inline-block;
@@ -444,12 +452,12 @@ path {
 }
 
 #kastorMap {
-    height: 100vh;
-    padding: 0;
-    margin: 0;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
 }
 
-#kastorMapLegend{
+#kastorMapLegend {
   position: absolute;
   font-size: 10pt;
   background-color: #ad9b47;
@@ -460,32 +468,32 @@ path {
   padding: 1em;
   z-index: 401;
   color: black;
-/*   font-family: 'LB Regular'; */
+  /*   font-family: 'LB Regular'; */
 }
 
-#kastorMapLegend h5{
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 0;
+#kastorMapLegend h5 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0;
 }
 
-#kastorMapLegend h7{
+#kastorMapLegend h7 {
   text-align: center;
   font-weight: bold;
   text-decoration: underline;
   display: block;
-  color:  black;
-  cursor:  pointer;
+  color: black;
+  cursor: pointer;
 }
 
-#kastorMapLegend ul{
+#kastorMapLegend ul {
   margin-left: -1em;
   font-weight: bold;
 }
 
 
 
-#heatmapLegend{
+#heatmapLegend {
   position: absolute;
   font-size: 10pt;
   background-color: darkgrey;
@@ -496,45 +504,45 @@ path {
   padding: 1em;
   z-index: 401;
   color: black;
-/*   font-family: 'LB Regular'; */
+  /*   font-family: 'LB Regular'; */
 }
 
-#heatmapLegend h5{
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 0;
+#heatmapLegend h5 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 0;
 }
 
-#heatmapLegend h7{
+#heatmapLegend h7 {
   text-align: center;
   font-weight: bold;
   text-decoration: underline;
   display: block;
-  color:  black;
-  cursor:  pointer;
+  color: black;
+  cursor: pointer;
 }
 
-#heatmapLegend ul{
+#heatmapLegend ul {
   margin-left: -1em;
   font-weight: bold;
 }
 
-.legendIcon{
+.legendIcon {
   min-height: 38px;
 }
 
-.col-12{
+.col-12 {
   margin: 0;
   flex: 0 0 100%;
   max-width: 100%;
-/*  margin: 0 calc(99.96667% - var(--grid-gutter));*/
+  /*  margin: 0 calc(99.96667% - var(--grid-gutter));*/
 }
 
-.small-icon{
-    height: 2.25em;
+.small-icon {
+  height: 2.25em;
 }
 
-.icon-fix{
+.icon-fix {
   height: 0;
   width: 0;
   visibility: hidden;
@@ -544,7 +552,7 @@ path {
   height: inherit;
 }*/
 
-.m-icon{
+.m-icon {
   background-image: url(../images/map-icons/Maritime.png);
   background-repeat: no-repeat;
   position: relative;
@@ -556,7 +564,7 @@ path {
   width: 30px;
 }
 
-.l-icon{
+.l-icon {
   background-image: url(../images/map-icons/Lighthouse.png);
   background-repeat: no-repeat;
   position: relative;
@@ -568,7 +576,7 @@ path {
   width: 30px;
 }
 
-.n-icon{
+.n-icon {
   background-image: url(../images/map-icons/Non-US.png);
   background-repeat: no-repeat;
   position: relative;
@@ -580,7 +588,7 @@ path {
   width: 30px;
 }
 
-.u-icon{
+.u-icon {
   background-image: url(../images/map-icons/Location.png);
   background-repeat: no-repeat;
   display: inline-block;
@@ -592,7 +600,7 @@ path {
   width: 30px;
 }
 
-.b-icon{
+.b-icon {
   background-image: url(../images/map-icons/Building.png);
   background-repeat: no-repeat;
   display: inline-block;
@@ -604,7 +612,7 @@ path {
   width: 24px;
 }
 
-.s-icon{
+.s-icon {
   background-image: url(../images/map-icons/State.png);
   background-repeat: no-repeat;
   display: inline-block;
@@ -616,7 +624,7 @@ path {
   width: 24px;
 }
 
-.star-icon{
+.star-icon {
   background-image: url(../images/map-icons/Capital.png);
   background-repeat: no-repeat;
   display: inline-block;
@@ -628,133 +636,133 @@ path {
   width: 30px;
 }
 
-#howTo{
-    position: relative;
-    margin: 0 auto;
-    background-color: #173E3A;
-    color: lightgray;
-    width: 90%;
-    top: 3em;
-    overflow-y: auto;
-    padding: 2em;
-    max-height: 90%;
+#howTo {
+  position: relative;
+  margin: 0 auto;
+  background-color: #173E3A;
+  color: lightgray;
+  width: 90%;
+  top: 3em;
+  overflow-y: auto;
+  padding: 2em;
+  max-height: 90%;
 }
 
-#howTo ul{
+#howTo ul {
   font-size: 13pt;
 }
 
-#howTo p{
+#howTo p {
   font-size: 14pt;
 }
 
-#howTo a{
+#howTo a {
   color: #B85323;
 }
 
-#howTo h2{
+#howTo h2 {
   color: white;
 }
 
-#howToContainer{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .85);
-    z-index: 500;
+#howToContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .85);
+  z-index: 500;
 }
 
-#closeHowTo{
-    width: 5em;
-    position: absolute;
-    right: 0em;
-    margin: -1em 1em;
+#closeHowTo {
+  width: 5em;
+  position: absolute;
+  right: 0em;
+  margin: -1em 1em;
 }
 
-#greeting{
-    position: relative;
-    margin: 0 auto;
-    color: black;
-    padding:  1em;
+#greeting {
+  position: relative;
+  margin: 0 auto;
+  color: black;
+  padding: 1em;
 }
 
-#greeting ul{
+#greeting ul {
   font-size: 13pt;
-  font-weight:  bold;
+  font-weight: bold;
 }
 
-#greeting p{
+#greeting p {
   font-size: 13pt;
-  text-align:  center;
-  font-weight:  bold;
+  text-align: center;
+  font-weight: bold;
 }
 
-#greeting a{
+#greeting a {
   color: #B85323;
 }
 
-#greeting h2{
+#greeting h2 {
   color: white;
-  text-align:  center;
+  text-align: center;
   text-decoration: underline;
 }
 
-#greeting label{
-  display:  block;
-  text-align:  right;
+#greeting label {
+  display: block;
+  text-align: right;
   font-style: italic;
   font-weight: bold;
 }
 
-#greeting input[type="checkbox"]{
-  cursor:  pointer;
+#greeting input[type="checkbox"] {
+  cursor: pointer;
 }
 
-#greetingContainer{
-    position: absolute;
-    z-index: 500;
-    background-color: #2A6EFF;
-    display: flex;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width:  fit-content;
-    max-width: 80%;
-/*     max-height:  290px; */
-    top: 195px;
+#greetingContainer {
+  position: absolute;
+  z-index: 500;
+  background-color: #2A6EFF;
+  display: flex;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  max-width: 80%;
+  /*     max-height:  290px; */
+  top: 195px;
 }
 
-#closeGreeting{
-    width: 5em;
-    position: absolute;
-    right: 0em;
-    margin: 0em 1em;
+#closeGreeting {
+  width: 5em;
+  position: absolute;
+  right: 0em;
+  margin: 0em 1em;
 }
 
 input[type="range"] {
-    -webkit-appearance: none;
-    appearance:  none;
-    background-color: white;
-    height: 11px;
-    padding: 0;
-    cursor: pointer;
-    margin-top: 12px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: white;
+  height: 11px;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 12px;
 }
- 
+
 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance:  none;
-    position: relative;
-    top: -1px;
-    z-index: 1;
-    width: 20px;
-    height: 20px;
-    -webkit-border-radius: 40px;
-    -moz-border-radius: 40px;
-    border-radius: 40px;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0075ff), color-stop(50%,#0075ff), color-stop(51%,#0075ff), color-stop(100%,#0075ff));
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  top: -1px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  border-radius: 40px;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0075ff), color-stop(50%, #0075ff), color-stop(51%, #0075ff), color-stop(100%, #0075ff));
 }
 
 datalist {
