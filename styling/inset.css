@@ -1,34 +1,11 @@
 /**
  * @author Bryan Haberger
  * https://github.com/thehabes
+ * Washington Universting - Saint Louis Fonts
+ * https://marcomm.wustl.edu/resources/branding-logo-toolkit/fonts/
+ * https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
  */
 
-/*
-
-Fonts
-Page Titles: Libre Baskerville Regular, 35pt
-Subheadings A: Libre Baskerville Regular, 25pt
-Subheadings B: Libre Baskerville Regular, 17pt
-Map Location Name: Libre Baskerville Bold, 20pt
-Title Subheads: Rockwell Regular, 17pt
-Body Copy: Source Sans Pro Regular, 16pt
-Colors
-Deep Green: 173E3A
-Limestone: FBFAF9
-Beige: D8D2C5
-Accessible Gray: 333326
-Dark Gray: 707070
-Medium Gray: D6D6D6
-Light Gray: E3E3E2
-Turquoise: 2B8282
-Standard Green: 007360
-Web Orange: B85323
-Blue: 005F85
-
-https://marcomm.wustl.edu/resources/branding-logo-toolkit/fonts/
-https://marcomm.wustl.edu/resources/branding-logo-toolkit/color-palettes/
-
-*/
 @import url(https://unpkg.com/chota@latest);
 
 @font-face {
@@ -148,7 +125,7 @@ label {
   font-weight: bold;
 }
 
-#resetView, #instructions{
+#datelessView, #instructions{
   border: 2px solid #B85323;
   font-size: 11pt;
   line-height: 12pt;

@@ -1,9 +1,11 @@
 /* 
+ * Script to power the inset Leaflet map.
  * @author Bryan Haberberger
  * https://github.com/thehabes
  * https://habesoftware.rocks
+ *
+ * @see https://cfg1789.wustl.edu
  */
-// cfg1789.wustl.edu
 
 let VIEWER = {}
 
@@ -62,7 +64,7 @@ document.addEventListener("KastorLeafletInitialized", event => {
     // 
     loadingMessage.classList.add("is-hidden")
     loadingMessage.innerHTML = `Arranging Map Data...<br>`
-    resetView.classList.remove("is-hidden")
+    datelessView.classList.remove("is-hidden")
     const infoContainer = document.getElementById("infoContainer")
     if(infoContainer) infoContainer.classList.remove("is-hidden")
     document.querySelector(".slider-container").classList.remove("is-hidden")
@@ -96,18 +98,6 @@ VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel){
         // Show the cluster points and hide the cluster icons
         VIEWER.locationsClusterLayerGroup.addLayer(VIEWER.cluster_points)
     }
-}
-
-VIEWER.isJSON = function(obj) {
-    let r = false
-    let json = {}
-    try {
-        json = JSON.parse(JSON.stringify(obj))
-        r = true
-    } catch (e) {
-        r = false
-    }
-    return r
 }
 
 /**
@@ -392,7 +382,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         const infoContainer = document.getElementById("infoContainer")
         if(infoContainer) infoContainer.classList.add("is-hidden")
         document.querySelector(".slider-container").classList.add("is-hidden")
-        resetView.classList.add("is-hidden")
+        datelessView.classList.add("is-hidden")
         leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
         loadingMessage.classList.remove("is-hidden")
         kastorMapLegend.classList.add("is-hidden")
@@ -1069,24 +1059,32 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
     }
 }
 
-// Change the selected date shown to the user.
+/**
+ * Change the selected date shown to the user.
+ */
 document.getElementById("timeSlider").addEventListener("input", function(e) {
     document.getElementById("slider-value").innerText = e.target.value
 })
 
-// Change the date slider
+/**
+ * Change the date slider
+ */
 document.getElementById("timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     let sliderYear = e.target.value
     VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear+"")
 })
 
-// Reset to the default view...maybe just page reset?
-document.getElementById("resetView").addEventListener("click", function(e) {
-    VIEWER.reset(e)
+/**
+ * 'See All Locations' button click handler
+ */
+document.getElementById("datelessView").addEventListener("click", function(e) {
+    VIEWER.dateless(e)
 })
 
-// Reset to the default view...maybe just page reset?
+/**
+ * Move forward one year
+ */
 document.querySelector(".year-inc").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
     if(!currentYear || currentYear === 1829) return
@@ -1095,7 +1093,9 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
     VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
 })
 
-// Reset to the default view...maybe just page reset?
+/**
+ * Move backward one year
+ */
 document.querySelector(".year-dec").addEventListener("click", function(e) {
     let currentYear = parseInt(document.getElementById("slider-value").innerText)
     if(!currentYear || currentYear === 1789) return
@@ -1104,10 +1104,16 @@ document.querySelector(".year-dec").addEventListener("click", function(e) {
     VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear+"")
 })
 
-VIEWER.reset = function(event) {
+/**
+ * Show all features across all time without a date filter
+ */
+VIEWER.dateless = function(event) {
     VIEWER.initializeLeaflet(VIEWER.startCoords, "0")
 }
 
+/**
+ * Use the chosen year to determine which count to show from the date:count (Employees_Count) property
+ */
 VIEWER.determineEmployeeCount = function(feature) {
     const datemap = feature.properties?.Employees_Count
     if (!datemap) return -1
@@ -1131,6 +1137,9 @@ VIEWER.determineEmployeeCount = function(feature) {
     return countForChosenYear
 }
 
+/**
+ * Show the greeting, unless the user has selected not to see it again.
+ */
 VIEWER.showGreeting = function() {
     const check = sessionStorage.getItem("kastor-map-greeting-message")
     if(check && check === "checked") return
