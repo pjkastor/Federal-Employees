@@ -25,37 +25,11 @@ VIEWER.baseLayers = {}
 
 VIEWER.baseLayers.mapbox_satellite_layer = null
 
-VIEWER.baseLayers.osm = null
+VIEWER.baseLayers.Esri_WorldPhysical = null
 
-VIEWER.baseLayers.esri_street = null
-
-VIEWER.baseLayers.esri_natgeo = null
-
-VIEWER.baseLayers.topomap = null
-
-VIEWER.baseLayers.carto = null
-
-VIEWER.baseLayers.USGS_top_streets = null
+VIEWER.baseLayers.Esri_Ocean = null
 
 VIEWER.baseMaps = null
-
-//Keep tracked of fetched resources.  Do not fetch resources you have already resolved.
-VIEWER.resourceMap = new Map()
-
-//Keep track of how many resources you have fetched
-VIEWER.resourceFetchCount = 0
-
-//Keep track of how many resources you are processing
-VIEWER.resourceCount = 0
-
-//Once you have fetched this many resources, fetch no more.  Helps stop infinite loops from circular references.
-VIEWER.resourceFetchLimit = 1000
-
-//Once you have processed this many resources, process no more.  Helps stop infinite loops from circular references.
-VIEWER.resourceFindLimit = 1000
-
-//The resource supplied via the data-param paramater.  All referenced values that could be resolved are resolved and embedded.
-VIEWER.resource = {}
 
 //For Leaflet
 VIEWER.mymap = null
@@ -69,11 +43,6 @@ VIEWER.startZoom = 2
 //Starting Coords
 VIEWER.startCoords = [21, 30] 
 
-// VIEWER.startBounds = [
-//     [-46.195042108660154, -170.33203125],
-//     [74.77584300649235, 166.46484375000003]
-// ]
-
 // Starting Viewport Boundary
 VIEWER.startBounds = [
     [-39.23225314171489, -176.484375],
@@ -86,8 +55,11 @@ VIEWER.cluster_points = null
 
 VIEWER.cluster_icons = null
 
+/**
+ * All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
+ */
 document.addEventListener("KastorLeafletInitialized", event => {
-    // All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
+    // 
     loadingMessage.classList.add("is-hidden")
     loadingMessage.innerHTML = `Arranging Map Data...<br>`
     resetView.classList.remove("is-hidden")
@@ -107,6 +79,9 @@ document.addEventListener("KastorLeafletInitialized", event => {
     VIEWER.once = false
 })
 
+/**
+ * Change out the points for the icons at a specific zoom level.
+ */
 VIEWER.iconsAtZoomLevel = function(oldlevel, newlevel){
     if(!VIEWER.mymap) return
     if(!oldlevel || !newlevel) return
@@ -214,7 +189,7 @@ VIEWER.init = async function() {
         fetch("./data/AllLocations.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1798_Tax_Divisions_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/1814_Districts_Merged.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
-        fetch("./data/StateBoundaries_new.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
+        fetch("./data/StateBoundaries.json", {"cache":"default"}).then(resp => resp.json()).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1819_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/AL_1824_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
         fetch("./data/judicial_districts/CT_district.geojson", {"cache":"default"}).then(resp => resp.json()).then(j => j.features).catch(err => { return {} }),
@@ -367,7 +342,6 @@ VIEWER.init = async function() {
     VIEWER.rawGeoJSONData.judicial_circuits = judicial_circuits
 
     VIEWER.rawGeoJSONData.locations = locationData
-    //VIEWER.rawGeoJSONData.counties = countyBoundaries
     VIEWER.rawGeoJSONData.states = stateBoundaries
     VIEWER.rawGeoJSONData.tax_1798 = tax_1798
     VIEWER.rawGeoJSONData.tax_1814 = tax_1814
@@ -395,19 +369,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 accessToken: 'pk.eyJ1IjoidGhlaGFiZXMiLCJhIjoiY2pyaTdmNGUzMzQwdDQzcGRwd21ieHF3NCJ9.SSflgKbI8tLQOo2DuzEgRQ'
             })
 
-        // VIEWER.baseLayers.osm =
-        //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //         maxZoom: 19
-        //     })
-
-        // VIEWER.baseLayers.topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        //     maxZoom: 10
-        // })
-
-        // VIEWER.baseLayers.USGS_top_streets = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
-        //     maxZoom: 8
-        // })
-
         VIEWER.baseLayers.Esri_WorldPhysical = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 8,
             minZoom: VIEWER.startZoom
@@ -420,9 +381,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.baseMaps = {
             "Mapbox Satellite": VIEWER.baseLayers.mapbox_satellite_layer,
-            // "OpenStreetMap": VIEWER.baseLayers.osm,
-            // "Open Topomap": VIEWER.baseLayers.topomap,
-            // "USGS Topo + Street": VIEWER.baseLayers.USGS_top_streets,
             "ESRI World Physical": VIEWER.baseLayers.Esri_WorldPhysical,
             "ESRI Ocean": VIEWER.baseLayers.Esri_Ocean
         }
@@ -453,7 +411,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     case "judicial_circuits":
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.rawGeoJSONData[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            if (f.properties.hasOwnProperty("Start_Date") && f.properties.hasOwnProperty("End_Date")){
+                            if (f.properties?.hasOwnProperty("Start_Date") && f.properties?.hasOwnProperty("End_Date")){
                                 // These are all just years but that should be OK
                                 const sDate = new Date(parseInt(f.properties["Start_Date"])+"")
                                 const eDate = new Date(parseInt(f.properties["End_Date"])+"")
@@ -467,30 +425,16 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                         geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.rawGeoJSONData[entry]))
                         geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
                             const count = VIEWER.determineEmployeeCount(f)
-                            if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
+                            if (f.properties?.hasOwnProperty("START_DATE") && f.properties?.hasOwnProperty("END_DATE")){
                                 const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
                                 const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
                                 const currEnd = new Date(userInputYear)
                                 const currStart = new Date(userInputYear)
-                                //return sDate <= currStart && eDate >= currEnd
                                 // We will want to make sure the states with a count of 'N/A' hide.  0 should show.
                                 if(!parseInt(count) || parseInt(count) <= -1){
                                     console.log("N/A")
                                 }
                                 return sDate <= currStart && eDate >= currEnd && parseInt(count) && parseInt(count) > -1
-                            }
-                        })
-                    break
-                    case "counties":
-                        geoMarkers[entry] = JSON.parse(JSON.stringify(VIEWER.rawGeoJSONData[entry]))
-                        geoMarkers[entry].features = geoMarkers[entry].features.filter(f => {
-                            const count = VIEWER.determineEmployeeCount(f)
-                            if (f.properties.hasOwnProperty("START_DATE") && f.properties.hasOwnProperty("END_DATE")){
-                                const sDate = new Date(parseInt(f.properties["START_DATE"])+"")
-                                const eDate = new Date(parseInt(f.properties["END_DATE"])+"")
-                                const currEnd = new Date(userInputYear)
-                                const currStart = new Date(userInputYear)
-                                return sDate <= currStart && eDate >= currEnd && parseInt(count) > 0  
                             }
                         })
                     break
@@ -509,15 +453,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             }
         }
 
-        VIEWER.leafletFormattedGeoJsonLayers.stateFeatures = L.geoJSON(geoMarkers.states, {
+        VIEWER.leafletFormattedGeoJsonLayers.statePostmastersFeatures = L.geoJSON(geoMarkers.states, {
             style: function(feature) {
-                // const name = feature.properties._name ?? ""
-                // return {
-                //     color: "white",
-                //     fillColor: "#005A9C",
-                //     fillOpacity: 1.00,
-                //     className: name.replaceAll(" ", "_")
-                // }
                 const count = VIEWER.determineEmployeeCount(feature)
                 function getColor(d) {
                     d = parseInt(d)
@@ -534,7 +471,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     return color
                 }
 
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 const fcolor = getColor(count)
                 const style_obj = 
                 {
@@ -553,7 +490,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         // VIEWER.leafletFormattedGeoJsonLayers.countyFeatures = L.geoJSON(geoMarkers.counties, {
         //     style: function(feature) {
-        //         const name = feature.properties._name ?? ""
+        //         const name = feature.properties?._name ?? ""
         //         return {
         //             color: "white",
         //             fillColor: "#3399ff",
@@ -564,7 +501,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         //     onEachFeature: VIEWER.formatPopupForNewberryData
         // })
 
-        // VIEWER.leafletFormattedGeoJsonLayers.postmastersFeatures = L.geoJSON(geoMarkers.counties, {
+        // VIEWER.leafletFormattedGeoJsonLayers.countyPostmastersFeatures = L.geoJSON(geoMarkers.counties, {
         //     style: function(feature) {
         //         const count = VIEWER.determineEmployeeCount(feature)
         //         function getColor(d) {
@@ -582,7 +519,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         //             return color
         //         }
 
-        //         const name = feature.properties._name ?? ""
+        //         const name = feature.properties?._name ?? ""
         //         const fcolor = getColor(count)
         //         const style_obj = 
         //         {
@@ -601,7 +538,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.leafletFormattedGeoJsonLayers.judicial_districts = L.geoJSON(geoMarkers.judicial_districts, {
             style: function(feature) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 return {
                     color: "white",
                     fillColor: "#4d4dff",
@@ -628,7 +565,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.leafletFormattedGeoJsonLayers.taxFeatures1798 = L.geoJSON(geoMarkers.tax_1798, {
             style: function(feature) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 return {
                     color: "white",
                     fillColor: "#ff9933",
@@ -641,7 +578,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.leafletFormattedGeoJsonLayers.taxFeatures1814 = L.geoJSON(geoMarkers.tax_1814, {
             style: function(feature) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 return {
                     color: "white",
                     fillColor: "#ffcc66",
@@ -654,10 +591,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.leafletFormattedGeoJsonLayers.locationFeatures = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 
                 // Make the Capital a 'star' Icon
-                if (feature.properties.State_Abbreviated === "Capital") {
+                if (feature.properties?.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [24, 24], // size of the icon
@@ -738,16 +675,11 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             onEachFeature: VIEWER.formatPopupForKastorData
         })
         
-        /**
-         * An option to switch between markers and icons on this layer is desired.
-         * It could be made completeley custom and combine both the point and icon markers.
-         * Then, on zoom, we can toggle.
-         */ 
         VIEWER.cluster_points = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
 
-                if (feature.properties.State_Abbreviated === "Capital") {
+                if (feature.properties?.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [16, 16], // size of the icon
@@ -765,7 +697,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                     (type === "U.S. Location") ? "blue" : 
                     (type === "State") ? "pink" :
                     (type === "Building") ? "lightgrey" : "red"
-                //if(feature.properties?.US === "No") fill = "#7A55A6"
                 return L.circleMarker(latlng, {
                     radius: 6,
                     fillColor: fill,
@@ -781,10 +712,10 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         VIEWER.cluster_icons = L.geoJSON(geoMarkers.locations, {
             pointToLayer: function(feature, latlng) {
-                const name = feature.properties._name ?? ""
+                const name = feature.properties?._name ?? ""
                 
                 // Make the Capital a 'star' Icon
-                if (feature.properties.State_Abbreviated === "Capital") {
+                if (feature.properties?.State_Abbreviated === "Capital") {
                     const capitalIcon = L.icon({
                         iconUrl: './images/map-icons/Capital.png',
                         iconSize: [24, 24], // size of the icon
@@ -890,9 +821,9 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             "1814 Tax Districts": VIEWER.leafletFormattedGeoJsonLayers.taxFeatures1814,
             "Judicial Districts": VIEWER.leafletFormattedGeoJsonLayers.judicial_districts,
             "Judicial Circuits": VIEWER.leafletFormattedGeoJsonLayers.judicial_circuits,
-            "Postmaster Heatmap": VIEWER.leafletFormattedGeoJsonLayers.stateFeatures,
+            "Postmaster Heatmap": VIEWER.leafletFormattedGeoJsonLayers.statePostmastersFeatures,
             //"Counties" : VIEWER.leafletFormattedGeoJsonLayers.countyFeatures,
-            //"Postmasters Heatmap": VIEWER.leafletFormattedGeoJsonLayers.postmastersFeatures,
+            //"Postmasters Heatmap - County": VIEWER.leafletFormattedGeoJsonLayers.countyPostmastersFeatures,
             "Individual Locations": VIEWER.leafletFormattedGeoJsonLayers.locationFeatures,
             "Clustered Locations": VIEWER.locationsClusterLayerGroup
         }
@@ -938,7 +869,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             })
             VIEWER.layerControl = L.control.layers(VIEWER.baseMaps, VIEWER.main_layers).addTo(VIEWER.mymap)
             VIEWER.mymap.addControl(L.control.zoom({position: 'bottomright'}))
-            //VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
             VIEWER.mymap.fitBounds(VIEWER.startBounds)
             const zoomNotice = document.createElement("a")
             zoomNotice.classList.add("zoomNotice")
@@ -950,7 +880,6 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 
         // Can only show State and County boundaries if a year is selected.  Hide these options until then.
         if (parseInt(userInputYear) <= 0) {
-            //VIEWER.mymap.setView(VIEWER.startCoords, VIEWER.startZoom)
             VIEWER.mymap.fitBounds(VIEWER.startBounds)
             VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
                 if(
@@ -1005,8 +934,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
 }
 
 /**
- * Define what information from each Feature belongs in the popup
- * that appears.  We want to show labels, summaries and thumbnails.
+ * Define what information from each Feature belongs in the popup that appears upon clicking a feature.
+ * This is for the Newberry encoded data schema.
  */
 VIEWER.formatPopupForNewberryData = function(feature, layer) {
     let popupContent = "<div class='featurePopUp'>"
@@ -1052,7 +981,6 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
         }
         if(feature.properties["Employees_Count"]){
             let count = VIEWER.determineEmployeeCount(feature)
-            // values of undefined, "", or "N/A" will all show "N/A" unless we choose otherwise.
             if(!parseInt(count) || parseInt(count) === -1) count = "N/A"
             layer.options["Employees_Count"] = count
             popupContent += `<div class="featureInfo"><label>Employee Count</label> ${count} </div>`
@@ -1074,12 +1002,12 @@ VIEWER.formatPopupForNewberryData = function(feature, layer) {
 }
 
 /**
- * Define what information from each Feature belongs in the popup
- * that appears.  We want to show labels, summaries and thumbnails.
+ * Define what information from each Feature belongs in the popup that appears upon clicking a feature.
+ * This is for the Kastor encoded data schema.
  */
 VIEWER.formatPopupForKastorData = function(feature, layer) {
     function determineStateTitle(feature) {
-        const datemap = feature?.properties?.State_Full
+        const datemap = feature.properties?.State_Full
         if (!datemap) return null
         if (typeof datemap === "string") return datemap
         const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
@@ -1091,11 +1019,11 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
                 const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
                 const the_year = years_in_order[i]
                 if (the_year === parseInt(VIEWER.userInputYear)) {
-                    titleForChosenYear = feature.properties.State_Full[the_year]
+                    titleForChosenYear = feature.properties?.State_Full[the_year]
                     break
                 }
                 if (the_year > parseInt(VIEWER.userInputYear)) {
-                    titleForChosenYear = feature.properties.State_Full[prev_year]
+                    titleForChosenYear = feature.properties?.State_Full[prev_year]
                     break
                 }
             }
@@ -1148,7 +1076,7 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
     }
 }
 
-// // Change the selected date shown to the user.
+// Change the selected date shown to the user.
 document.getElementById("timeSlider").addEventListener("input", function(e) {
     document.getElementById("slider-value").innerText = e.target.value
 })
@@ -1188,7 +1116,7 @@ VIEWER.reset = function(event) {
 }
 
 VIEWER.determineEmployeeCount = function(feature) {
-    const datemap = feature?.properties?.Employees_Count
+    const datemap = feature.properties?.Employees_Count
     if (!datemap) return -1
     const years_in_order = Object.keys(datemap).map(stryear => parseInt(stryear)).sort(function(a, b) { return a - b })
     const mostrecent = years_in_order.pop()
@@ -1198,11 +1126,11 @@ VIEWER.determineEmployeeCount = function(feature) {
             const prev_year = (i > 0) ? years_in_order[i - 1] : years_in_order[i]
             const the_year = years_in_order[i]
             if (the_year === parseInt(VIEWER.userInputYear)) {
-                countForChosenYear = feature.properties.Employees_Count[the_year]
+                countForChosenYear = feature.properties?.Employees_Count[the_year]
                 break
             }
             if (the_year > parseInt(VIEWER.userInputYear)) {
-                countForChosenYear = feature.properties.Employees_Count[prev_year]
+                countForChosenYear = feature.properties?.Employees_Count[prev_year]
                 break
             }
         }
