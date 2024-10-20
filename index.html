@@ -5,15 +5,31 @@
 -->
 <html>
     <head>
-        <title>BFG: Map</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+        <title>BFG: Map</title>
     </head>
+    <style>
+        #contentAbove{
+            background-color: #3c3d3d;
+            color: white;
+            height: 10vh;
+            line-height: 7vh;
+            font-size: 14pt;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        #CMScontainer{
+            height: 75vh;  
+            width: 100%;
+        }
+    </style>
     <body>
-        <div class="container">
-            <p> 
-                Hello!  This is the landing page for the federal map web app.  
-            </p>
+        <div id="contentAbove" class="col"> Federal Employess Web Map Usage Example Page </div>
+        <div id="CMScontainer">
+            <iframe style="height: inherit; width:100%;" frameBorder="0" src="inset.html" title="Iframe Example"></iframe>
         </div>
+    </body>
 </html>
