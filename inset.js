@@ -1,7 +1,6 @@
 /* 
  * Script to power the inset Leaflet map.
  * @author Bryan Haberberger
- * https://github.com/thehabes
  * https://habesoftware.rocks
  *
  * @see https://cfg1789.wustl.edu
