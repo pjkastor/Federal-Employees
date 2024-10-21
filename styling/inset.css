@@ -354,6 +354,7 @@ path {
   background-size: 55px;
   width: 55px;
   min-width: 55px;
+  max-width: 55px;
   height: 55px;
 }
 
@@ -362,6 +363,7 @@ path {
   background-repeat: no-repeat;
   width: 36px;
   min-width: 36px;
+  max-width: 36px;
   height: 63px;
 }
 
@@ -371,6 +373,7 @@ path {
   background-size: 4em 4em;
   width: 4em;
   min-width: 4em;
+  max-width: 4em;
   height: 4em;
 }
 
@@ -380,6 +383,7 @@ path {
   background-size: 4em 4em;
   width: 4em;
   min-width: 4em;
+  max-width: 4em;
   height: 4em;
 }
 
@@ -389,6 +393,7 @@ path {
   background-size: 4em 4em;
   width: 4em;
   min-width: 4em;
+  max-width: 4em;
   height: 4em;
 }
 
