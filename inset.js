@@ -56,26 +56,27 @@ VIEWER.cluster_points = null
 
 VIEWER.cluster_icons = null
 
+const loadingMessage = document.querySelector(".loadingMessage")
+const kastorMapLegend = document.querySelector(".kastorMapLegend")
+const heatmapLegend = document.querySelector(".heatmapLegend")
+const datelessView = document.querySelector(".datelessView")
 /**
  * All geography is loaded and the interface is ready to show.  Paginate by hiding the 'loading' UI
  */
 document.addEventListener("KastorLeafletInitialized", event => {
-    // 
     loadingMessage.classList.add("is-hidden")
     loadingMessage.innerHTML = `Arranging Map Data...<br>`
     datelessView.classList.remove("is-hidden")
-    const infoContainer = document.getElementById("infoContainer")
-    if (infoContainer) infoContainer.classList.remove("is-hidden")
     document.querySelector(".slider-container").classList.remove("is-hidden")
-    leafletInstanceContainer.style.backgroundImage = "none"
-    leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
-    leafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
+    kastorLeafletInstanceContainer.style.backgroundImage = "none"
+    kastorLeafletInstanceContainer.querySelector(".leaflet-map-pane").classList.remove("is-hidden")
+    kastorLeafletInstanceContainer.querySelector(".leaflet-control-container").classList.remove("is-hidden")
     kastorMapLegend.classList.remove("is-hidden")
     VIEWER.layerControl._container.querySelectorAll("input[type='checkbox']").forEach(chk => {
         if (chk.nextElementSibling.innerText.trim() === "Postmaster Heatmap" && chk.checked)
             heatmapLegend.classList.remove("is-hidden")
     })
-    leafletInstanceContainer.classList.add("has-loaded")
+    kastorLeafletInstanceContainer.classList.add("has-loaded")
     if (VIEWER.once) VIEWER.showGreeting()
     VIEWER.once = false
 })
@@ -371,13 +372,11 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
         }
     } else {
         // Prepare for 'loading' modal and pagination
-        leafletInstanceContainer.querySelector(".leaflet-map-pane").classList.add("is-hidden")
-        leafletInstanceContainer.querySelector(".leaflet-control-container").classList.add("is-hidden")
-        const infoContainer = document.getElementById("infoContainer")
-        if (infoContainer) infoContainer.classList.add("is-hidden")
+        kastorLeafletInstanceContainer.querySelector(".leaflet-map-pane").classList.add("is-hidden")
+        kastorLeafletInstanceContainer.querySelector(".leaflet-control-container").classList.add("is-hidden")
         document.querySelector(".slider-container").classList.add("is-hidden")
         datelessView.classList.add("is-hidden")
-        leafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
+        kastorLeafletInstanceContainer.style.backgroundImage = "url(./images/earth.gif)"
         loadingMessage.classList.remove("is-hidden")
         kastorMapLegend.classList.add("is-hidden")
         heatmapLegend.classList.add("is-hidden")
@@ -424,8 +423,8 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
             }
         } else {
             geoMarkers = VIEWER.rawGeoJSONData
-            document.getElementById("timeSlider").value = "0"
-            document.getElementById("slider-value").innerText = "N/A"
+            document.querySelector(".timeSlider").value = "0"
+            document.querySelector(".slider-value").innerText = "N/A"
         }
 
         VIEWER.leafletFormattedGeoJsonLayers.statePostmastersFeatures = L.geoJSON(geoMarkers.states, {
@@ -832,7 +831,7 @@ VIEWER.initializeLeaflet = async function(coords, userInputYear = "0") {
                 }
             })
         } else {
-            VIEWER.mymap = L.map('leafletInstanceContainer', {
+            VIEWER.mymap = L.map('kastorLeafletInstanceContainer', {
                 center: coords,
                 zoomControl: false,
                 zoom: VIEWER.startZoom,
@@ -1040,14 +1039,14 @@ VIEWER.formatPopupForKastorData = function(feature, layer) {
 /**
  * Change the selected date shown to the user.
  */
-document.getElementById("timeSlider").addEventListener("input", function(e) {
-    document.getElementById("slider-value").innerText = e.target.value
+document.querySelector(".timeSlider").addEventListener("input", function(e) {
+    document.querySelector(".slider-value").innerText = e.target.value
 })
 
 /**
  * Change the date slider
  */
-document.getElementById("timeSlider").addEventListener("change", function(e) {
+document.querySelector(".timeSlider").addEventListener("change", function(e) {
     // Remove and redraw the layers filtering the data by Start Date and End Date comparison to the slider value.
     let sliderYear = e.target.value
     VIEWER.initializeLeaflet(VIEWER.startCoords, sliderYear + "")
@@ -1056,7 +1055,7 @@ document.getElementById("timeSlider").addEventListener("change", function(e) {
 /**
  * 'See All Locations' button click handler
  */
-document.getElementById("datelessView").addEventListener("click", function(e) {
+datelessView.addEventListener("click", function(e) {
     VIEWER.dateless(e)
 })
 
@@ -1064,10 +1063,10 @@ document.getElementById("datelessView").addEventListener("click", function(e) {
  * Move forward one year
  */
 document.querySelector(".year-inc").addEventListener("click", function(e) {
-    let currentYear = parseInt(document.getElementById("slider-value").innerText)
+    let currentYear = parseInt(document.querySelector(".slider-value").innerText)
     if (!currentYear || currentYear === 1829) return
     currentYear++
-    document.getElementById("slider-value").innerText = currentYear
+    document.querySelector(".slider-value").innerText = currentYear
     VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear + "")
 })
 
@@ -1075,10 +1074,10 @@ document.querySelector(".year-inc").addEventListener("click", function(e) {
  * Move backward one year
  */
 document.querySelector(".year-dec").addEventListener("click", function(e) {
-    let currentYear = parseInt(document.getElementById("slider-value").innerText)
+    let currentYear = parseInt(document.querySelector(".slider-value").innerText)
     if (!currentYear || currentYear === 1789) return
     currentYear--
-    document.getElementById("slider-value").innerText = currentYear
+    document.querySelector(".slider-value").innerText = currentYear
     VIEWER.initializeLeaflet(VIEWER.startCoords, currentYear + "")
 })
 
@@ -1121,7 +1120,7 @@ VIEWER.determineEmployeeCount = function(feature) {
 VIEWER.showGreeting = function() {
     const check = sessionStorage.getItem("kastor-map-greeting-message")
     if (check && check === "checked") return
-    greetingContainer.classList.remove("is-hidden")
+    document.querySelector(".greetingContainer").classList.remove("is-hidden")
 }
 
 VIEWER.init()

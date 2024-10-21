@@ -83,7 +83,7 @@ label {
 }
 
 
-#leafletInstanceContainer {
+#kastorLeafletInstanceContainer {
   height: 100%;
   width: 100%;
   background-image: url(../images/LogoNoText.png);
@@ -95,7 +95,7 @@ label {
   z-index: 0;
 }
 
-#leafletInstanceContainer.has-loaded {
+#kastorLeafletInstanceContainer.has-loaded {
   background-size: 150em;
   background-position: center;
   background-repeat: no-repeat;
@@ -106,7 +106,7 @@ label {
   background-color: white;
 }
 
-#loadingMessage {
+.loadingMessage {
   text-align: center;
   background-color: darkgrey;
   color: black;
@@ -132,8 +132,8 @@ label {
   font-weight: bold;
 }
 
-#datelessView,
-#instructions {
+.datelessView,
+.instructions {
   border: 2px solid #B85323;
   font-size: 11pt;
   line-height: 12pt;
@@ -296,14 +296,6 @@ input[type="checkbox"] {
   height: 2rem;
 }
 
-/*.slider-container {
-    font-family: "Roboto";
-}*/
-
-/*#timeSliderSpan {
-    display: inline-block;
-}*/
-
 .is-not-visible {
   visibility: hidden;
   opacity: 0;
@@ -435,7 +427,7 @@ path {
   background-repeat: no-repeat;
 }
 
-#resetContainer {
+.datelessContainer {
   z-index: 1;
   position: relative;
   display: inline-block;
@@ -443,7 +435,7 @@ path {
   top: 4px;
 }
 
-#instructionsContainer {
+.instructionsContainer {
   z-index: 1;
   position: relative;
   display: inline-block;
@@ -451,13 +443,13 @@ path {
   top: 4px;
 }
 
-#kastorMap {
+.webmap {
   height: 100vh;
   padding: 0;
   margin: 0;
 }
 
-#kastorMapLegend {
+.kastorMapLegend {
   position: absolute;
   font-size: 10pt;
   background-color: #ad9b47;
@@ -471,13 +463,13 @@ path {
   /*   font-family: 'LB Regular'; */
 }
 
-#kastorMapLegend h5 {
+.kastorMapLegend h5 {
   text-align: center;
   font-weight: bold;
   margin-bottom: 0;
 }
 
-#kastorMapLegend h7 {
+.kastorMapLegend h7 {
   text-align: center;
   font-weight: bold;
   text-decoration: underline;
@@ -486,14 +478,14 @@ path {
   cursor: pointer;
 }
 
-#kastorMapLegend ul {
+.kastorMapLegend ul {
   margin-left: -1em;
   font-weight: bold;
 }
 
 
 
-#heatmapLegend {
+.heatmapLegend {
   position: absolute;
   font-size: 10pt;
   background-color: darkgrey;
@@ -507,13 +499,13 @@ path {
   /*   font-family: 'LB Regular'; */
 }
 
-#heatmapLegend h5 {
+.heatmapLegend h5 {
   text-align: center;
   font-weight: bold;
   margin-bottom: 0;
 }
 
-#heatmapLegend h7 {
+.heatmapLegend h7 {
   text-align: center;
   font-weight: bold;
   text-decoration: underline;
@@ -522,7 +514,7 @@ path {
   cursor: pointer;
 }
 
-#heatmapLegend ul {
+.heatmapLegend ul {
   margin-left: -1em;
   font-weight: bold;
 }
@@ -636,7 +628,7 @@ path {
   width: 30px;
 }
 
-#howTo {
+.howTo {
   position: relative;
   margin: 0 auto;
   background-color: #173E3A;
@@ -648,23 +640,30 @@ path {
   max-height: 90%;
 }
 
-#howTo ul {
+.howTo ul {
   font-size: 13pt;
 }
 
-#howTo p {
+.howTo p {
   font-size: 14pt;
 }
 
-#howTo a {
+.howTo a {
   color: #B85323;
 }
 
-#howTo h2 {
-  color: white;
+.howTo h1{
+  color:  white;
+  text-align:  center;
 }
 
-#howToContainer {
+.howTo h2 {
+  color: white;
+  margin: 2em 0em 0.5em 0em;
+  text-decoration:  underline;
+}
+
+.howToContainer {
   position: absolute;
   top: 0;
   left: 0;
@@ -674,53 +673,53 @@ path {
   z-index: 500;
 }
 
-#closeHowTo {
-  width: 5em;
+.closeHowTo {
+  width: 5em !important;
   position: absolute;
   right: 0em;
   margin: -1em 1em;
 }
 
-#greeting {
+.greeting {
   position: relative;
   margin: 0 auto;
   color: black;
   padding: 1em;
 }
 
-#greeting ul {
+.greeting ul {
   font-size: 13pt;
   font-weight: bold;
 }
 
-#greeting p {
+.greeting p {
   font-size: 13pt;
   text-align: center;
   font-weight: bold;
 }
 
-#greeting a {
+.greeting a {
   color: #B85323;
 }
 
-#greeting h2 {
+.greeting h2 {
   color: white;
   text-align: center;
   text-decoration: underline;
 }
 
-#greeting label {
+.greeting label {
   display: block;
   text-align: right;
   font-style: italic;
   font-weight: bold;
 }
 
-#greeting input[type="checkbox"] {
+.greeting input[type="checkbox"] {
   cursor: pointer;
 }
 
-#greetingContainer {
+.greetingContainer {
   position: absolute;
   z-index: 500;
   background-color: #2A6EFF;
@@ -734,8 +733,8 @@ path {
   top: 195px;
 }
 
-#closeGreeting {
-  width: 5em;
+.closeGreeting {
+  width: 5em !important;
   position: absolute;
   right: 0em;
   margin: 0em 1em;
