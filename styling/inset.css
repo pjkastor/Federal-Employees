@@ -773,10 +773,15 @@ datalist option {
   padding: 0;
 }
 
-.colorSquare{
+.colorSquare {
   display: inline-block;
   height: 15px;
   width: 15px;
   margin-right: 6px;
   margin-bottom: -2px;
+}
+
+.leaflet-popup-close-button {
+  top: 2px !important;
+  right: 2px !important;
 }
