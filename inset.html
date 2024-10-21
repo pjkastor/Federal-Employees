@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+    @author Bryan Haberberger
+    https://habesoftware.rocks
+-->
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="">
+    <link rel="stylesheet" href="./marker-clustering/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="./marker-clustering/leaflet.markercluster-src.js"></script>
+    <script src="./inset.js" type="module"></script>
+    <link rel="stylesheet" href="./styling/inset.css" />
+</head>
+
+<body>
+    <div class="row webmap">
+        <div class="col-12">
+            <div class="slider-container is-hidden">
+                <div class="slider-controls">
+                    <div class="instructionsContainer">
+                        <input type="button" class="button primary instructions" value="how to use" onclick="openHowTo()" />
+                    </div>
+                    <div class="inline year-dec" title="Move backward one year">
+                        <span class="icon-fix">hack</span>
+                        <img src="./images/map-icons/Fleur.de.lis.left.white.png" class="inline small-icon" />
+                    </div>
+                    <h2 class="inline slider-value">1829</h2>
+                    <div class="inline year-inc" title="Move forward one year">
+                        <span class="icon-fix">hack</span>
+                        <img src="./images/map-icons/Fleur.de.lis.right.white.png" class="inline small-icon" />
+                    </div>
+                    <div class="datelessContainer">
+                        <input type="button" class="button primary datelessView" value="see all locations" />
+                    </div>
+                </div>
+                <div class="slide">
+                    <h4 class="inline">1789</h4>
+                    <input class="inline timeSlider" type="range" min="1789" max="1829" value="1829" step="1">
+                    <h4 class="inline">1829</h4>
+                </div>
+                <small>choose a year using the slider above</small>
+            </div>
+            <div id="kastorLeafletInstanceContainer">
+                <div class="loadingMessage" style="text-align: center;">
+                    Gathering Federal Employee Data...<br>
+                </div>
+                <div class="is-hidden kastorMapLegend">
+                    <h5>Legend</h5>
+                    <h7 onclick="openHowTo()">About</h7>
+                    <ul>
+                        <li><span class="colorSquare" style="background-color:blue;"></span>Location</li>
+                        <li><span class="colorSquare" style="background-color:yellow;"></span>Lighthouse</li>
+                        <li><span class="colorSquare" style="background-color:lightgrey;"></span>Building</li>
+                        <li><span class="colorSquare" style="background-color:#008080;"></span>Maritime Station</li>
+                        <li><span class="colorSquare" style="background-color:pink;"></span>State</li>
+                        <li><span class="colorSquare" style="background-color:#7A55A6;"></span>Non U.S. Location</li>
+                    </ul>
+                </div>
+                <div class="is-hidden heatmapLegend">
+                    <h5>Postmaster Count</h5>
+                    <ul>
+                        <li><span class="colorSquare" style="background-color:#800026;"></span>800+</li>
+                        <li><span class="colorSquare" style="background-color:#BD0026;"></span>600 - 799</li>
+                        <li><span class="colorSquare" style="background-color:#E31A1C;"></span>400 - 599</li>
+                        <li><span class="colorSquare" style="background-color:#FC4E2A;"></span>200 - 399</li>
+                        <li><span class="colorSquare" style="background-color:#FD8D3C;"></span>100 - 199</li>
+                        <li><span class="colorSquare" style="background-color:#FEB24C;"></span>50 - 99</li>
+                        <li><span class="colorSquare" style="background-color:#FED976;"></span>20 - 49</li>
+                        <li><span class="colorSquare" style="background-color:#FFEDA0;"></span>1 - 19</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="is-hidden howToContainer">
+            <div class="howTo">
+                <input class="button primary closeHowTo" value="close" onclick="closeHowTo(event)" />
+                <h1>How to use this map</h1>
+                <p class="row">
+                    <span class="layersIcon col-1"></span>
+                    <span class="col-11">
+                        This map visualizes the locations where federal employees did their work. It is built on a series of layers, which you can choose by selecting the layers icon in the top right of the map. 
+                    </span>
+                </p>
+                <p>
+                    Each layer is independent of the others, so you can see multiple layers at once or just a single layer. This does mean that if you want to only one layer, you will need to turn off any other layers.
+                </p>
+                <p class="row">
+                    <span class="zoomIcon col-1"></span>
+                    <span class="col-11">
+                        You can zoom in or out by using the zoom area in the bottom right corner or scrolling on your mouse.
+                    </span>
+                </p>
+                <p>
+                    You can also move through time. The number at the top center of the map shows the specific year. The map will launch by showing the location of federal offices in 1829. You can select other years either by dragging the circle in the middle of the scrollbar near the top of the map or by clicking the arrows to either side of the current year. You can also select “Show all locations” to every location from 1789-1829.
+                </p>
+                <p>
+                    You can click on individual locations, court jurisdictions, or tax collection districts to see additional information, including links to the people who worked in those places.
+                </p>
+                <p>You can adjust the following layers:</p>
+                <ul>
+                    <li><a href="#Locations">Locations</a></li>
+                    <li><a href="#Districts">Judicial Districts</a></li>
+                    <li><a href="#Circuits">Judicial Circuits</a></li>
+                    <li><a href="#Postmasters">Postmasters heatmap</a></li>
+                    <li><a href="#TaxDistricts">1798 and 1814 Tax Districts</a></li>
+                    <li><a href="#States">States & Territories</a></li>
+                    <li><a href="#Basemaps">Basemaps</a></li>
+                </ul>
+                <h2 id="Locations"> Locations </h2>
+                <p>
+                    This layer shows individual places (cities and towns, buildings, and maritime locations). How this material appears will change as you zoom in and out.
+                </p>
+                <p class="row">
+                    <span class="clusterIcon col-1"></span>
+                    <span class="col-11">
+                        When you first connect to the map, you will be at the greatest distance, and locations are clustered together into groups represented by circles with a number indicating how many locations are in that circle.
+                    </span>
+                </p>
+                <p class="row">
+                    <span class="locationsIcon col-1"></span>
+                    <span class="col-11">
+                        As you zoom in, clusters will change to individual locations, represented by colored dots indicating the type of location.
+                    </span>
+                </p>
+                <p class="row">
+                    <span class="iconsIcon col-1"></span>
+                    <span class="col-11">
+                        At higher zoom levels the dots will change to icons, each representing the type of location.
+                    </span>
+                </p>
+                <h2 id="Districts">Federal Judicial Districts</h2>
+                <p>
+                    The United States was organized into a series of district courts that served as the foundation of the federal judicial system. Their jurisdiction was limited, and their cases consisted primarily of issues in maritime law.
+                </p>
+                <p>
+                    Established in 1789, each state constituted a judicial district, so their boundaries were the same. The only exceptions were Maine (a region within Massachusetts) and Kentucky (a region within Virginia), each of which were separate judicial districts. Congress eventually divided some states into multiple judicial districts. Most federal territories did not have federal district courts. As a result, the district court map looks similar but not identical to a map of the states and territories of the United States.
+                </p>
+                <h2 id="Circuits">Federal Judicial Circuits</h2>
+                <p>Circuit courts had their own legal jurisdiction and also heard cases appealed from the district courts.</p>
+                <p>
+                    Each circuit consisted of several states, and the composition changed over time in response to population shifts, the creation of new states, and efforts to reorganize the federal judiciary. Each circuit court initally consisted of two justices from the Supreme Court and a district court judge. Supreme Court Justices soon complained about the difficulties of riding circuit, and in 1793 Congress revised the law to require only a single Supreme Court Justice along with a District Court Judge. Circuit courts did not have their own designated judges, except for the period from 1801-1802 when the U.S. experimented with appointing circuit court judges. As a result, this layer shows the various circuits, but does not link to lists of individual judges.
+                </p>
+                <h2 id="Postmasters">Postmasters Heatmap</h2>
+                <p>
+                    This layer represents the distribution of U.S. postmasters. While post offices did have designated locations, many of those locations were towns, businesses, or other places that no longer exist. As a result, post offices are mapped by the states in which they were located.
+                </p>
+                <p>Each state has a different color to reflect the number of postmasters in that county in a given year.</p>
+                <h2 id="TaxDistricts">1798 and 1814 Tax Districts</h2>
+                <p>
+                    In 1798 and in 1814, the federal government established a series of direct taxes. These taxes emerged from military costs: an undeclared naval war with France in 1798 that included the mobilization of both the army and the navy; and the War of 1812. In both cases, Congress divided the individual states into individual tax collection districts and appointed officials with the unenviable task of collecting those taxes.
+                </p>
+                <h2 id="States">State and Territorial Boundaries</h2>
+                <p>
+                    This layer shows the primary internal organization within the United States, with boundaries changing year to year. It’s important to note that these boundaries reflect the territorial claims of the United States. It includes land that other governments had not ceded and continued to control, including both native American societies and European empires.
+                </p>
+                <h2 id="Basemaps">Basemaps</h2>
+                <p>
+                    Every layer of data sits atop a basemap that shows the global landscape. Each basemap has its own benefits. This map includes three basemaps, each of which has different information and color contrasts. These basemaps have the additional benefit of containing very little of the information from current society that fills most digital maps (highways and roads, cities and towns, state and national boundaries). This project describes an era before many of those places took their current form, or before changes the landscape existed.
+                </p>
+                <p>
+                    The map defaults to showing every location from 1789-1829, and you can always restore this default by selecting “SEE ALL LOCATIONS” to the right of the time slider.
+                </p>
+                <h2 id="Basemaps">Location Icons</h2>
+                <ul>
+                    <li class="legendIcon">
+                        <i class="star-icon"></i>:
+                        <span>
+                            Capital (capital of the United States, located in New York, NY, from 1789-1790; Philadelphia, PA, from 1791-1800; Washington, DC, from 1801-1829)
+                        </span>
+                    </li>
+                    <li class="legendIcon">
+                        <i class="u-icon"></i>:
+                        <span>Location (town, city, or other population center)</span> 
+                    </li>
+                    <li class="legendIcon">
+                        <i class="l-icon"></i>:
+                        <span>Lighthouse (individual lighthouse)</span>
+                    </li>
+                    <li class="legendIcon">
+                        <i class="b-icon"></i>:
+                        <span>Building (building, fort, or similar structure)</span>
+                    </li>
+                    <li class="legendIcon">
+                        <i class="m-icon"></i>:
+                        <span>Maritime Station (location for U.S. vessels on a waterway or near a port)</span>
+                    </li>
+                    <li class="legendIcon">
+                        <i class="s-icon"></i>:
+                        <span>
+                            State (U.S. states for those offices that exercised state-wide jurisdiction without a known or designated meeting place)
+                        </span>
+                    </li>
+                    <li class="legendIcon">
+                        <i class="n-icon"></i>:
+                        <span>Non-U.S. Location (city, town, or other population center located outside the spaces claimed or controlled by the United States)</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="is-hidden greetingContainer">
+            <div class="greeting">
+                <input class="button primary closeGreeting" value="close" onclick="closeGreeting(event)" />
+                <h2>Welcome to the Map</h2>
+                <ul>
+                    <li> Select "Layers" in the top right to see the different forms of information you can explore. </li>
+                    <li> 
+                        Use "Zoom" in the bottom right to shrink or enlarge the viewing area. Keyboard <code>+</code> or <code>-</code> and mousewheels work as well. 
+                    </li>
+                    <li> 
+                        Use the white scrollbar above to view locations for a specific year. The chosen year appears at the top center of the window. 
+                    </li>
+                    <li> Select "See All Locations" at the top of the map window to see every location at once from all timeframes. </li>
+                </ul>
+                <p>Select "How To Use" at the top of the map window for additional details.</p>
+                <label>
+                    <input type="checkbox" onchange="changeGreetingSetting(event)" />
+                    *Do not show this message again
+                </label>
+            </div>
+        </div>
+    </div>
+    <script>
+    const greetingContainer = document.querySelector(".greetingContainer")
+    const howToContainer = document.querySelector(".howToContainer")
+    function changeGreetingSetting(event) {
+        const checkbox = event.target;
+        if (checkbox.checked) sessionStorage.setItem("kastor-map-greeting-message", "checked")
+        else sessionStorage.setItem("kastor-map-greeting-message", "")
+        return
+    }
+
+    function closeGreeting(event) {
+        greetingContainer.classList.add("is-hidden")
+    }
+
+    function closeHowTo(event) {
+        howToContainer.classList.add("is-hidden")
+    }
+
+    function openHowTo(event) {
+        greetingContainer.classList.add("is-hidden")
+        howToContainer.classList.remove("is-hidden")
+    }
+    </script>
+</body>
+
+</html>
