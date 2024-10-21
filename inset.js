@@ -1,9 +1,8 @@
 /* 
  * Script to power the inset Leaflet map.
+ *
  * @author Bryan Haberberger
  * https://habesoftware.rocks
- *
- * @see https://cfg1789.wustl.edu
  */
 
 let VIEWER = {}
