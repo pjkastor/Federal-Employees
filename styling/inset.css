@@ -457,7 +457,7 @@ path {
   box-shadow: 8px 0px 22px gray;
   bottom: 1em;
   left: 1em;
-  padding: 1em;
+  padding: 0.5em;
   z-index: 401;
   color: black;
   /*   font-family: 'LB Regular'; */
@@ -493,7 +493,7 @@ path {
   box-shadow: 8px 0px 22px gray;
   top: 97px;
   left: 1em;
-  padding: 1em;
+  padding: 0.5em;
   z-index: 401;
   color: black;
   /*   font-family: 'LB Regular'; */
@@ -771,7 +771,14 @@ datalist {
   writing-mode: vertical-lr;
 }
 
-
 datalist option {
   padding: 0;
+}
+
+.colorSquare{
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+  margin-bottom: -2px;
 }
