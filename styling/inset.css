@@ -335,17 +335,6 @@ path {
   background-size: 55px;
 }
 
-.layersIcon {
-  background-image: url(../images/layers.png);
-  background-position: 2px;
-  width: 44px;
-  height: 44px;
-  position: relative;
-  display: inline-block;
-  top: 18px;
-  margin: 0px 5px;
-}
-
 .leaflet-retina .leaflet-control-layers-toggle {
   width: 55px !important;
   height: 55px !important;
@@ -359,52 +348,48 @@ path {
   line-height: 38px !important;
 }
 
+.layersIcon {
+  background-image: url(../images/layers.png);
+  background-repeat: no-repeat;
+  background-size: 55px;
+  width: 55px;
+  min-width: 55px;
+  height: 55px;
+}
+
 .zoomIcon {
   background-image: url(../images/zoom.png);
-  background-position: 2px;
+  background-repeat: no-repeat;
   width: 36px;
+  min-width: 36px;
   height: 63px;
-  position: relative;
-  display: inline-block;
-  top: 25px;
-  margin: 0px 5px;
 }
 
 .clusterIcon {
   background-image: url(../images/cluster.png);
-  background-position: 2px;
+  background-repeat: no-repeat;
   background-size: 4em 4em;
-  background-position: 2px;
   width: 4em;
+  min-width: 4em;
   height: 4em;
-  position: relative;
-  display: inline-block;
-  top: 18px;
-  margin: 0px 5px;
 }
 
 .iconsIcon {
   background-image: url(../images/icons.png);
+  background-repeat: no-repeat;
   background-size: 4em 4em;
-  background-position: 2px;
   width: 4em;
+  min-width: 4em;
   height: 4em;
-  position: relative;
-  display: inline-block;
-  top: 18px;
-  margin: 0px 5px;
 }
 
 .locationsIcon {
   background-image: url(../images/locations.png);
+  background-repeat: no-repeat;
   background-size: 4em 4em;
-  background-position: 2px;
   width: 4em;
+  min-width: 4em;
   height: 4em;
-  position: relative;
-  display: inline-block;
-  top: 18px;
-  margin: 0px 5px;
 }
 
 .inline {
