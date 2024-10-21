@@ -532,11 +532,11 @@ path {
   background-repeat: no-repeat;
   position: relative;
   top: 7px;
-  left: 8px;
   display: inline-block;
   background-size: 30px 30px;
   height: 30px;
   width: 30px;
+  margin-right: 8px;
 }
 
 .l-icon {
@@ -544,11 +544,11 @@ path {
   background-repeat: no-repeat;
   position: relative;
   top: 14px;
-  left: 8px;
   display: inline-block;
   background-size: 30px 30px;
   height: 38px;
   width: 30px;
+  margin-right: 8px;
 }
 
 .n-icon {
@@ -556,11 +556,11 @@ path {
   background-repeat: no-repeat;
   position: relative;
   top: 10px;
-  left: 8px;
   display: inline-block;
   background-size: 30px 30px;
   height: 30px;
   width: 30px;
+  margin-right: 8px;
 }
 
 .u-icon {
@@ -569,10 +569,10 @@ path {
   display: inline-block;
   position: relative;
   top: 7px;
-  left: 8px;
   background-size: 30px 30px;
   height: 30px;
   width: 30px;
+  margin-right: 8px;
 }
 
 .b-icon {
@@ -581,10 +581,10 @@ path {
   display: inline-block;
   position: relative;
   top: 19px;
-  left: 8px;
   background-size: 24px 24px;
   height: 38px;
-  width: 24px;
+  width: 30px;
+  margin-right: 8px;
 }
 
 .s-icon {
@@ -593,10 +593,10 @@ path {
   display: inline-block;
   position: relative;
   top: 19px;
-  left: 8px;
   background-size: 24px 24px;
   height: 38px;
-  width: 24px;
+  width: 30px;
+  margin-right: 8px;
 }
 
 .star-icon {
@@ -605,10 +605,10 @@ path {
   display: inline-block;
   position: relative;
   top: 7px;
-  left: 8px;
   background-size: 30px 30px;
   height: 30px;
   width: 30px;
+  margin-right: 8px;
 }
 
 .howTo {
