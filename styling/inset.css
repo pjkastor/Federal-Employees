@@ -483,8 +483,6 @@ path {
   font-weight: bold;
 }
 
-
-
 .heatmapLegend {
   position: absolute;
   font-size: 10pt;
@@ -779,6 +777,6 @@ datalist option {
   display: inline-block;
   height: 15px;
   width: 15px;
-  margin-right: 10px;
+  margin-right: 6px;
   margin-bottom: -2px;
 }
